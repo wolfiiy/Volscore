@@ -28,13 +28,19 @@ namespace HttpListenerExample
             AddBody();
             pageData +=
                 "</html>";
+
+            // override content with example html
+            // TEMPORARY
+            string[] readText = File.ReadAllLines("../../../../doc/FdM.html");
+            pageData = "";
+            foreach (string s in readText) pageData += s;
         }
 
         private static void AddHeader()
         {
             pageData +=
                 "<head>" +
-                "   <title>HttpListener Example</title>" +
+                "   <title>VolScore</title>" +
                 "</head>";
         }
 
@@ -42,10 +48,7 @@ namespace HttpListenerExample
         {
             pageData +=
                 "<body>" +
-                "  <p>Page Views: {0}</p>" +
-                "  <form method=\"post\" action=\"shutdown\">" +
-                "    <input type=\"submit\" value=\"Shutdown\" {1}>" +
-                "  </form>" +
+                "  <h1>Hello World!</h1>" +
                 "</body>";
         }
         public static async Task HandleIncomingConnections()
@@ -84,7 +87,7 @@ namespace HttpListenerExample
                 // Write the response info
                 CreatePage();
                 string disableSubmit = !runServer ? "disabled" : "";
-                byte[] data = Encoding.UTF8.GetBytes(String.Format(pageData, pageViews, disableSubmit));
+                byte[] data = Encoding.UTF8.GetBytes(pageData);
                 resp.ContentType = "text/html";
                 resp.ContentEncoding = Encoding.UTF8;
                 resp.ContentLength64 = data.LongLength;
