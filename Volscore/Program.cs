@@ -19,7 +19,7 @@ namespace HttpListenerExample
         public static string pageData;
 
 
-        private static void CreatePage()
+        private static void ShowGame(int gameNb)
         {
             pageData =
                 "<!DOCTYPE>" +
@@ -54,6 +54,7 @@ namespace HttpListenerExample
         public static async Task HandleIncomingConnections()
         {
             bool runServer = true;
+            int requestedGame = 0;
 
             // While a user hasn't visited the `shutdown` url, keep on handling requests
             while (runServer)
@@ -73,6 +74,15 @@ namespace HttpListenerExample
                 Console.WriteLine(req.UserAgent);
                 Console.WriteLine();
 
+                // Get game number from querystring
+                try
+                {
+                    requestedGame = int.Parse(req.QueryString.Get("game"));
+                } catch(Exception e)
+                {
+                    requestedGame = 0;
+                }
+
                 // If `shutdown` url requested w/ POST, then shutdown the server after serving the page
                 if ((req.HttpMethod == "POST") && (req.Url.AbsolutePath == "/shutdown"))
                 {
@@ -85,7 +95,7 @@ namespace HttpListenerExample
                     pageViews += 1;
 
                 // Write the response info
-                CreatePage();
+                ShowGame(requestedGame);
                 string disableSubmit = !runServer ? "disabled" : "";
                 byte[] data = Encoding.UTF8.GetBytes(pageData);
                 resp.ContentType = "text/html";
