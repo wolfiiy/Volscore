@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html>
+    <head>
+		<meta charset="UTF-8">
+        <title>VolScore</title>
+        <style>
+            body {
+                font-family:Arial, Helvetica, sans-serif;
+            }
+            table {
+                border-collapse: collapse;
+            }
+            td, th {
+                border: 1px solid black;
+                padding: 3px;
+                text-align: left;
+            }
+            th {
+                background-color: beige;
+            }
+            .score {
+                width: 50px;
+                text-align: center;
+            }
+            .separating {
+                border-left: 4px solid black;
+            }
+            .final_win {
+                background-color: lightblue;
+            }
+            .final_loss {
+                background-color: pink;
+            }
+        </style>
+    </head>
+    <body>
+        <h2>Match</h2>
+        <table>
+            <tr>
+                <th>De</th>
+                <td colspan="2">Championnat</td>
+            </tr>
+            <tr>
+                <th>Niveau</th>
+                <td colspan="2">Régional - Vaud</td>
+            </tr>
+            <tr>
+                <th>Catégorie</th>
+                <td colspan="2">Hommes</td>
+            </tr>
+            <tr>
+                <th>Ligue</th>
+                <td colspan="2">U17</td>
+            </tr>
+            <tr>
+                <th>Numéro</th>
+                <td colspan="2">3214</td>
+            </tr>
+            <tr>
+                <th>Entre</th>
+                <td>Froideville</td>
+                <td>Ecublens</td>
+            </tr>
+            <tr>
+                <th>Lieu</th>
+                <td colspan="2">Froideville</td>
+            </tr>
+            <tr>
+                <th>Salle</th>
+                <td colspan="2">Début de la Fin</td>
+            </tr>
+            <tr>
+                <th>Date</th>
+                <td colspan="2">16.12.2022</td>
+            </tr>
+            <tr>
+                <th>Heure</th>
+                <td colspan="2">21h00</td>
+            </tr>
+        </table>
+        <h2>Equipes</h2>
+        <table>
+            <tr>
+                <th>A</th>
+                <td colspan="2">Froideville</td>
+                <th class="separating">B</th>
+                <td colspan="2">Ecublens</td>
+            </tr>
+            <tr>
+                <th>License</th>
+                <th>Numéro</th>
+                <th>Nom</th>
+                <th class="separating">License</th>
+                <th>Numéro</th>
+                <th>Nom</th>
+            </tr>
+            <tr>
+                <td>23556</td>
+                <td>3</td>
+                <td>Georges</td>
+                <td class="separating">35635</td>
+                <td>7</td>
+                <td>Blaise</td>
+            </tr>
+            <tr>
+                <td>56755</td>
+                <td>4</td>
+                <td>Kevin</td>
+                <td class="separating">23556</td>
+                <td>9</td>
+                <td>Pascal</td>
+            </tr>
+            <tr>
+                <td>243455</td>
+                <td>6</td>
+                <td>Marcel</td>
+                <td class="separating">46456</td>
+                <td>3</td>
+                <td>Guy</td>
+            </tr>
+            <tr>
+                <td>56466</td>
+                <td>8</td>
+                <td>Arthur</td>
+                <td class="separating">57567</td>
+                <td>6</td>
+                <td>Stéphane</td>
+            </tr>
+            <tr>
+                <td>75679</td>
+                <td>12</td>
+                <td>Jean-Marc</td>
+                <td class="separating">23444</td>
+                <td>4</td>
+                <td>Noé</td>
+            </tr>
+            <tr>
+                <td>45664</td>
+                <td>1</td>
+                <td>Pierre-Yves</td>
+                <td class="separating">43324</td>
+                <td>13</td>
+                <td>Gabriel</td>
+            </tr>
+            <tr>
+                <td>34577</td>
+                <td>5</td>
+                <td>Samuel</td>
+                <td class="separating">87685</td>
+                <td>12</td>
+                <td>Nicolas</td>
+            </tr>
+            <tr>
+                <td>34536</td>
+                <td>7</td>
+                <td>Antoine</td>
+                <td class="separating">67843</td>
+                <td>8</td>
+                <td>Pierre</td>
+            </tr>
+            <tr>
+                <th colspan="3">
+                    Libéros
+                </th>
+                <th colspan="3" class="separating">
+                    Libéros
+                </th>
+            </tr>
+            <tr>
+                <td>34577</td>
+                <td>5</td>
+                <td>Samuel</td>
+                <td class="separating">67843</td>
+                <td>8</td>
+                <td>Pierre</td>
+            </tr>
+            <tr>
+                <th colspan="3">
+                    Officiels
+                </th>
+                <th colspan="3" class="separating">
+                    Officiels
+                </th>
+            </tr>
+            <tr>
+                <td>46794</td>
+                <th>C</td>
+                <td>Hervé</td>
+                <td class="separating">92113</td>
+                <th>C</td>
+                <td>Paul</td>
+            </tr>
+            <tr>
+                <td>28934</td>
+                <th>AC1</td>
+                <td>Roxane</td>
+                <td class="separating">------</td>
+                <th>AC1</td>
+                <td>------</td>
+            </tr>
+            <tr>
+                <td>------</td>
+                <th>AC2</td>
+                <td>------</td>
+                <td class="separating">------</td>
+                <th>AC2</td>
+                <td>------</td>
+            </tr>
+            <tr>
+                <td>------</td>
+                <th>P</td>
+                <td>------</td>
+                <td class="separating">47878</td>
+                <th>P</td>
+                <td>Petra</td>
+            </tr>
+            <tr>
+                <td>------</td>
+                <th>M</td>
+                <td>------</td>
+                <td class="separating">------</td>
+                <th>M</td>
+                <td>------</td>
+            </tr>
+        </table>
+        <h2>Jeu</h2>
+        <h4>Set 1</h4>
+        <table>
+            <tr>
+                <th class="score">Début</th>
+                <td class="score">21h00</td>
+                <td colspan="3">Froideville</td>
+                <td class="score">A</td>
+                <td colspan="3" class="separating">Ecublens</td>
+                <td class="score">B</td>
+                <th class="score">Fin</th>
+                <td class="score">21h23</td>
+            </tr>
+            <tr>
+                <th class="score">I</th>
+                <th class="score">II</th>
+                <th class="score">III</th>
+                <th class="score">IV</th>
+                <th class="score">V</th>
+                <th class="score">VI</th>
+                <th class="score separating">I</th>
+                <th class="score">II</th>
+                <th class="score">III</th>
+                <th class="score">IV</th>
+                <th class="score">V</th>
+                <th class="score">VI</th>
+            </tr>
+            <tr>
+                <td class="score">3</td>
+                <td class="score">6</td>
+                <td class="score">1</td>
+                <td class="score">12</td>
+                <td class="score">4</td>
+                <td class="score">7</td>
+                <td class="score separating">4</td>
+                <td class="score">6</td>
+                <td class="score">9</td>
+                <td class="score">13</td>
+                <td class="score">3</td>
+                <td class="score">7</td>
+            </tr>
+            <tr>
+                <td class="score"></td>
+                <td class="score"></td>
+                <td class="score">5</td>
+                <td class="score"></td>
+                <td class="score"></td>
+                <td class="score"></td>
+                <td class="score separating"></td>
+                <td class="score"></td>
+                <td class="score"></td>
+                <td class="score"></td>
+                <td class="score"></td>
+                <td class="score"></td>
+            </tr>
+            <tr>
+                <td class="score"></td>
+                <td class="score"></td>
+                <td class="score">9 : 3</td>
+                <td class="score"></td>
+                <td class="score"></td>
+                <td class="score"></td>
+                <td class="score separating"></td>
+                <td class="score"></td>
+                <td class="score"></td>
+                <td class="score"></td>
+                <td class="score"></td>
+                <td class="score"></td>
+            </tr>
+            <tr>
+                <td class="score"></td>
+                <td class="score"></td>
+                <td class="score">11 : 10</td>
+                <td class="score"></td>
+                <td class="score"></td>
+                <td class="score"></td>
+                <td class="score separating"></td>
+                <td class="score"></td>
+                <td class="score"></td>
+                <td class="score"></td>
+                <td class="score"></td>
+                <td class="score"></td>
+            </tr>
+            <tr>
+                <td class="score">0</td>
+                <td class="score">1</td>
+                <td class="score">9</td>
+                <td class="score">11</td>
+                <td class="score">19</td>
+                <td class="score">20</td>
+                <td class="score separating">1</td>
+                <td class="score">3</td>
+                <td class="score">9</td>
+                <td class="score">10</td>
+                <td class="score">12</td>
+                <td class="score">14</td>
+            </tr>
+            <tr>
+                <td class="score">23</td>
+                <td class="score final_win">25</td>
+                <td class="score"></td>
+                <td class="score"></td>
+                <td class="score"></td>
+                <td class="score"></td>
+                <td class="score separating"></td>
+                <td class="score final_loss">17</td>
+                <td class="score"></td>
+                <td class="score"></td>
+                <td class="score"></td>
+                <td class="score"></td>
+            </tr>
+        </table>
+    </body>
+</html>
