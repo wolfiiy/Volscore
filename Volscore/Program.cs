@@ -1,5 +1,6 @@
 ﻿// Filename:  HttpServer.cs        
-// Author:    Benjamin N. Summerton <define-private-public>        
+// Author:    Benjamin N. Summerton <define-private-public>
+//            Adapted to the specific topic of Volleyball score keeper by X. Carrel
 // License:   Unlicense (http://unlicense.org/)
 
 using System;
@@ -7,8 +8,16 @@ using System.IO;
 using System.Text;
 using System.Net;
 using System.Threading.Tasks;
+using static Volscore.IVolscoreDB;
+using MySqlX.XDevAPI.Relational;
+using static System.Formats.Asn1.AsnWriter;
+using static System.Net.Mime.MediaTypeNames;
+using System.Drawing;
+using System.Net.NetworkInformation;
+using System.Runtime.InteropServices;
+using System.Diagnostics;
 
-namespace HttpListenerExample
+namespace VolScore
 {
     class HttpServer
     {
@@ -17,40 +26,136 @@ namespace HttpListenerExample
         public static int pageViews = 0;
         public static int requestCount = 0;
         public static string pageData;
+        private static VolscoreDB volscoreDB = new VolscoreDB();
 
-
-        private static void ShowGame(int gameNb)
+        private static void LoadGame(int gameNb)
         {
-            pageData =
-                "<!DOCTYPE>" +
-                "<html>";
-            AddHeader();
-            AddBody();
-            pageData +=
-                "</html>";
-
-            // override content with example html
-            // TEMPORARY
-            string[] readText = File.ReadAllLines("../../../../doc/FdM.html");
-            pageData = "";
-            foreach (string s in readText) pageData += s;
+            if (gameNb> 0) // a specific game has been requested
+            {
+                Game? game = volscoreDB.GetGame(gameNb);
+                if (game != null)
+                {
+                    pageData =
+                        "<!DOCTYPE>" +
+                        "<html>";
+                    AddHeader();
+                    AddBody(game);
+                    pageData +=
+                        "</html>";
+                }
+                else
+                {
+                    pageData =
+                        "<head>" +
+                        "   <title>VolScore</title>" +
+                        "</head>"+
+                        "<body>" +
+                        "  <h1>Ce match n'existe pas</h1>" +
+                        "</body>";
+                }
+            }
+            else
+            {
+                // override content with example html
+                // TEMPORARY
+                string[] readText = File.ReadAllLines("../../../../doc/FdM.html");
+                pageData = "";
+                foreach (string s in readText) pageData += s;
+            }
         }
 
         private static void AddHeader()
         {
             pageData +=
-                "<head>" +
-                "   <title>VolScore</title>" +
-                "</head>";
+                "<head>                                                         " +
+                "                                                               " +
+                "    <meta charset = 'UTF-8'>                                   " +
+                "    <title> VolScore </title>                                  " +
+                "    <style>                                                    " +
+                "        body {                                                 " +
+                "            font-family:Arial, Helvetica, sans-serif;          " +
+                "        }                                                      " +
+                "        table {                                                " +
+                "            border-collapse: collapse;                         " +
+                "        }                                                      " +
+                "        td, th {                                               " +
+                "        border: 1px solid black;                               " +
+                "        padding: 3px;                                          " +
+                "            text-align: left;                                  " +
+                "        }                                                      " +
+                "        th {                                                   " +
+                "            background-color: beige;                           " +
+                "        }                                                      " +
+                "        .score {                                               " +
+                "        width: 50px;                                           " +
+                "            text-align: center;                                " +
+                "        }                                                      " +
+                "        .separating {                                          " +
+                "            border-left: 4px solid black;                      " +
+                "        }                                                      " +
+                "        .final_win {                                           " +
+                "            background-color: lightblue;                       " +
+                "        }                                                      " +
+                "        .final_loss {                                          " +
+                "            background-color: pink;                            " +
+                "        }                                                      " +
+                "    </style>                                                   " +
+                "</head>                                                        ";
         }
 
-        private static void AddBody()
+        private static void AddBody(Game? game)
         {
-            pageData +=
-                "<body>" +
-                "  <h1>Hello World!</h1>" +
-                "</body>";
+            Game theGame = (Game)game;
+            pageData += $"<body>";
+            AddGame(theGame);
+            pageData += $"</body>";
         }
+
+        private static void AddGame(Game game)
+        {
+            pageData += $"<h2> Match {game.number}</h2>                         ";
+            pageData += $"<table>                                                 ";
+            pageData += $"    <tr>                                                ";
+            pageData += $"        <th> De </th>                                 ";
+            pageData += $"        <td colspan = '2'> {game.type} </td>          ";
+            pageData += $"    </tr>                                               ";
+            pageData += $"    <tr>                                                ";
+            pageData += $"        <th> Niveau </th>                             ";
+            pageData += $"        <td colspan = '2'> {game.level} </td>         ";
+            pageData += $"    </tr>                                               ";
+            pageData += $"    <tr>                                                ";
+            pageData += $"        <th> Catégorie </th>                          ";
+            pageData += $"        <td colspan = '2'> {game.category} </td>      ";
+            pageData += $"    </tr>                                               ";
+            pageData += $"    <tr>                                                ";
+            pageData += $"        <th> Ligue </th>                              ";
+            pageData += $"        <td colspan = '2'> {game.league} </td>        ";
+            pageData += $"    </tr>                                               ";
+            pageData += $"    <tr>                                                ";
+            pageData += $"        <th> Entre </th>                              ";
+            pageData += $"        <td> {game.receivingTeam} </td>               ";
+            pageData += $"        <td> {game.visitingTeam} </td>                ";
+            pageData += $"    </tr>                                               ";
+            pageData += $"    <tr>                                                ";
+            pageData += $"        <th> Lieu </th>                               ";
+            pageData += $"        <td colspan = '2'> {game.place} </td>         ";
+            pageData += $"    </tr>                                               ";
+            pageData += $"    <tr>                                                ";
+            pageData += $"        <th> Salle </th>                              ";
+            pageData += $"        <td colspan = '2'> {game.venue} </td>         ";
+            pageData += $"    </tr>                                               ";
+            pageData += $"    <tr>                                                ";
+            pageData += $"        <th> Date </th>                               ";
+            pageData += $"        <td colspan = '2'> {game.moment} </td>        ";
+            pageData += $"    </tr>                                               ";
+            pageData += $"    <tr>                                                ";
+            pageData += $"        <th> Heure </th>                              ";
+            pageData += $"        <td colspan = '2'> {game.moment} </td>        ";
+            pageData += $"    </tr>                                               ";
+            pageData += $"</table>                                                ";
+
+        }
+
         public static async Task HandleIncomingConnections()
         {
             bool runServer = true;
@@ -64,47 +169,48 @@ namespace HttpListenerExample
 
                 // Peel out the requests and response objects
                 HttpListenerRequest req = ctx.Request;
-                HttpListenerResponse resp = ctx.Response;
-
-                // Print out some info about the request
-                Console.WriteLine("Request #: {0}", ++requestCount);
-                Console.WriteLine(req.Url.ToString());
-                Console.WriteLine(req.HttpMethod);
-                Console.WriteLine(req.UserHostName);
-                Console.WriteLine(req.UserAgent);
-                Console.WriteLine();
-
-                // Get game number from querystring
-                try
-                {
-                    requestedGame = int.Parse(req.QueryString.Get("game"));
-                } catch(Exception e)
-                {
-                    requestedGame = 0;
-                }
-
-                // If `shutdown` url requested w/ POST, then shutdown the server after serving the page
-                if ((req.HttpMethod == "POST") && (req.Url.AbsolutePath == "/shutdown"))
-                {
-                    Console.WriteLine("Shutdown requested");
-                    runServer = false;
-                }
-
-                // Make sure we don't increment the page views counter if `favicon.ico` is requested
+                // do nothing if `favicon.ico` is requested
                 if (req.Url.AbsolutePath != "/favicon.ico")
-                    pageViews += 1;
+                {
+                    HttpListenerResponse resp = ctx.Response;
 
-                // Write the response info
-                ShowGame(requestedGame);
-                string disableSubmit = !runServer ? "disabled" : "";
-                byte[] data = Encoding.UTF8.GetBytes(pageData);
-                resp.ContentType = "text/html";
-                resp.ContentEncoding = Encoding.UTF8;
-                resp.ContentLength64 = data.LongLength;
+                    // Print out some info about the request
+                    Console.WriteLine("Request #: {0}", ++requestCount);
+                    Console.WriteLine(req.Url.ToString());
+                    Console.WriteLine(req.HttpMethod);
+                    Console.WriteLine(req.UserHostName);
+                    Console.WriteLine(req.UserAgent);
+                    Console.WriteLine();
 
-                // Write out to the response stream (asynchronously), then close it
-                await resp.OutputStream.WriteAsync(data, 0, data.Length);
-                resp.Close();
+                    // Get game number from querystring
+                    try
+                    {
+                        requestedGame = int.Parse(req.QueryString.Get("game"));
+                    }
+                    catch (Exception e)
+                    {
+                        requestedGame = 0;
+                    }
+
+                    // If `shutdown` url requested w/ POST, then shutdown the server after serving the page
+                    if ((req.HttpMethod == "POST") && (req.Url.AbsolutePath == "/shutdown"))
+                    {
+                        Console.WriteLine("Shutdown requested");
+                        runServer = false;
+                    }
+
+                    // Write the response info
+                    LoadGame(requestedGame);
+                    string disableSubmit = !runServer ? "disabled" : "";
+                    byte[] data = Encoding.UTF8.GetBytes(pageData);
+                    resp.ContentType = "text/html";
+                    resp.ContentEncoding = Encoding.UTF8;
+                    resp.ContentLength64 = data.LongLength;
+                    // Write out to the response stream (asynchronously), then close it
+                    await resp.OutputStream.WriteAsync(data, 0, data.Length);
+                    resp.Close();
+                }
+
             }
         }
 
