@@ -221,9 +221,9 @@ namespace VolScore
             }
         }
 
-        public IVolscoreDB.Game? GetGame(int number)
+        public Game GetGame(int number)
         {
-            Game? res = null;
+            Game res;
 
             string query = 
                 $"SELECT id, `type`, `level`, `category`, league, 'receivingTeam', 'visitingTeam', location, venue, moment " +
@@ -233,11 +233,51 @@ namespace VolScore
             MySqlDataReader reader = cmd.ExecuteReader();
             if (reader.Read())
             {
-                res = new Game (reader.GetInt32(0), reader.GetString(1), reader.GetString(2), reader.GetString(3), reader.GetString(4), reader.GetString(5), reader.GetString(6), reader.GetString(7), reader.GetString(8), reader.GetDateTime(9));
+                res = new Game (reader.GetString(1), reader.GetString(2), reader.GetString(3), reader.GetString(4), reader.GetString(5), reader.GetString(6), reader.GetString(7), reader.GetString(8), reader.GetDateTime(9));
+                res.Number = reader.GetInt32(0);
+                reader.Close();
+                return res;
             }
-            reader.Close();
-            return res;
+            else
+            {
+                reader.Close();
+                throw new Exception($"Le match {number} n'existe pas");
+            }
         }
 
+        public List<Team> GetTeams()
+        {
+            throw new NotImplementedException();
+        }
+
+        public int CreateGame(Game game)
+        {
+            throw new NotImplementedException();
+        }
+
+        public int AddSet(Game game)
+        {
+            throw new NotImplementedException();
+        }
+
+        public int NumberOfSets(Game game)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Set GetSet(Game game, int setNb)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool DefinePlayersPositions(Game game, int setNb, int teamNb, int playerP1, int playerP2, int playerP3, int playerP4, int playerP5, int playerP6)
+        {
+            throw new NotImplementedException();
+        }
+
+        public List<Game> GetGames()
+        {
+            throw new NotImplementedException();
+        }
     }
 }
