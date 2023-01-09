@@ -81,44 +81,44 @@ namespace VolScore
 
         private static void AddGame(Game game)
         {
-            pageData += $"<h2> Match {game.number}</h2>                         ";
+            pageData += $"<h2> Match {game.Number}</h2>                         ";
             pageData += $"<table>                                                 ";
             pageData += $"    <tr>                                                ";
             pageData += $"        <th> De </th>                                 ";
-            pageData += $"        <td colspan = '2'> {game.type} </td>          ";
+            pageData += $"        <td colspan = '2'> {game.Type} </td>          ";
             pageData += $"    </tr>                                               ";
             pageData += $"    <tr>                                                ";
             pageData += $"        <th> Niveau </th>                             ";
-            pageData += $"        <td colspan = '2'> {game.level} </td>         ";
+            pageData += $"        <td colspan = '2'> {game.Level} </td>         ";
             pageData += $"    </tr>                                               ";
             pageData += $"    <tr>                                                ";
             pageData += $"        <th> Catégorie </th>                          ";
-            pageData += $"        <td colspan = '2'> {game.category} </td>      ";
+            pageData += $"        <td colspan = '2'> {game.Category} </td>      ";
             pageData += $"    </tr>                                               ";
             pageData += $"    <tr>                                                ";
             pageData += $"        <th> Ligue </th>                              ";
-            pageData += $"        <td colspan = '2'> {game.league} </td>        ";
+            pageData += $"        <td colspan = '2'> {game.League} </td>        ";
             pageData += $"    </tr>                                               ";
             pageData += $"    <tr>                                                ";
             pageData += $"        <th> Entre </th>                              ";
-            pageData += $"        <td> {game.receivingTeam} </td>               ";
-            pageData += $"        <td> {game.visitingTeam} </td>                ";
+            pageData += $"        <td> {game.ReceivingTeam} </td>               ";
+            pageData += $"        <td> {game.VisitingTeam} </td>                ";
             pageData += $"    </tr>                                               ";
             pageData += $"    <tr>                                                ";
             pageData += $"        <th> Lieu </th>                               ";
-            pageData += $"        <td colspan = '2'> {game.place} </td>         ";
+            pageData += $"        <td colspan = '2'> {game.Place} </td>         ";
             pageData += $"    </tr>                                               ";
             pageData += $"    <tr>                                                ";
             pageData += $"        <th> Salle </th>                              ";
-            pageData += $"        <td colspan = '2'> {game.venue} </td>         ";
+            pageData += $"        <td colspan = '2'> {game.Venue} </td>         ";
             pageData += $"    </tr>                                               ";
             pageData += $"    <tr>                                                ";
             pageData += $"        <th> Date </th>                               ";
-            pageData += $"        <td colspan = '2'> {game.moment} </td>        ";
+            pageData += $"        <td colspan = '2'> {game.Moment} </td>        ";
             pageData += $"    </tr>                                               ";
             pageData += $"    <tr>                                                ";
             pageData += $"        <th> Heure </th>                              ";
-            pageData += $"        <td colspan = '2'> {game.moment} </td>        ";
+            pageData += $"        <td colspan = '2'> {game.Moment} </td>        ";
             pageData += $"    </tr>                                               ";
             pageData += $"</table>                                                ";
 
@@ -150,7 +150,7 @@ namespace VolScore
                     Console.WriteLine(req.UserAgent);
                     Console.WriteLine();
 
-                    // Get game number from querystring
+                    // Get game Number from querystring
                     try
                     {
                         requestedGame = int.Parse(req.QueryString.Get("game"));
