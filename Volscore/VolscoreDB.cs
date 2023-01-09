@@ -14,7 +14,7 @@ using static Volscore.IVolscoreDB;
 
 namespace VolScore
 {
-    class VolscoreDB : IVolscoreDB
+    public class VolscoreDB : IVolscoreDB
     {
         private MySqlConnection _connection;
 
@@ -247,7 +247,15 @@ namespace VolScore
 
         public List<Team> GetTeams()
         {
-            throw new NotImplementedException();
+            List<Team> teams = new List<Team>();
+            string query = $"SELECT id, `name` FROM teams;";
+            MySqlCommand cmd = new MySqlCommand(query, _connection);
+            MySqlDataReader reader = cmd.ExecuteReader();
+            while (reader.Read())
+            {
+                teams.Add(new Team(reader.GetInt32(0), reader.GetString(1)));
+            }
+            return teams;
         }
 
         public int CreateGame(Game game)

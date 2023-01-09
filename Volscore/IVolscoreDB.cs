@@ -8,6 +8,7 @@ namespace Volscore
 {
     public interface IVolscoreDB
     {
+        #region Data Structures
         /// <summary>
         /// Structure de données qui définit un match
         /// </summary>
@@ -85,6 +86,8 @@ namespace Volscore
             }
         }
 
+        #endregion
+        #region Functions
         /// <summary>
         /// Retourne la liste de toutes les équipes enregistrées
         /// </summary>
@@ -177,5 +180,6 @@ namespace Volscore
         /// </returns>
         public bool DefinePlayersPositions(Game game, int setNb, int teamNb, int playerP1, int playerP2, int playerP3, int playerP4, int playerP5, int playerP6);
 
+        #endregion
     }
 }
