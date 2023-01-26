@@ -16,7 +16,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Volscore\Volscore.csproj" />
+    <ProjectReference Include="..\Volscore\VolscoreServer.csproj" />
   </ItemGroup>
 
 </Project>

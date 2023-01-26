@@ -3,9 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.4.33205.214
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Volscore", "Volscore\Volscore.csproj", "{8B607F3A-34FC-42BC-9184-4EE7133027AB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VolscoreServer", "Volscore\VolscoreServer.csproj", "{8B607F3A-34FC-42BC-9184-4EE7133027AB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tests", "Tests\Tests.csproj", "{A8E6D316-B08E-455D-B787-3094903C4EBD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tests", "Tests\Tests.csproj", "{A8E6D316-B08E-455D-B787-3094903C4EBD}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VolscoreConsole", "VolscoreConsole\VolscoreConsole.csproj", "{645D9CE4-4BB8-4153-8F98-A2E90A57D976}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,10 @@ Global
 		{A8E6D316-B08E-455D-B787-3094903C4EBD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A8E6D316-B08E-455D-B787-3094903C4EBD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A8E6D316-B08E-455D-B787-3094903C4EBD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{645D9CE4-4BB8-4153-8F98-A2E90A57D976}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{645D9CE4-4BB8-4153-8F98-A2E90A57D976}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{645D9CE4-4BB8-4153-8F98-A2E90A57D976}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{645D9CE4-4BB8-4153-8F98-A2E90A57D976}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

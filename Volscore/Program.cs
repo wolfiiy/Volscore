@@ -8,7 +8,7 @@ using System.IO;
 using System.Text;
 using System.Net;
 using System.Threading.Tasks;
-using static Volscore.IVolscoreDB;
+using static VolScore.IVolscoreDB;
 using MySqlX.XDevAPI.Relational;
 using static System.Formats.Asn1.AsnWriter;
 using static System.Net.Mime.MediaTypeNames;

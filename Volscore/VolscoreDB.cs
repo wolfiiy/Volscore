@@ -1,16 +1,15 @@
 ﻿/*
- * Vous
+ * XCL
  * ETML
  * Novembre/Décembre 2020
- * Mise en oeuvre du paradigme MVC en exploitant la problématique de la fourchette 
- * => class dbHandler pour gérer les accès et la lecture/écriture des données de cette application. 
+ * class dbHandler pour gérer les accès et la lecture/écriture des données de cette application. 
  */
 
 using System.Diagnostics;
 using MySql.Data.MySqlClient;
 using System.Collections.Generic;
-using Volscore;
-using static Volscore.IVolscoreDB;
+using VolScore;
+using static VolScore.IVolscoreDB;
 
 namespace VolScore
 {

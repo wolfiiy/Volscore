@@ -1,4 +1,4 @@
-using Volscore;
+using VolScore;
 
 namespace VolScore
 {
