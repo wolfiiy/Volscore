@@ -2,6 +2,9 @@ using Volscore;
 
 namespace VolScore
 {
+    /// <summary>
+    /// Cette suite de tests est basée sur la DB telle que créée par le script VolScore.sql
+    /// </summary>
     [TestClass]
     public class VolscoreDBTests
     {
