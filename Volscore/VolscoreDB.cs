@@ -41,7 +41,7 @@ namespace VolScore
             _connection = new MySqlConnection(connectStr);
         }
 
-
+        #region DB interactions
         /// <summary>
         /// Pour ouvrir l'accès à la base de données
         /// </summary>
@@ -219,7 +219,9 @@ namespace VolScore
                 this.CloseConnection();
             }
         }
+        #endregion
 
+        #region Interface implementation
         public Game GetGame(int number)
         {
             Game res;
@@ -254,6 +256,7 @@ namespace VolScore
             {
                 teams.Add(new Team(reader.GetInt32(0), reader.GetString(1)));
             }
+            reader.Close();
             return teams;
         }
 
@@ -286,5 +289,20 @@ namespace VolScore
         {
             throw new NotImplementedException();
         }
+
+        public List<Member> GetPlayers(Team team)
+        {
+            List<Member> members = new List<Member>();
+            string query = $"SELECT id, `first_name`, `last_name`, `role`, `license`, `number`, `libero` FROM members WHERE team_id = {team.Id};";
+            MySqlCommand cmd = new MySqlCommand(query, _connection);
+            MySqlDataReader reader = cmd.ExecuteReader();
+            while (reader.Read())
+            {
+                members.Add(new Member(reader.GetInt32(0), reader.GetString(1), reader.GetString(2), reader.GetString(3), reader.GetInt32(4), reader.GetInt32(5), reader.IsDBNull(6) ? false : reader.GetBoolean(6)));
+            }
+            reader.Close();
+            return members;
+        }
+        #endregion
     }
 }

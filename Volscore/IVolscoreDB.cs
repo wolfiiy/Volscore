@@ -42,18 +42,19 @@ namespace VolScore
 
         struct Team
         {
-            public int Number;
+            public int Id;
             public string Name;
 
-            public Team(int number, string name)
+            public Team(int id, string name)
             {
-                Number = number;
+                Id = id;
                 Name = name;
             }
         }
 
         struct Member
         {
+            public int Id;
             public string FirstName;
             public string LastName;
             public string Role;
@@ -61,8 +62,9 @@ namespace VolScore
             public int Number;
             public bool Libero;
 
-            public Member(string firstName, string lastName, string role, int license, int number, bool libero)
+            public Member(int id, string firstName, string lastName, string role, int license, int number, bool libero)
             {
+                Id = id;
                 FirstName = firstName;
                 LastName = lastName;
                 Role = role;
@@ -93,6 +95,13 @@ namespace VolScore
         /// </summary>
         /// <returns></returns>
         public List<Team> GetTeams();
+
+        /// <summary>
+        /// Retourne la liste des joueurs d'un équipe
+        /// </summary>
+        /// <param name="team"></param>
+        /// <returns></returns>
+        public List<Member> GetPlayers(Team team);
 
 
         /// <summary>
