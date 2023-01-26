@@ -5,3 +5,13 @@
  ![](doc/feuille%20de%20match%20officielle%20remplie.png)
 
 
+## Mise en place de l'environnement de travail
+
+- Downloader et démarrer [UWamp](https://www.uwamp.com/fr/?page=download) (si besoin)
+- Lancer PHPMyAdmn
+- Aller sous l'onglet `Import`
+- Choisir le fichier `doc>volscoredb.sql`
+- Clicker `Go`
+- Ouvrir la solution VS `Volscore.sln`
+- Faire clic droit sur `Tests>VolscoreDBTest.cs`, choisir `Exécuter les tests`
+- Si les tests sont verts, c'est tout bon !
