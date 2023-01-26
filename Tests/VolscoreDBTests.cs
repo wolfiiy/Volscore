@@ -13,7 +13,7 @@ namespace VolScore
         {
             VolscoreDB vdb = new VolscoreDB();
             List<IVolscoreDB.Team> teams = vdb.GetTeams();
-            Assert.AreEqual(6, teams.Count);
+            Assert.AreEqual(4, teams.Count);
         }
     }
 }
