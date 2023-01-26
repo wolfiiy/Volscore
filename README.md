@@ -10,7 +10,7 @@
 - Downloader et démarrer [UWamp](https://www.uwamp.com/fr/?page=download) (si besoin)
 - Lancer PHPMyAdmn
 - Aller sous l'onglet `Import`
-- Choisir le fichier `doc>volscoredb.sql`
+- Choisir le fichier `Volscore>Resources>volscore.sql`
 - Clicker `Go`
 - Ouvrir la solution VS `Volscore.sln`
 - Faire clic droit sur `Tests>VolscoreDBTest.cs`, choisir `Exécuter les tests`
