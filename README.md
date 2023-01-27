@@ -19,4 +19,4 @@
 - Faire clic droit sur `Tests>VolscoreDBTest.cs`, choisir `Exécuter les tests`
 - Si les tests sont verts, c'est tout bon !
 
-Pour la documentation, suivre [ce lien](doc/html/index.html)
+Pour la documentation, ouvrez [ce fichier](doc/html/index.html) à partir de votre repo local
