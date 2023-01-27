@@ -18,3 +18,5 @@
 - Ouvrir la solution VS `Volscore.sln` avec VS 2022
 - Faire clic droit sur `Tests>VolscoreDBTest.cs`, choisir `Exécuter les tests`
 - Si les tests sont verts, c'est tout bon !
+
+Pour la documentation, suivre [ce lien](doc/html/index.html)
