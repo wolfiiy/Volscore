@@ -1,15 +1,15 @@
 <?php
 $action = isset($_GET['action']) ? $_GET['action'] : 'home';
 require_once 'controller/controller.php';
+require_once 'model/VolscoreDB.php';
 
 switch ($action)
 {
-    case 'concerts':
-        $future = $_GET['future'];
-        showConcerts($future);
+    case 'teams':
+        showTeams();
         break;
-    case 'movies':
-        showMovies();
+    case 'games':
+        showGames();
         break;
     default:
         require_once 'view/home.php';
