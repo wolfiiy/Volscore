@@ -7,11 +7,12 @@
 
 ### Base de données
 
-- Installer [UWamp](https://www.uwamp.com/fr/?page=download) si besoin et le démarrer
-- Lancer PHPMyAdmn depuis le panneau de contrôle d'Uwamp (user root, mdp root)
+- Installer [UWamp](https://www.uwamp.com/fr/?page=download) 3.1.0 ou plus si besoin et le démarrer
+- Lancer PHPMyAdmin depuis le panneau de contrôle d'Uwamp (user root, mdp root)
 - Aller sous l'onglet `Import`
 - Choisir le fichier `Volscore>Resources>volscore.sql`
 - Clicker `Go`
+- La base de donnée `volscore` doit apparaître dans la barre latérale
 
 ### C#
 
@@ -26,6 +27,6 @@ Pour la documentation, ouvrez [ce fichier](doc/html/index.html) à partir de vot
 - Dans UWamp, arrêter le serevur Apache
 - Cliquer 'Apache config'
 - Sélectionner le serveur pour le port 80 (`main-serveur *:80` normalement)
-- Mettre le chamin du dossier PhP du repo local dans 'Document Root'
+- Mettre le chemin du dossier PhP du repo local dans `Document Root`
 - Cliquer 'OK', le serveur redémarre automatiquement
 - Cliquer 'Navigateur www', vous devriez voir les équipes et les matches
