@@ -1,9 +1,9 @@
 var interface_vol_score_1_1_i_volscore_d_b =
 [
-    [ "Game", "struct_vol_score_1_1_i_volscore_d_b_1_1_game.html", null ],
-    [ "Member", "struct_vol_score_1_1_i_volscore_d_b_1_1_member.html", null ],
-    [ "Set", "struct_vol_score_1_1_i_volscore_d_b_1_1_set.html", null ],
-    [ "Team", "struct_vol_score_1_1_i_volscore_d_b_1_1_team.html", null ],
+    [ "Game", "struct_vol_score_1_1_i_volscore_d_b_1_1_game.html", "struct_vol_score_1_1_i_volscore_d_b_1_1_game" ],
+    [ "Member", "struct_vol_score_1_1_i_volscore_d_b_1_1_member.html", "struct_vol_score_1_1_i_volscore_d_b_1_1_member" ],
+    [ "Set", "struct_vol_score_1_1_i_volscore_d_b_1_1_set.html", "struct_vol_score_1_1_i_volscore_d_b_1_1_set" ],
+    [ "Team", "struct_vol_score_1_1_i_volscore_d_b_1_1_team.html", "struct_vol_score_1_1_i_volscore_d_b_1_1_team" ],
     [ "AddSet", "interface_vol_score_1_1_i_volscore_d_b.html#a5e6cf534bc1380436bba0db4b1b21fba", null ],
     [ "CreateGame", "interface_vol_score_1_1_i_volscore_d_b.html#ac9d57f6ad7e7a38729540831c079e20b", null ],
     [ "DefinePlayersPositions", "interface_vol_score_1_1_i_volscore_d_b.html#a8cf9ba77cc65f19f595474288e0c2fe2", null ],

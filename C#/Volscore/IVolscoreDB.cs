@@ -10,30 +10,34 @@ namespace VolScore
     {
         #region Data Structures
         /// <summary>
-        /// Structure de données qui définit un match
+        /// Structure de données qui contient toutes les informations utiles pour un match
         /// </summary>
         struct Game
         {
-            public int Number;
-            public string Type;
-            public string Level;
-            public string Category;
-            public string League;
-            public string ReceivingTeam;
-            public string VisitingTeam;
-            public string Place;
-            public string Venue;
-            public DateTime Moment;
+            public int Number;                  //!< Numéro officiel du match
+            public string Type;                 //!< Type de compétition: Championnat, Coupe, Amical, ...
+            public string Level;                //!< Niveau: National, Regional, International
+            public string Category;             //!< Catégorie: Homme, Femme, Mixte
+            public string League;               //!< Ligue: U19, M4, F2, ...
+            public int ReceivingTeamId;         //!< Numéro de l'équipe recevante
+            public string ReceivingTeamName;    //!< Nom de l'équipe recevante
+            public int VisitingTeamId;          //!< Numéro de l'équipe visiteuse
+            public string VisitingTeamName;     //!< Nom de l'équipe visiteuse
+            public string Place;                //!< Lieu: Dorigny, Ecublens, Pailly
+            public string Venue;                //!< Nom de la salle de sport
+            public DateTime Moment;             //!< Date et heure du début du match
 
-            public Game(string type, string level, string category, string league, string receivingTeam, string visitingTeam, string place, string venue, DateTime moment)
+            public Game(string type, string level, string category, string league, int receivingTeamId, string receivingTeamName, int visitingTeamId, string visitingTeamName, string place, string venue, DateTime moment)
             {
                 Number = 0;
                 Type = type;
                 Level = level;
                 Category = category;
                 League = league;
-                ReceivingTeam = receivingTeam;
-                VisitingTeam = visitingTeam;
+                ReceivingTeamId = receivingTeamId;
+                ReceivingTeamName = receivingTeamName;
+                VisitingTeamId = visitingTeamId;
+                VisitingTeamName = visitingTeamName;
                 Place = place;
                 Venue = venue;
                 Moment = moment;
@@ -42,8 +46,8 @@ namespace VolScore
 
         struct Team
         {
-            public int Id;
-            public string Name;
+            public int Id;                      //!< Numéro de l'équipe
+            public string Name;                 //!< Nom de l'équipe (club)
 
             public Team(int id, string name)
             {
@@ -54,13 +58,13 @@ namespace VolScore
 
         struct Member
         {
-            public int Id;
-            public string FirstName;
-            public string LastName;
-            public string Role;
-            public int License;
-            public int Number;
-            public bool Libero;
+            public int Id;                      //!< Numéro de membre interne pour le système Volscore
+            public string FirstName;            //!< Prénom
+            public string LastName;             //!< Nom de famille
+            public string Role;                 //!< Rôle dans l'équipe: J pour Joueur, C pour Capitaine
+            public int License;                 //!< Numéro de license
+            public int Number;                  //!< Numéro sur le maillot
+            public bool Libero;                 //!< Joue au poste de libéro oui/non
 
             public Member(int id, string firstName, string lastName, string role, int license, int number, bool libero)
             {
@@ -76,10 +80,10 @@ namespace VolScore
 
         struct Set
         {
-            public int Game;
-            public int Number;
-            public DateTime Start;
-            public DateTime End;
+            public int Game;                    //!< Le numéro du match auquel ce set appartient
+            public int Number;                  //!< L'ordre du set, donc entre 1 et 5
+            public DateTime Start;              //!< Le moment du début du set
+            public DateTime End;                //!< Le moment de la fin du set
 
             public Set(int game, int number) : this()
             {

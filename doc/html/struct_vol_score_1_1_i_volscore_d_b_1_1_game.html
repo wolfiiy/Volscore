@@ -98,52 +98,70 @@ $(document).ready(function(){initNavTree('struct_vol_score_1_1_i_volscore_d_b_1_
 </div><!--header-->
 <div class="contents">
 
-<p>Structure de données qui définit un match   
+<p>Structure de données qui contient toutes les informations utiles pour un match   
  <a href="struct_vol_score_1_1_i_volscore_d_b_1_1_game.html#details">More...</a></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a214d69d062a88e92e576136bdc8ad82a"><td class="memItemLeft" align="right" valign="top"><a id="a214d69d062a88e92e576136bdc8ad82a" name="a214d69d062a88e92e576136bdc8ad82a"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>Game</b> (string type, string level, string category, string league, string receivingTeam, string visitingTeam, string place, string venue, DateTime moment)</td></tr>
-<tr class="separator:a214d69d062a88e92e576136bdc8ad82a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7241b76e13eaf9ddebe63d64167b79e1"><td class="memItemLeft" align="right" valign="top"><a id="a7241b76e13eaf9ddebe63d64167b79e1" name="a7241b76e13eaf9ddebe63d64167b79e1"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>Game</b> (string type, string level, string category, string league, int receivingTeamId, string receivingTeamName, int visitingTeamId, string visitingTeamName, string place, string venue, DateTime moment)</td></tr>
+<tr class="separator:a7241b76e13eaf9ddebe63d64167b79e1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
 <tr class="memitem:ae17f8becf51a83566ae2d5c7afad1412"><td class="memItemLeft" align="right" valign="top"><a id="ae17f8becf51a83566ae2d5c7afad1412" name="ae17f8becf51a83566ae2d5c7afad1412"></a>
 int&#160;</td><td class="memItemRight" valign="bottom"><b>Number</b></td></tr>
+<tr class="memdesc:ae17f8becf51a83566ae2d5c7afad1412"><td class="mdescLeft">&#160;</td><td class="mdescRight">Numéro officiel du match. <br /></td></tr>
 <tr class="separator:ae17f8becf51a83566ae2d5c7afad1412"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab65d6f042091fa0c9af22620f3854875"><td class="memItemLeft" align="right" valign="top"><a id="ab65d6f042091fa0c9af22620f3854875" name="ab65d6f042091fa0c9af22620f3854875"></a>
 string&#160;</td><td class="memItemRight" valign="bottom"><b>Type</b></td></tr>
+<tr class="memdesc:ab65d6f042091fa0c9af22620f3854875"><td class="mdescLeft">&#160;</td><td class="mdescRight">Type de compétition: Championnat, Coupe, Amical, ... <br /></td></tr>
 <tr class="separator:ab65d6f042091fa0c9af22620f3854875"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae91a2168d9e5e493bdd73820818a6043"><td class="memItemLeft" align="right" valign="top"><a id="ae91a2168d9e5e493bdd73820818a6043" name="ae91a2168d9e5e493bdd73820818a6043"></a>
 string&#160;</td><td class="memItemRight" valign="bottom"><b>Level</b></td></tr>
+<tr class="memdesc:ae91a2168d9e5e493bdd73820818a6043"><td class="mdescLeft">&#160;</td><td class="mdescRight">Niveau: National, Regional, International. <br /></td></tr>
 <tr class="separator:ae91a2168d9e5e493bdd73820818a6043"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad860aded2c8d4619ceb8ca745a5471fa"><td class="memItemLeft" align="right" valign="top"><a id="ad860aded2c8d4619ceb8ca745a5471fa" name="ad860aded2c8d4619ceb8ca745a5471fa"></a>
 string&#160;</td><td class="memItemRight" valign="bottom"><b>Category</b></td></tr>
+<tr class="memdesc:ad860aded2c8d4619ceb8ca745a5471fa"><td class="mdescLeft">&#160;</td><td class="mdescRight">Catégorie: Homme, Femme, Mixte. <br /></td></tr>
 <tr class="separator:ad860aded2c8d4619ceb8ca745a5471fa"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7383885f50c2c6b94c07dfb3cb96801a"><td class="memItemLeft" align="right" valign="top"><a id="a7383885f50c2c6b94c07dfb3cb96801a" name="a7383885f50c2c6b94c07dfb3cb96801a"></a>
 string&#160;</td><td class="memItemRight" valign="bottom"><b>League</b></td></tr>
+<tr class="memdesc:a7383885f50c2c6b94c07dfb3cb96801a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Ligue: U19, M4, F2, ... <br /></td></tr>
 <tr class="separator:a7383885f50c2c6b94c07dfb3cb96801a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a99f7f4202259ccd4caedf7b0075fc27c"><td class="memItemLeft" align="right" valign="top"><a id="a99f7f4202259ccd4caedf7b0075fc27c" name="a99f7f4202259ccd4caedf7b0075fc27c"></a>
-string&#160;</td><td class="memItemRight" valign="bottom"><b>ReceivingTeam</b></td></tr>
-<tr class="separator:a99f7f4202259ccd4caedf7b0075fc27c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5b7a1552853d8786f4141796d45fba1b"><td class="memItemLeft" align="right" valign="top"><a id="a5b7a1552853d8786f4141796d45fba1b" name="a5b7a1552853d8786f4141796d45fba1b"></a>
-string&#160;</td><td class="memItemRight" valign="bottom"><b>VisitingTeam</b></td></tr>
-<tr class="separator:a5b7a1552853d8786f4141796d45fba1b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7a912afc727569fd938aa3b3a59cbeb8"><td class="memItemLeft" align="right" valign="top"><a id="a7a912afc727569fd938aa3b3a59cbeb8" name="a7a912afc727569fd938aa3b3a59cbeb8"></a>
+int&#160;</td><td class="memItemRight" valign="bottom"><b>ReceivingTeamId</b></td></tr>
+<tr class="memdesc:a7a912afc727569fd938aa3b3a59cbeb8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Numéro de l'équipe recevante. <br /></td></tr>
+<tr class="separator:a7a912afc727569fd938aa3b3a59cbeb8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af30a58329803c42280d644b8896b932b"><td class="memItemLeft" align="right" valign="top"><a id="af30a58329803c42280d644b8896b932b" name="af30a58329803c42280d644b8896b932b"></a>
+string&#160;</td><td class="memItemRight" valign="bottom"><b>ReceivingTeamName</b></td></tr>
+<tr class="memdesc:af30a58329803c42280d644b8896b932b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Nom de l'équipe recevante. <br /></td></tr>
+<tr class="separator:af30a58329803c42280d644b8896b932b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1f06765af34505ba2e85fdc346f22b61"><td class="memItemLeft" align="right" valign="top"><a id="a1f06765af34505ba2e85fdc346f22b61" name="a1f06765af34505ba2e85fdc346f22b61"></a>
+int&#160;</td><td class="memItemRight" valign="bottom"><b>VisitingTeamId</b></td></tr>
+<tr class="memdesc:a1f06765af34505ba2e85fdc346f22b61"><td class="mdescLeft">&#160;</td><td class="mdescRight">Numéro de l'équipe visiteuse. <br /></td></tr>
+<tr class="separator:a1f06765af34505ba2e85fdc346f22b61"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5d6d3fdf8cfda46d8047dd2ba8e6f924"><td class="memItemLeft" align="right" valign="top"><a id="a5d6d3fdf8cfda46d8047dd2ba8e6f924" name="a5d6d3fdf8cfda46d8047dd2ba8e6f924"></a>
+string&#160;</td><td class="memItemRight" valign="bottom"><b>VisitingTeamName</b></td></tr>
+<tr class="memdesc:a5d6d3fdf8cfda46d8047dd2ba8e6f924"><td class="mdescLeft">&#160;</td><td class="mdescRight">Nom de l'équipe visiteuse. <br /></td></tr>
+<tr class="separator:a5d6d3fdf8cfda46d8047dd2ba8e6f924"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3c0cb3980fb0c0d877fb71afe08760a4"><td class="memItemLeft" align="right" valign="top"><a id="a3c0cb3980fb0c0d877fb71afe08760a4" name="a3c0cb3980fb0c0d877fb71afe08760a4"></a>
 string&#160;</td><td class="memItemRight" valign="bottom"><b>Place</b></td></tr>
+<tr class="memdesc:a3c0cb3980fb0c0d877fb71afe08760a4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Lieu: Dorigny, Ecublens, Pailly. <br /></td></tr>
 <tr class="separator:a3c0cb3980fb0c0d877fb71afe08760a4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac35f704e6aec494971ff54e7d3e3d486"><td class="memItemLeft" align="right" valign="top"><a id="ac35f704e6aec494971ff54e7d3e3d486" name="ac35f704e6aec494971ff54e7d3e3d486"></a>
 string&#160;</td><td class="memItemRight" valign="bottom"><b>Venue</b></td></tr>
+<tr class="memdesc:ac35f704e6aec494971ff54e7d3e3d486"><td class="mdescLeft">&#160;</td><td class="mdescRight">Nom de la salle de sport. <br /></td></tr>
 <tr class="separator:ac35f704e6aec494971ff54e7d3e3d486"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab74ad47fddcb4e79bdfb76a28ed0d9b7"><td class="memItemLeft" align="right" valign="top"><a id="ab74ad47fddcb4e79bdfb76a28ed0d9b7" name="ab74ad47fddcb4e79bdfb76a28ed0d9b7"></a>
 DateTime&#160;</td><td class="memItemRight" valign="bottom"><b>Moment</b></td></tr>
+<tr class="memdesc:ab74ad47fddcb4e79bdfb76a28ed0d9b7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Date et heure du début du match. <br /></td></tr>
 <tr class="separator:ab74ad47fddcb4e79bdfb76a28ed0d9b7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p >Structure de données qui définit un match  </p>
+<div class="textblock"><p >Structure de données qui contient toutes les informations utiles pour un match  </p>
 </div><hr/>The documentation for this struct was generated from the following file:<ul>
-<li>C:/Users/px05iql/source/repos/Volscore/C#/Volscore/IVolscoreDB.cs</li>
+<li>C:/Users/Xavier/source/repos/Volscore/C#/Volscore/IVolscoreDB.cs</li>
 </ul>
 </div><!-- contents -->
 </div><!-- doc-content -->
