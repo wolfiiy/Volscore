@@ -35,5 +35,12 @@ interface IVolscoreDb {
      */
     public static function getCaptain($teamid) : Member;
 
+    /**
+     * Get the libero of a specific team
+     * parameter $teamid is the number of the team
+     * returns a Member object
+     */
+    public static function getLibero($teamid) : Member;
+
     public static function getBenchPlayers($gameid,$setid,$teamid); //#### Not Implemented
 }
