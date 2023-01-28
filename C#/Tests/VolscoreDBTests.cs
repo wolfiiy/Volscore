@@ -42,5 +42,13 @@ namespace VolScore
             IVolscoreDB.Member cap = vdb.GetCaptain(vdb.GetTeam(3)); // Froideville
             Assert.AreEqual("Stewart", cap.LastName);
         }
+
+        [TestMethod]
+        public void GetLiberoTest()
+        {
+            VolscoreDB vdb = new VolscoreDB();
+            IVolscoreDB.Member lib = vdb.GetLibero(vdb.GetTeam(2)); // Froideville
+            Assert.AreEqual("Eaton", lib.LastName);
+        }
     }
 }

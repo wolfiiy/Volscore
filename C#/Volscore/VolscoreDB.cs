@@ -283,6 +283,42 @@ namespace VolScore
             return res;
         }
 
+        public List<Member> GetPlayers(Team team)
+        {
+            List<Member> members = new List<Member>();
+            string query = $"SELECT id, `first_name`, `last_name`, `role`, `license`, `number`, `libero` FROM members WHERE team_id = {team.Id};";
+            MySqlCommand cmd = new MySqlCommand(query, _connection);
+            MySqlDataReader reader = cmd.ExecuteReader();
+            while (reader.Read())
+            {
+                members.Add(new Member(reader.GetInt32(0), reader.GetString(1), reader.GetString(2), reader.GetString(3), reader.GetInt32(4), reader.GetInt32(5), reader.IsDBNull(6) ? false : reader.GetBoolean(6)));
+            }
+            reader.Close();
+            return members;
+        }
+
+        public Member GetCaptain(Team team)
+        {
+            string query = $"SELECT id, `first_name`, `last_name`, `role`, `license`, `number`, `libero` FROM members WHERE team_id = {team.Id} AND role='C';";
+            MySqlCommand cmd = new MySqlCommand(query, _connection);
+            MySqlDataReader reader = cmd.ExecuteReader();
+            reader.Read();
+            Member res = new Member(reader.GetInt32(0), reader.GetString(1), reader.GetString(2), reader.GetString(3), reader.GetInt32(4), reader.GetInt32(5), reader.IsDBNull(6) ? false : reader.GetBoolean(6));
+            reader.Close();
+            return res;
+        }
+
+        public Member GetLibero(Team team)
+        {
+            string query = $"SELECT id, `first_name`, `last_name`, `role`, `license`, `number`, `libero` FROM members WHERE team_id = {team.Id} AND libero=1;";
+            MySqlCommand cmd = new MySqlCommand(query, _connection);
+            MySqlDataReader reader = cmd.ExecuteReader();
+            reader.Read();
+            Member res = new Member(reader.GetInt32(0), reader.GetString(1), reader.GetString(2), reader.GetString(3), reader.GetInt32(4), reader.GetInt32(5), reader.IsDBNull(6) ? false : reader.GetBoolean(6));
+            reader.Close();
+            return res;
+        }
+
         public int CreateGame(Game game)
         {
             throw new NotImplementedException();
@@ -311,31 +347,6 @@ namespace VolScore
         public List<Game> GetGames()
         {
             throw new NotImplementedException();
-        }
-
-        public List<Member> GetPlayers(Team team)
-        {
-            List<Member> members = new List<Member>();
-            string query = $"SELECT id, `first_name`, `last_name`, `role`, `license`, `number`, `libero` FROM members WHERE team_id = {team.Id};";
-            MySqlCommand cmd = new MySqlCommand(query, _connection);
-            MySqlDataReader reader = cmd.ExecuteReader();
-            while (reader.Read())
-            {
-                members.Add(new Member(reader.GetInt32(0), reader.GetString(1), reader.GetString(2), reader.GetString(3), reader.GetInt32(4), reader.GetInt32(5), reader.IsDBNull(6) ? false : reader.GetBoolean(6)));
-            }
-            reader.Close();
-            return members;
-        }
-
-        public Member GetCaptain(Team team)
-        {
-            string query = $"SELECT id, `first_name`, `last_name`, `role`, `license`, `number`, `libero` FROM members WHERE team_id = {team.Id} AND role='C';";
-            MySqlCommand cmd = new MySqlCommand(query, _connection);
-            MySqlDataReader reader = cmd.ExecuteReader();
-            reader.Read();
-            Member res = new Member(reader.GetInt32(0), reader.GetString(1), reader.GetString(2), reader.GetString(3), reader.GetInt32(4), reader.GetInt32(5), reader.IsDBNull(6) ? false : reader.GetBoolean(6));
-            reader.Close();
-            return res;
         }
 
         #endregion

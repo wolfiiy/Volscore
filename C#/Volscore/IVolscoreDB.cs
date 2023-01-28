@@ -125,6 +125,14 @@ namespace VolScore
 
 
         /// <summary>
+        /// Retourne le libero d'une équipe
+        /// </summary>
+        /// <param name="team"></param>
+        /// <returns></returns>
+        public Member GetLibero(Team team);
+
+
+        /// <summary>
         /// Retourne la liste de tous les matches enregistrés
         /// </summary>
         /// <returns></returns>
