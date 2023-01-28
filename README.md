@@ -40,4 +40,4 @@ Pour la documentation, ouvrez [ce fichier](doc/html/index.html) à partir de vot
 - Ouvrir le script `Database>volscore.sql` et l'exécuter
 - Dans le terminal Cmder, aller dans le dossier `PhP` du repo local
 - Lancer un serveur php: `php -S localhost:8000`
-- Ouvrir la page [http:\\\\localhost:8000](http:\\localhost:8000)
+- Dans un navigateur, aller à la page `http:\\localhost:8000`
