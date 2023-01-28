@@ -227,15 +227,27 @@ namespace VolScore
             Game res;
 
             string query = 
-                $"SELECT id, `type`, `level`, `category`, league, 'receivingTeam', 'visitingTeam', location, venue, moment " +
-                $"FROM games " +
-                $"WHERE id={number}";
+                $"SELECT games.id, type, level,category,league,receiving_id,r.name as receiving,visiting_id,v.name as visiting,location,venue,moment "+
+                $"FROM games INNER JOIN teams r ON games.receiving_id = r.id INNER JOIN teams v ON games.visiting_id = v.id " +
+                $"WHERE games.id={number}";
+
             MySqlCommand cmd = new MySqlCommand(query,_connection);
             MySqlDataReader reader = cmd.ExecuteReader();
             if (reader.Read())
             {
-                res = new Game (reader.GetString(1), reader.GetString(2), reader.GetString(3), reader.GetString(4), reader.GetString(5), reader.GetString(6), reader.GetString(7), reader.GetString(8), reader.GetDateTime(9));
-                res.Number = reader.GetInt32(0);
+                res = new Game (
+                    reader.GetInt32(0),  // Number
+                    reader.GetString(1), // Type
+                    reader.GetString(2), // Level
+                    reader.GetString(3), // category
+                    reader.GetString(4), // league
+                    reader.GetInt32(5),  // receiving_id
+                    reader.GetString(6), // receiving name
+                    reader.GetInt32(7),  // visiting id
+                    reader.GetString(8), // visiting name
+                    reader.GetString(9), // Location
+                    reader.GetString(10), // Venue
+                    reader.GetDateTime(11));
                 reader.Close();
                 return res;
             }
@@ -258,6 +270,17 @@ namespace VolScore
             }
             reader.Close();
             return teams;
+        }
+
+        public Team GetTeam(int teamid)
+        {
+            string query = $"SELECT id, `name` FROM teams WHERE id = {teamid};";
+            MySqlCommand cmd = new MySqlCommand(query, _connection);
+            MySqlDataReader reader = cmd.ExecuteReader();
+            reader.Read();
+            Team res = new Team(reader.GetInt32(0), reader.GetString(1));
+            reader.Close();
+            return res;
         }
 
         public int CreateGame(Game game)
@@ -303,6 +326,18 @@ namespace VolScore
             reader.Close();
             return members;
         }
+
+        public Member GetCaptain(Team team)
+        {
+            string query = $"SELECT id, `first_name`, `last_name`, `role`, `license`, `number`, `libero` FROM members WHERE team_id = {team.Id} AND role='C';";
+            MySqlCommand cmd = new MySqlCommand(query, _connection);
+            MySqlDataReader reader = cmd.ExecuteReader();
+            reader.Read();
+            Member res = new Member(reader.GetInt32(0), reader.GetString(1), reader.GetString(2), reader.GetString(3), reader.GetInt32(4), reader.GetInt32(5), reader.IsDBNull(6) ? false : reader.GetBoolean(6));
+            reader.Close();
+            return res;
+        }
+
         #endregion
     }
 }

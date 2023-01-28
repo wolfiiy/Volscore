@@ -101,8 +101,8 @@ namespace VolScore
             pageData += $"    </tr>                                               ";
             pageData += $"    <tr>                                                ";
             pageData += $"        <th> Entre </th>                              ";
-            pageData += $"        <td> {game.ReceivingTeam} </td>               ";
-            pageData += $"        <td> {game.VisitingTeam} </td>                ";
+            pageData += $"        <td> {game.ReceivingTeamName} </td>               ";
+            pageData += $"        <td> {game.VisitingTeamName} </td>                ";
             pageData += $"    </tr>                                               ";
             pageData += $"    <tr>                                                ";
             pageData += $"        <th> Lieu </th>                               ";

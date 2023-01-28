@@ -27,9 +27,9 @@ namespace VolScore
             public string Venue;                //!< Nom de la salle de sport
             public DateTime Moment;             //!< Date et heure du début du match
 
-            public Game(string type, string level, string category, string league, int receivingTeamId, string receivingTeamName, int visitingTeamId, string visitingTeamName, string place, string venue, DateTime moment)
+            public Game(int number, string type, string level, string category, string league, int receivingTeamId, string receivingTeamName, int visitingTeamId, string visitingTeamName, string place, string venue, DateTime moment)
             {
-                Number = 0;
+                Number = number;
                 Type = type;
                 Level = level;
                 Category = category;
@@ -101,11 +101,27 @@ namespace VolScore
         public List<Team> GetTeams();
 
         /// <summary>
-        /// Retourne la liste des joueurs d'un équipe
+        /// Retourne une équipe spécifique
+        /// </summary>
+        /// <param name="team">Le numéro d'équipe</param>
+        /// <returns></returns>
+        /// 
+        public Team GetTeam(int team);
+
+        /// <summary>
+        /// Retourne la liste des joueurs d'une équipe
         /// </summary>
         /// <param name="team"></param>
         /// <returns></returns>
         public List<Member> GetPlayers(Team team);
+
+
+        /// <summary>
+        /// Retourne le capitaine d'une équipe
+        /// </summary>
+        /// <param name="team"></param>
+        /// <returns></returns>
+        public Member GetCaptain(Team team);
 
 
         /// <summary>
