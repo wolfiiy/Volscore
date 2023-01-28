@@ -11,7 +11,7 @@ class VolscoreDB implements IVolscoreDb {
     }
     
 
-    public static function getTeams()
+    public static function getTeams() : array
     {
         try
         {
@@ -19,9 +19,12 @@ class VolscoreDB implements IVolscoreDb {
             $query = "SELECT * FROM teams";
             $statement = $dbh->prepare($query); // Prepare query
             $statement->execute(); // Executer la query
-            $queryResult = $statement->fetchAll(); // Affiche les résultats
+            $res = [];
+            while ($row = $statement->fetch()) {
+                $res[] = new Team($row);
+            }
             $dbh = null;
-            return $queryResult;
+            return $res;
         } catch (PDOException $e) {
             print 'Error!:' . $e->getMessage() . '<br/>';
             return null;
@@ -47,9 +50,21 @@ class VolscoreDB implements IVolscoreDb {
         }
     }
     
-    public static function getTeam($number)
+    public static function getTeam($number) : Team
     {
-        throw new Exception("Not implemented yet");
+        try
+        {
+            $dbh = self::connexionDB();
+            $query = "SELECT * FROM teams WHERE id = $number";
+            $statement = $dbh->prepare($query); // Prepare query
+            $statement->execute(); // Executer la query
+            $queryResult = $statement->fetch(); // Affiche les résultats
+            $dbh = null;
+            return new Team($queryResult);
+        } catch (PDOException $e) {
+            print 'Error!:' . $e->getMessage() . '<br/>';
+            return null;
+        }
     }
     public static function getGame($number)
     {
