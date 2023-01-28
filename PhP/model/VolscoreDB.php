@@ -31,19 +31,22 @@ class VolscoreDB implements IVolscoreDb {
         }
     }
     
-    public static function getGames()
+    public static function getGames() : array
     {
         try
         {
             $dbh = self::connexionDB();
             $query = 
-                "SELECT games.id, type, level,category,league,location,venue,moment,receiving_id,r.name as receiving,visiting_id,v.name as visiting ".
+                "SELECT games.id, type, level,category,league,receiving_id,r.name as receivingTeamName,visiting_id,v.name as visitingTeamName,location,venue,moment ".
                 "FROM games INNER JOIN teams r ON games.receiving_id = r.id INNER JOIN teams v ON games.visiting_id = v.id";
             $statement = $dbh->prepare($query); // Prepare query
             $statement->execute(); // Executer la query
-            $queryResult = $statement->fetchAll(); // Affiche les résultats
+            $res = [];
+            while ($row = $statement->fetch()) {
+                $res[] = new Game($row);
+            }
             $dbh = null;
-            return $queryResult;
+            return $res;
         } catch (PDOException $e) {
             print 'Error!:' . $e->getMessage() . '<br/>';
             return null;

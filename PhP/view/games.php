@@ -13,7 +13,7 @@ ob_start();
     <?php
     foreach ($games as $game)
     {
-        echo "<tr><td>".$game['id']."</td><td>".$game['receiving']."</td><td>".$game['visiting']."</td></tr>";
+        echo "<tr><td>".$game->id."</td><td>".$game->receivingTeamName."</td><td>".$game->visitingTeamName."</td></tr>";
     }
     ?>
     </tbody>

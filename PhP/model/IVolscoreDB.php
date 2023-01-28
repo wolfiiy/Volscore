@@ -2,6 +2,7 @@
 
 require_once 'Model.php';
 require_once 'Team.php';
+require_once 'Game.php';
 
 interface IVolscoreDb {
     /**
@@ -14,7 +15,12 @@ interface IVolscoreDb {
      * Get a specific team
      */
     public static function getTeam($number) : Team;
-    public static function getGames();
+
+    /**
+     * Get all games in the system
+     */
+    public static function getGames() : array;
+
     public static function getGame($number);
     public static function getPlayers($teamid);
     public static function getCaptain($teamid);
