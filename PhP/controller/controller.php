@@ -6,7 +6,7 @@
 function showTeams()
 {
     // Get data
-    $teams = getTeams();
+    $teams = VolscoreDb::getTeams();
 
     // Prepare data: nothing for now
 
@@ -21,7 +21,7 @@ function showTeams()
 function showGames()
 {
     // Get data
-    $games = getGames();
+    $games = VolscoreDb::getGames();
 
     // Prepare data: nothing for now
 
