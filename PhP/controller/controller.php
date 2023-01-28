@@ -7,7 +7,7 @@ function showTeams()
 {
     // Get data
     $teams = VolscoreDb::getTeams();
-    dd($teams);
+
     // Prepare data: nothing for now
 
     // Go ahead and show it
@@ -27,5 +27,17 @@ function showGames()
 
     // Go ahead and show it
     require_once 'view/games.php';
+}
+
+function executeUnitTests() 
+{
+    echo "Test getTeam(number) -> ";
+    $team = VolscoreDB::getTeam(3);
+    if ($team->name === "Froideville") {
+        echo "OK";
+    } else {
+        echo "ko";
+    }
+    echo "<hr>";
 }
 ?>

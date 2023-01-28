@@ -12,6 +12,9 @@ switch ($action)
     case 'games':
         showGames();
         break;
+    case 'unittests':
+        executeUnitTests();
+        break;
     default:
         require_once 'view/home.php';
 }
