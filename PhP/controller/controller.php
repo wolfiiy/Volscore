@@ -7,7 +7,7 @@ function showTeams()
 {
     // Get data
     $teams = VolscoreDb::getTeams();
-
+    dd($teams);
     // Prepare data: nothing for now
 
     // Go ahead and show it

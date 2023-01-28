@@ -2,6 +2,7 @@
 $action = isset($_GET['action']) ? $_GET['action'] : 'home';
 require_once 'controller/controller.php';
 require_once 'model/VolscoreDB.php';
+require_once 'vendor/autoload.php';
 
 switch ($action)
 {
