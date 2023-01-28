@@ -39,5 +39,15 @@ function executeUnitTests()
         echo "ko";
     }
     echo "<hr>";
+
+
+    echo "Test getCaptain(teamid) -> ";
+    $cap = VolscoreDB::getCaptain(3);
+    if ($cap->last_name === "Stewart") {
+        echo "OK";
+    } else {
+        echo "ko";
+    }
+    echo "<hr>";
 }
 ?>

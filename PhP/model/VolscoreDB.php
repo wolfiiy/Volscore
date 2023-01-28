@@ -77,10 +77,24 @@ class VolscoreDB implements IVolscoreDb {
     {
         throw new Exception("Not implemented yet");
     }
-    public static function getCaptain($teamid)
+
+    public static function getCaptain($teamid) : Member
     {
-        throw new Exception("Not implemented yet");
+        try
+        {
+            $dbh = self::connexionDB();
+            $query = "SELECT * FROM members WHERE team_id = $teamid AND role='C'";
+            $statement = $dbh->prepare($query); // Prepare query
+            $statement->execute(); // Executer la query
+            $queryResult = $statement->fetch(); // Affiche les résultats
+            $dbh = null;
+            return new Member($queryResult);
+        } catch (PDOException $e) {
+            print 'Error!:' . $e->getMessage() . '<br/>';
+            return null;
+        }
     }
+
     public static function getBenchPlayers($gameid,$setid,$teamid)
     {
         throw new Exception("Not implemented yet");
