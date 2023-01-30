@@ -33,11 +33,11 @@ namespace VolScore
         private void Init()
         {
             string srv_addr = "localhost";
-            string dbname   = "volscore";
-            string uid      = "root";
-            string pass     = "root";
+            string dbname = "volscore";
+            string uid = "root";
+            string pass = "root";
             string connectStr;
-            connectStr  = "SERVER=" + srv_addr + ";" + "DATABASE=" + dbname + ";" + "UID=" + uid + ";" + "PASSWORD=" + pass + ";";
+            connectStr = "SERVER=" + srv_addr + ";" + "DATABASE=" + dbname + ";" + "UID=" + uid + ";" + "PASSWORD=" + pass + ";";
             _connection = new MySqlConnection(connectStr);
         }
 
@@ -226,16 +226,16 @@ namespace VolScore
         {
             Game res;
 
-            string query = 
-                $"SELECT games.id, type, level,category,league,receiving_id,r.name as receiving,visiting_id,v.name as visiting,location,venue,moment "+
+            string query =
+                $"SELECT games.id, type, level,category,league,receiving_id,r.name as receiving,visiting_id,v.name as visiting,location,venue,moment " +
                 $"FROM games INNER JOIN teams r ON games.receiving_id = r.id INNER JOIN teams v ON games.visiting_id = v.id " +
                 $"WHERE games.id={number}";
 
-            MySqlCommand cmd = new MySqlCommand(query,_connection);
+            MySqlCommand cmd = new MySqlCommand(query, _connection);
             MySqlDataReader reader = cmd.ExecuteReader();
             if (reader.Read())
             {
-                res = new Game (
+                res = new Game(
                     reader.GetInt32(0),  // Number
                     reader.GetString(1), // Type
                     reader.GetString(2), // Level
@@ -346,7 +346,32 @@ namespace VolScore
 
         public List<Game> GetGames()
         {
-            throw new NotImplementedException();
+            List<Game> games = new List<Game>();
+            string query =
+                $"SELECT games.id, type, level,category,league,receiving_id,r.name as receiving,visiting_id,v.name as visiting,location,venue,moment " +
+                $"FROM games INNER JOIN teams r ON games.receiving_id = r.id INNER JOIN teams v ON games.visiting_id = v.id ";
+            MySqlCommand cmd = new MySqlCommand(query, _connection);
+            MySqlDataReader reader = cmd.ExecuteReader();
+            while (reader.Read())
+            {
+                Game newgame = new Game(
+                                reader.GetInt32(0),  // Number
+                                reader.GetString(1), // Type
+                                reader.GetString(2), // Level
+                                reader.GetString(3), // category
+                                reader.GetString(4), // league
+                                reader.GetInt32(5),  // receiving_id
+                                reader.GetString(6), // receiving name
+                                reader.GetInt32(7),  // visiting id
+                                reader.GetString(8), // visiting name
+                                reader.GetString(9), // Location
+                                reader.GetString(10), // Venue
+                                reader.GetDateTime(11));
+
+                games.Add(newgame);
+            }
+            reader.Close();
+            return games;
         }
 
         #endregion

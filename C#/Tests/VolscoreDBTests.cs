@@ -50,5 +50,16 @@ namespace VolScore
             IVolscoreDB.Member lib = vdb.GetLibero(vdb.GetTeam(2)); // Froideville
             Assert.AreEqual("Eaton", lib.LastName);
         }
+
+        [TestMethod]
+        public void GetGamesTests()
+        {
+            VolscoreDB vdb = new VolscoreDB();
+            List<IVolscoreDB.Game> games = vdb.GetGames();
+            Assert.AreEqual(3, games.Count);
+            Assert.AreEqual("U17", games[0].League);
+            Assert.AreEqual("Yverdon", games[1].Place);
+            Assert.AreEqual("LUC", games[2].ReceivingTeamName);
+        }
     }
 }
