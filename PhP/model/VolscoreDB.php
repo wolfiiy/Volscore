@@ -10,7 +10,21 @@ class VolscoreDB implements IVolscoreDb {
         return $PDO;
     }
     
-
+    public static function executeInsertQuery($query) : int
+    {
+        try
+        {
+            $dbh = self::connexionDB();
+            $statement = $dbh->prepare($query); // Prepare query
+            $statement->execute(); // Executer la query
+            $res = $dbh->lastInsertId();
+            $dbh = null;
+            return $res;
+        } catch (PDOException $e) {
+            print 'Error!:' . $e->getMessage() . '<br/>';
+            return null;
+        }
+    }
     public static function getTeams() : array
     {
         try
