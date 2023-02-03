@@ -49,7 +49,7 @@ CREATE TABLE `games` (
 --
 
 /*!40000 ALTER TABLE `games` DISABLE KEYS */;
-INSERT INTO `games` VALUES (1,'Championnat','Régional-Vaud','M','U17','Froideville','Salle des Platanes','2013-01-20 20:00:00',3,2),(2,'Championnat','Régional-Vaud','M','U17','Yverdon','Salle des Iles','2013-01-20 20:45:00',6,5),(3,'Championnat','Régional-Vaud','M','U17','Dorigny','Salle Omnisport','2013-01-20 20:00:00',1,4);
+INSERT INTO `games` VALUES (1,'Championnat','Régional-Vaud','M','U17','Froideville','Salle des Platanes','2023-01-20 20:00:00',3,2),(2,'Championnat','Régional-Vaud','M','U17','Yverdon','Salle des Iles','2023-01-20 20:45:00',6,5),(3,'Championnat','Régional-Vaud','M','U17','Dorigny','Salle Omnisport','2023-01-20 20:00:00',1,4);
 /*!40000 ALTER TABLE `games` ENABLE KEYS */;
 
 --
