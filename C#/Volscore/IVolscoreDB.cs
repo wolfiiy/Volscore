@@ -84,6 +84,8 @@ namespace VolScore
             public int Number;                  //!< L'ordre du set, donc entre 1 et 5
             public DateTime Start;              //!< Le moment du début du set
             public DateTime End;                //!< Le moment de la fin du set
+            public int ScoreReceiving;          //!< Le nombre de points marqués par l'équipe recevante
+            public int ScoreVisiting;           //!< Le nombre de points marqués par l'équipe visiteuse
 
             public Set(int game, int number) : this()
             {
