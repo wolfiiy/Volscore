@@ -1,6 +1,7 @@
 using MySql.Data.MySqlClient;
 using System.Diagnostics;
 using VolScore;
+using static VolScore.IVolscoreDB;
 
 namespace VolScore
 {
@@ -15,26 +16,54 @@ namespace VolScore
         [ClassInitialize]
         public static void ClassInitialize(TestContext testContext)
         {
+            Random random = new Random();
+
             vdb = new VolscoreDB();
+
+            // Reset the database
             string script = File.ReadAllText(@"..\..\..\..\..\database\volscore.sql");
             MySqlCommand cmd = new MySqlCommand(script,vdb.Connection);
             cmd.ExecuteNonQuery();
-        }
 
+            // Add some games around current date
+
+            // Today
+            DateTime today = DateTime.Now;
+            DateTime moment = new DateTime(today.Year, today.Month, today.Day, 20, 0, 0);
+
+            string query =
+                $"INSERT INTO games (type,level,category,league,location,venue,moment,receiving_id,visiting_id) " +
+                $"VALUES('Coupe', 'Régional-Vaud', 'F', 'F2', 'Froideville', 'Complexe sportif', '{moment.ToString("yyyy-MM-dd HH:mm")}', {random.Next(1, 7)}, {random.Next(1, 7)});";
+            cmd = new MySqlCommand(query, vdb.Connection);
+            cmd.ExecuteNonQuery();
+
+            // Future games
+            DateTime tomorrow = DateTime.Now.AddDays(1);
+            moment = new DateTime(tomorrow.Year, tomorrow.Month,tomorrow.Day,20,0,0);
+            query =
+                $"INSERT INTO games (type,level,category,league,location,venue,moment,receiving_id,visiting_id) " +
+                $"VALUES('Coupe', 'Régional-Vaud', 'F', 'F2', 'Lausanne', 'Vennes', '{moment.ToString("yyyy-MM-dd HH:mm")}', {random.Next(1, 7)}, {random.Next(1, 7)});";
+            cmd = new MySqlCommand(query, vdb.Connection);
+            cmd.ExecuteNonQuery();
+            moment = moment.AddDays(1);
+            query =
+                $"INSERT INTO games (type,level,category,league,location,venue,moment,receiving_id,visiting_id) " +
+                $"VALUES('Coupe', 'Régional-Vaud', 'F', 'F2', 'Lutry', 'Les Pales', '{moment.ToString("yyyy-MM-dd HH:mm")}', {random.Next(1, 7)}, {random.Next(1, 7)});";
+            cmd = new MySqlCommand(query, vdb.Connection);
+            cmd.ExecuteNonQuery();
+        }
         [TestMethod]
         public void GetTeamsTest()
         {
             List<IVolscoreDB.Team> teams = vdb.GetTeams();
             Assert.AreEqual(6, teams.Count);
         }
-
         [TestMethod]
         public void GetTeamTest()
         {
             IVolscoreDB.Team team = vdb.GetTeam(3);
             Assert.AreEqual("Froideville", team.Name);
         }
-
         [TestMethod]
         public void GetGameTest()
         {
@@ -44,14 +73,12 @@ namespace VolScore
             Assert.AreEqual("U17", game.League);
             Assert.AreEqual("Froideville", game.ReceivingTeamName);
         }
-
         [TestMethod]
         public void GetCaptainTest()
         {
             IVolscoreDB.Member cap = vdb.GetCaptain(vdb.GetTeam(3)); // Froideville
             Assert.AreEqual("Stewart", cap.LastName);
         }
-
         [TestMethod]
         public void GetLiberoTest()
         {
@@ -63,10 +90,10 @@ namespace VolScore
         public void GetGamesTests()
         {
             List<IVolscoreDB.Game> games = vdb.GetGames();
-            Assert.AreEqual(3, games.Count);
+            Assert.AreEqual(4, games.Count);
             Assert.AreEqual("U17", games[0].League);
-            Assert.AreEqual("Dorigny", games[1].Place);
-            Assert.AreEqual("Yverdon", games[2].ReceivingTeamName);
+            Assert.AreEqual("Yverdon", games[1].Place);
+            Assert.AreEqual("LUC", games[2].ReceivingTeamName);
         }
     }
 }

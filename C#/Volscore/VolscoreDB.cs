@@ -321,7 +321,13 @@ namespace VolScore
 
         public int CreateGame(Game game)
         {
-            throw new NotImplementedException();
+            string query =
+                $"INSERT INTO games (type,level,category,league,location,venue,moment,receiving_id,visiting_id) "+
+                $"VALUES('{game.Type}', '{game.Level}', '{game.Category}', '{game.League}', '{game.Place}', '{game.Venue}', '{game.Moment}', {game.ReceivingTeamId}, {game.VisitingTeamId});";
+
+            MySqlCommand cmd = new MySqlCommand(query, Connection);
+            cmd.ExecuteNonQuery();
+            return (int)cmd.LastInsertedId;
         }
 
         public int AddSet(Game game)
@@ -349,7 +355,8 @@ namespace VolScore
             List<Game> games = new List<Game>();
             string query =
                 $"SELECT games.id, type, level,category,league,receiving_id,r.name as receiving,visiting_id,v.name as visiting,location,venue,moment " +
-                $"FROM games INNER JOIN teams r ON games.receiving_id = r.id INNER JOIN teams v ON games.visiting_id = v.id ";
+                $"FROM games INNER JOIN teams r ON games.receiving_id = r.id INNER JOIN teams v ON games.visiting_id = v.id "+
+                $"ORDER BY games.id";
             MySqlCommand cmd = new MySqlCommand(query, Connection);
             MySqlDataReader reader = cmd.ExecuteReader();
             while (reader.Read())
