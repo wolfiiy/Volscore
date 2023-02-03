@@ -1,4 +1,7 @@
 <?php
+
+$output = shell_exec("\"C:\\Program Files\\MySQL\\MySQL Server 8.0\\bin\\mysql\"  -u root -proot < ..\\Database\\volscore.sql");
+
 echo "Test getTeam(number) -> ";
 $team = VolscoreDB::getTeam(3);
 if ($team->name === "Froideville") {
