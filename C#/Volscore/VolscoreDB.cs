@@ -15,7 +15,7 @@ namespace VolScore
 {
     public class VolscoreDB : IVolscoreDB
     {
-        private MySqlConnection _connection;
+        public MySqlConnection Connection;
 
         /// <summary>
         /// Constructeur par defaut
@@ -38,7 +38,7 @@ namespace VolScore
             string pass = "root";
             string connectStr;
             connectStr = "SERVER=" + srv_addr + ";" + "DATABASE=" + dbname + ";" + "UID=" + uid + ";" + "PASSWORD=" + pass + ";";
-            _connection = new MySqlConnection(connectStr);
+            Connection = new MySqlConnection(connectStr);
         }
 
         #region DB interactions
@@ -49,7 +49,7 @@ namespace VolScore
         {
             try
             {
-                _connection.Open();
+                Connection.Open();
                 Debug.WriteLine("DB connection is now open");
                 return true;
             }
@@ -77,7 +77,7 @@ namespace VolScore
         {
             try
             {
-                _connection.Close();
+                Connection.Close();
                 Debug.WriteLine("DB connection is now closed");
                 return true;
             }
@@ -107,7 +107,7 @@ namespace VolScore
             if (OpenConnection())
             {
                 // create Command
-                MySqlCommand cmd = new MySqlCommand(query, _connection);
+                MySqlCommand cmd = new MySqlCommand(query, Connection);
                 // create a data reader and Execute the command
                 MySqlDataReader dataReader = cmd.ExecuteReader();
 
@@ -141,7 +141,7 @@ namespace VolScore
             if (this.OpenConnection())
             {
                 //Create Mysql Command
-                MySqlCommand cmd = new MySqlCommand(query, _connection);
+                MySqlCommand cmd = new MySqlCommand(query, Connection);
 
                 //ExecuteScalar will return one value
                 Count = int.Parse(cmd.ExecuteScalar() + "");
@@ -168,7 +168,7 @@ namespace VolScore
             if (this.OpenConnection())
             {
                 //create command and assign the query and connection from the constructor
-                MySqlCommand cmd = new MySqlCommand(query, _connection);
+                MySqlCommand cmd = new MySqlCommand(query, Connection);
 
                 //Execute command
                 cmd.ExecuteNonQuery();
@@ -194,7 +194,7 @@ namespace VolScore
                 //Assign the query using CommandText
                 cmd.CommandText = query;
                 //Assign the connection using Connection
-                cmd.Connection = _connection;
+                cmd.Connection = Connection;
 
                 //Execute query
                 cmd.ExecuteNonQuery();
@@ -214,7 +214,7 @@ namespace VolScore
 
             if (this.OpenConnection())
             {
-                MySqlCommand cmd = new MySqlCommand(query, _connection);
+                MySqlCommand cmd = new MySqlCommand(query, Connection);
                 cmd.ExecuteNonQuery();
                 this.CloseConnection();
             }
@@ -231,7 +231,7 @@ namespace VolScore
                 $"FROM games INNER JOIN teams r ON games.receiving_id = r.id INNER JOIN teams v ON games.visiting_id = v.id " +
                 $"WHERE games.id={number}";
 
-            MySqlCommand cmd = new MySqlCommand(query, _connection);
+            MySqlCommand cmd = new MySqlCommand(query, Connection);
             MySqlDataReader reader = cmd.ExecuteReader();
             if (reader.Read())
             {
@@ -262,7 +262,7 @@ namespace VolScore
         {
             List<Team> teams = new List<Team>();
             string query = $"SELECT id, `name` FROM teams;";
-            MySqlCommand cmd = new MySqlCommand(query, _connection);
+            MySqlCommand cmd = new MySqlCommand(query, Connection);
             MySqlDataReader reader = cmd.ExecuteReader();
             while (reader.Read())
             {
@@ -275,7 +275,7 @@ namespace VolScore
         public Team GetTeam(int teamid)
         {
             string query = $"SELECT id, `name` FROM teams WHERE id = {teamid};";
-            MySqlCommand cmd = new MySqlCommand(query, _connection);
+            MySqlCommand cmd = new MySqlCommand(query, Connection);
             MySqlDataReader reader = cmd.ExecuteReader();
             reader.Read();
             Team res = new Team(reader.GetInt32(0), reader.GetString(1));
@@ -287,7 +287,7 @@ namespace VolScore
         {
             List<Member> members = new List<Member>();
             string query = $"SELECT id, `first_name`, `last_name`, `role`, `license`, `number`, `libero` FROM members WHERE team_id = {team.Id};";
-            MySqlCommand cmd = new MySqlCommand(query, _connection);
+            MySqlCommand cmd = new MySqlCommand(query, Connection);
             MySqlDataReader reader = cmd.ExecuteReader();
             while (reader.Read())
             {
@@ -300,7 +300,7 @@ namespace VolScore
         public Member GetCaptain(Team team)
         {
             string query = $"SELECT id, `first_name`, `last_name`, `role`, `license`, `number`, `libero` FROM members WHERE team_id = {team.Id} AND role='C';";
-            MySqlCommand cmd = new MySqlCommand(query, _connection);
+            MySqlCommand cmd = new MySqlCommand(query, Connection);
             MySqlDataReader reader = cmd.ExecuteReader();
             reader.Read();
             Member res = new Member(reader.GetInt32(0), reader.GetString(1), reader.GetString(2), reader.GetString(3), reader.GetInt32(4), reader.GetInt32(5), reader.IsDBNull(6) ? false : reader.GetBoolean(6));
@@ -311,7 +311,7 @@ namespace VolScore
         public Member GetLibero(Team team)
         {
             string query = $"SELECT id, `first_name`, `last_name`, `role`, `license`, `number`, `libero` FROM members WHERE team_id = {team.Id} AND libero=1;";
-            MySqlCommand cmd = new MySqlCommand(query, _connection);
+            MySqlCommand cmd = new MySqlCommand(query, Connection);
             MySqlDataReader reader = cmd.ExecuteReader();
             reader.Read();
             Member res = new Member(reader.GetInt32(0), reader.GetString(1), reader.GetString(2), reader.GetString(3), reader.GetInt32(4), reader.GetInt32(5), reader.IsDBNull(6) ? false : reader.GetBoolean(6));
@@ -350,7 +350,7 @@ namespace VolScore
             string query =
                 $"SELECT games.id, type, level,category,league,receiving_id,r.name as receiving,visiting_id,v.name as visiting,location,venue,moment " +
                 $"FROM games INNER JOIN teams r ON games.receiving_id = r.id INNER JOIN teams v ON games.visiting_id = v.id ";
-            MySqlCommand cmd = new MySqlCommand(query, _connection);
+            MySqlCommand cmd = new MySqlCommand(query, Connection);
             MySqlDataReader reader = cmd.ExecuteReader();
             while (reader.Read())
             {

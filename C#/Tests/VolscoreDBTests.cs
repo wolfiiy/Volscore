@@ -1,3 +1,4 @@
+using MySql.Data.MySqlClient;
 using VolScore;
 
 namespace VolScore
@@ -12,6 +13,9 @@ namespace VolScore
         public void GetTeamsTest()
         {
             VolscoreDB vdb = new VolscoreDB();
+            string script = File.ReadAllText(@"..\..\..\..\..\database\volscore.sql");
+            MySqlCommand cmd = new MySqlCommand(script,vdb.Connection);
+            cmd.ExecuteNonQuery();
             List<IVolscoreDB.Team> teams = vdb.GetTeams();
             Assert.AreEqual(6, teams.Count);
         }
