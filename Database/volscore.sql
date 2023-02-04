@@ -5,7 +5,7 @@ USE `volscore`;
 --
 -- Host: localhost    Database: volscore
 -- ------------------------------------------------------
--- Server version	8.0.31
+-- Server version	5.7.11
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -22,11 +22,10 @@ USE `volscore`;
 -- Table structure for table `games`
 --
 
-DROP TABLE IF EXISTS `games`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `games` (
-  `id` int NOT NULL AUTO_INCREMENT,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `type` varchar(45) NOT NULL,
   `level` varchar(45) NOT NULL,
   `category` varchar(45) NOT NULL,
@@ -34,14 +33,14 @@ CREATE TABLE `games` (
   `location` varchar(45) DEFAULT NULL,
   `venue` varchar(45) DEFAULT NULL,
   `moment` datetime DEFAULT NULL,
-  `receiving_id` int NOT NULL,
-  `visiting_id` int NOT NULL,
+  `receiving_id` int(11) NOT NULL,
+  `visiting_id` int(11) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `fk_games_teams_idx` (`receiving_id`),
   KEY `fk_games_teams1_idx` (`visiting_id`),
-  CONSTRAINT `fk_games_teams` FOREIGN KEY (`receiving_id`) REFERENCES `teams` (`id`),
-  CONSTRAINT `fk_games_teams1` FOREIGN KEY (`visiting_id`) REFERENCES `teams` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb3;
+  CONSTRAINT `fk_games_teams` FOREIGN KEY (`receiving_id`) REFERENCES `teams` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `fk_games_teams1` FOREIGN KEY (`visiting_id`) REFERENCES `teams` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -49,29 +48,28 @@ CREATE TABLE `games` (
 --
 
 /*!40000 ALTER TABLE `games` DISABLE KEYS */;
-INSERT INTO `games` VALUES (1,'Championnat','Régional-Vaud','M','U17','Froideville','Salle des Platanes','2023-01-20 20:00:00',3,2),(2,'Championnat','Régional-Vaud','M','U17','Yverdon','Salle des Iles','2023-01-20 20:45:00',6,5),(3,'Championnat','Régional-Vaud','M','U17','Dorigny','Salle Omnisport','2023-01-20 20:00:00',1,4);
+INSERT INTO `games` VALUES (1,'Championnat','R','M','U17','Froideville','Salle des Platanes','2023-01-20 20:00:00',3,2),(2,'Championnat','R','M','U17','Yverdon','Salle des Iles','2023-01-20 20:45:00',6,5),(3,'Championnat','R','M','U17','Dorigny','Salle Omnisport','2023-01-20 20:00:00',1,4);
 /*!40000 ALTER TABLE `games` ENABLE KEYS */;
 
 --
 -- Table structure for table `members`
 --
 
-DROP TABLE IF EXISTS `members`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `members` (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `team_id` int NOT NULL,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `team_id` int(11) NOT NULL,
   `role` varchar(45) NOT NULL,
   `first_name` varchar(45) NOT NULL,
   `last_name` varchar(45) NOT NULL,
-  `license` int DEFAULT NULL,
-  `number` int DEFAULT NULL,
-  `libero` tinyint DEFAULT NULL,
+  `license` int(11) DEFAULT NULL,
+  `number` int(11) DEFAULT NULL,
+  `libero` tinyint(4) DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `fk_members_teams1_idx` (`team_id`),
-  CONSTRAINT `fk_members_teams1` FOREIGN KEY (`team_id`) REFERENCES `teams` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=201 DEFAULT CHARSET=utf8mb3;
+  CONSTRAINT `fk_members_teams1` FOREIGN KEY (`team_id`) REFERENCES `teams` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB AUTO_INCREMENT=201 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -86,66 +84,84 @@ INSERT INTO `members` VALUES (1,1,'C','Gavin','Franks',91453,1,NULL),(2,1,'J','B
 -- Table structure for table `position`
 --
 
-DROP TABLE IF EXISTS `position`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `position` (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `set_id` int NOT NULL,
-  `member_id` int NOT NULL,
-  `position` varchar(3) DEFAULT NULL,
+CREATE TABLE `points_on_serve` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `team_id` int(11) NOT NULL,
+  `set_id` int(11) NOT NULL,
+  `position_of_server` int(11) NOT NULL COMMENT 'The position (1-6) of the player who made the serve(s)',
   PRIMARY KEY (`id`),
-  KEY `fk_position_sets1_idx` (`set_id`),
-  KEY `fk_position_members1_idx` (`member_id`),
-  CONSTRAINT `fk_position_members1` FOREIGN KEY (`member_id`) REFERENCES `members` (`id`),
-  CONSTRAINT `fk_position_sets1` FOREIGN KEY (`set_id`) REFERENCES `sets` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+  KEY `fk_points_on_serve_teams1_idx` (`team_id`),
+  KEY `fk_points_on_serve_sets1_idx` (`set_id`),
+  CONSTRAINT `fk_points_on_serve_sets1` FOREIGN KEY (`set_id`) REFERENCES `sets` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `fk_points_on_serve_teams1` FOREIGN KEY (`team_id`) REFERENCES `teams` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `position`
+-- Table structure for table `positions`
 --
 
-/*!40000 ALTER TABLE `position` DISABLE KEYS */;
-/*!40000 ALTER TABLE `position` ENABLE KEYS */;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `positions` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `set_id` int(11) NOT NULL,
+  `player_position_1_id` int(11) NOT NULL,
+  `player_position_2_id` int(11) NOT NULL,
+  `player_position_3_id` int(11) NOT NULL,
+  `player_position_4_id` int(11) NOT NULL,
+  `player_position_5_id` int(11) NOT NULL,
+  `player_position_6_id` int(11) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `fk_position_sets1_idx` (`set_id`),
+  KEY `fk_positions_members1_idx` (`player_position_1_id`),
+  KEY `fk_positions_members2_idx` (`player_position_2_id`),
+  KEY `fk_positions_members3_idx` (`player_position_3_id`),
+  KEY `fk_positions_members4_idx` (`player_position_4_id`),
+  KEY `fk_positions_members5_idx` (`player_position_5_id`),
+  KEY `fk_positions_members6_idx` (`player_position_6_id`),
+  CONSTRAINT `fk_position_sets1` FOREIGN KEY (`set_id`) REFERENCES `sets` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `fk_positions_members1` FOREIGN KEY (`player_position_1_id`) REFERENCES `members` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `fk_positions_members2` FOREIGN KEY (`player_position_2_id`) REFERENCES `members` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `fk_positions_members3` FOREIGN KEY (`player_position_3_id`) REFERENCES `members` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `fk_positions_members4` FOREIGN KEY (`player_position_4_id`) REFERENCES `members` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `fk_positions_members5` FOREIGN KEY (`player_position_5_id`) REFERENCES `members` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `fk_positions_members6` FOREIGN KEY (`player_position_6_id`) REFERENCES `members` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Table structure for table `sets`
 --
 
-DROP TABLE IF EXISTS `sets`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `sets` (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `number` int DEFAULT NULL,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `number` int(11) DEFAULT NULL,
   `start` datetime DEFAULT NULL,
   `end` datetime DEFAULT NULL,
-  `game_id` int NOT NULL,
+  `game_id` int(11) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `fk_sets_games1_idx` (`game_id`),
-  CONSTRAINT `fk_sets_games1` FOREIGN KEY (`game_id`) REFERENCES `games` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+  CONSTRAINT `fk_sets_games1` FOREIGN KEY (`game_id`) REFERENCES `games` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `sets`
---
-
 
 --
 -- Table structure for table `teams`
 --
 
-DROP TABLE IF EXISTS `teams`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `teams` (
-  `id` int NOT NULL AUTO_INCREMENT,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(45) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `name_UNIQUE` (`name`)
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -165,4 +181,4 @@ INSERT INTO `teams` VALUES (2,'Ecublens'),(3,'Froideville'),(4,'Littoral'),(1,'L
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-01-28 11:33:57
+-- Dump completed on 2023-02-04 12:19:39

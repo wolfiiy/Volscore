@@ -10,6 +10,7 @@ using MySql.Data.MySqlClient;
 using System.Collections.Generic;
 using VolScore;
 using static VolScore.IVolscoreDB;
+using Org.BouncyCastle.Utilities;
 
 namespace VolScore
 {
@@ -332,7 +333,16 @@ namespace VolScore
 
         public int AddSet(Game game)
         {
-            throw new NotImplementedException();
+            List<Set> sets = GetSets(game);
+            if (sets.Count >= 5) return -2;
+            string query =
+                $"INSERT INTO sets (number,game_id) " +
+                $"VALUES({sets.Count+1},{game.Number});";
+
+            MySqlCommand cmd = new MySqlCommand(query, Connection);
+            cmd.ExecuteNonQuery();
+            return (int)cmd.LastInsertedId;
+
         }
 
         public int NumberOfSets(Game game)
@@ -379,6 +389,52 @@ namespace VolScore
             }
             reader.Close();
             return games;
+        }
+
+        public List<Set> GetSets(Game game)
+        {
+            List<Set> res = new List<Set>();
+            Set set;
+
+            string query =
+                $"SELECT sets.id, number, start, end, game_id, " +
+                $"(SELECT COUNT(points_on_serve.id) FROM points_on_serve WHERE team_id = receiving_id and set_id = sets.id) as recscore, "+
+                $"(SELECT COUNT(points_on_serve.id) FROM points_on_serve WHERE team_id = visiting_id and set_id = sets.id) as visscore " +
+                $"FROM games INNER JOIN sets ON games.id = sets.game_id " +
+                $"WHERE game_id = {game.Number} " +
+                $"ORDER BY sets.number";
+            MySqlCommand cmd = new MySqlCommand(query, Connection);
+            MySqlDataReader reader = cmd.ExecuteReader();
+            while (reader.Read())
+            {
+                Set newset = new Set(
+                                    reader.GetInt32(4),  // Game Number
+                                    reader.GetInt32(1)  // Set number
+                                );
+                newset.Id = reader.GetInt32(0);
+                if (!reader.IsDBNull(2)) newset.Start = reader.GetDateTime(2);
+                if (!reader.IsDBNull(3)) newset.End = reader.GetDateTime(3);
+                if (!reader.IsDBNull(5)) newset.ScoreReceiving = reader.GetInt32(5);
+                if (!reader.IsDBNull(6)) newset.ScoreVisiting = reader.GetInt32(6);
+
+                res.Add(newset);
+            }
+            reader.Close();
+            return res;
+        }
+
+        public bool GameIsOver(Game game)
+        {
+            List<Set> sets = GetSets(game);
+            int recwin = 0;
+            int viswin = 0;
+            foreach (Set set in sets)
+            {
+                if (set.ScoreReceiving > set.ScoreVisiting) recwin++;
+                if (set.ScoreReceiving < set.ScoreVisiting) viswin++;
+            }
+            return (recwin == 3 || viswin == 3);
+            // TODO handle 5th set score at 15
         }
 
         #endregion

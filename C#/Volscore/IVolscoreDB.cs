@@ -80,6 +80,7 @@ namespace VolScore
 
         struct Set
         {
+            public int Id;                      //!< L'identifiant du set dans la base de données
             public int Game;                    //!< Le numéro du match auquel ce set appartient
             public int Number;                  //!< L'ordre du set, donc entre 1 et 5
             public DateTime Start;              //!< Le moment du début du set
@@ -186,6 +187,12 @@ namespace VolScore
         /// </returns>
         public Game GetGame(int number);
 
+        /// <summary>
+        /// Indique si un match est terminé ou pas
+        /// </summary>
+        /// <param name="number">Le numéro du match</param>
+        /// <returns></returns>
+        public bool GameIsOver(Game game);
 
         /// <summary>
         /// Retourne le set voulu du match voulu
@@ -199,6 +206,15 @@ namespace VolScore
         /// </returns>
         public Set GetSet(Game game, int setNb);
 
+        /// <summary>
+        /// Retourne les sets du match voulu
+        /// </summary>
+        /// <param name="game"></param>
+        /// <returns>
+        /// Une liste de structure de type 'Set'
+        /// 
+        /// </returns>
+        public List<Set> GetSets(Game game);
 
         /// <summary>
         /// Définit les positions de départ des joueurs d'une équipe pour un set donné

@@ -51,7 +51,78 @@ namespace VolScore
                 $"VALUES('Coupe', 'Régional-Vaud', 'F', 'F2', 'Lutry', 'Les Pales', '{moment.ToString("yyyy-MM-dd HH:mm")}', {random.Next(1, 7)}, {random.Next(1, 7)});";
             cmd = new MySqlCommand(query, vdb.Connection);
             cmd.ExecuteNonQuery();
+
+            // Add scores to games in the past
+            // Start with listing past games
+            List<Game> pastgames = new List<Game>();
+            query =
+                $"SELECT games.id, type, level,category,league,receiving_id,r.name as receiving,visiting_id,v.name as visiting,location,venue,moment " +
+                $"FROM games INNER JOIN teams r ON games.receiving_id = r.id INNER JOIN teams v ON games.visiting_id = v.id " +
+                $"WHERE moment < '{today.ToString("yyyy-MM-dd")}' ";
+            cmd = new MySqlCommand(query, vdb.Connection);
+            MySqlDataReader reader = cmd.ExecuteReader();
+            while (reader.Read())
+            {
+                Game newgame = new Game(
+                                reader.GetInt32(0),  // Number
+                                reader.GetString(1), // Type
+                                reader.GetString(2), // Level
+                                reader.GetString(3), // category
+                                reader.GetString(4), // league
+                                reader.GetInt32(5),  // receiving_id
+                                reader.GetString(6), // receiving name
+                                reader.GetInt32(7),  // visiting id
+                                reader.GetString(8), // visiting name
+                                reader.GetString(9), // Location
+                                reader.GetString(10), // Venue
+                                reader.GetDateTime(11));
+
+                pastgames.Add(newgame);
+            }
+            reader.Close();
+
+            // Add scores to each past game
+            foreach (Game game in pastgames)
+            {
+                while (!vdb.GameIsOver(game))
+                {
+                    int newset = vdb.AddSet(game);
+                    int servpos = 1;
+                    int recscore = 0;
+                    int visscore = 0;
+                    int serving = 0; // TODO fix this, it's wrong ! we should keep track of position for each team, not globally
+                    int scoring;
+                    while (recscore < 25 && visscore < 25)
+                    {
+                        scoring = random.Next(2);
+                        if (scoring == 0)
+                        {
+                            query =
+                                $"INSERT INTO points_on_serve (team_id, set_id, position_of_server) " +
+                                $"VALUES({game.ReceivingTeamId},{newset},{servpos});";
+                            cmd = new MySqlCommand(query, vdb.Connection);
+                            cmd.ExecuteNonQuery();
+                            recscore++;
+                            serving = 0;
+                        } else
+                        {
+                            query =
+                                $"INSERT INTO points_on_serve (team_id, set_id, position_of_server) " +
+                                $"VALUES({game.VisitingTeamId},{newset},{servpos});";
+                            cmd = new MySqlCommand(query, vdb.Connection);
+                            cmd.ExecuteNonQuery();
+                            visscore++; ;
+                            if (scoring != serving) servpos = servpos % 6 + 1; // other team serving before --> rotation
+                            serving = 1;
+                        }
+                        ;
+                    }
+                }
+            }
+
+
         }
+
         [TestMethod]
         public void GetTeamsTest()
         {
