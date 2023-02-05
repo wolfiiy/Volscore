@@ -161,13 +161,10 @@ namespace VolScore
         /// </summary>
         /// <param name="game"></param>
         /// <returns>
-        /// Le numéro du set dans le match (donce entre 1 et 5) s'il a pu être créé. Sinon:
-        /// 
-        /// -1 si le match n'existe pas
-        /// -2 si on ne peut pas en rajouter un parce que le match est terminé
-        /// 
+        /// Le set qui a été créé
+        /// Attention: l'appel à cette fonction causera un crash (exception) si on ajoute un 6è set
         /// </returns>
-        public int AddSet(Game game);
+        public Set AddSet(Game game);
 
 
         /// <summary>
@@ -205,6 +202,16 @@ namespace VolScore
         /// Attention: l'appel à cette fonction causera un crash (exception) si le set n'existe pas !!!
         /// </returns>
         public Set GetSet(Game game, int setNb);
+
+        /// <summary>
+        /// Indique si un set est terminé
+        /// Prend en compte les cas particuliers:
+        ///   - Deux points d'écart en fin de set
+        ///   - 15 points au 5ème set
+        /// </summary>
+        /// <param name="set"></param>
+        /// <returns></returns>
+        public bool SetIsOver(Set set);
 
         /// <summary>
         /// Retourne les sets du match voulu

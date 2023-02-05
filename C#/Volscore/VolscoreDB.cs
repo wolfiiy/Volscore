@@ -331,18 +331,19 @@ namespace VolScore
             return (int)cmd.LastInsertedId;
         }
 
-        public int AddSet(Game game)
+        public Set AddSet(Game game)
         {
             List<Set> sets = GetSets(game);
-            if (sets.Count >= 5) return -2;
+            if (sets.Count >= 5) throw new Exception("Too many sets");
             string query =
                 $"INSERT INTO sets (number,game_id) " +
                 $"VALUES({sets.Count+1},{game.Number});";
 
             MySqlCommand cmd = new MySqlCommand(query, Connection);
             cmd.ExecuteNonQuery();
-            return (int)cmd.LastInsertedId;
-
+            Set res = new Set(game.Number, sets.Count + 1);
+            res.Id = (int)cmd.LastInsertedId;
+            return res ;
         }
 
         public int NumberOfSets(Game game)
@@ -435,6 +436,30 @@ namespace VolScore
             }
             return (recwin == 3 || viswin == 3);
             // TODO handle 5th set score at 15
+        }
+
+        public bool SetIsOver(Set set)
+        {
+            int score1 = 0;
+            int score2 = 0;
+            int limit = set.Number == 5 ? 15 : 25;
+
+            // get both scores. We don't care about which team is which
+            string query = 
+                $"select count(id) as points, team_id " +
+                $"from points_on_serve where set_id = {set.Id} group by team_id;";
+
+            MySqlCommand cmd = new MySqlCommand(query, Connection);
+            MySqlDataReader reader = cmd.ExecuteReader();
+
+            if (reader.Read()) score1 = reader.GetInt32(0);
+            if (reader.Read()) score2 = reader.GetInt32(0);
+            reader.Close();
+
+            // Assess
+            if (score1 < limit && score2 < limit) return false; // no one has enough points
+            if (Math.Abs(score2-score1) < 2) return false; // one team has enough points but a 1-point lead only
+            return true; // if we get there, we have a winner
         }
 
         #endregion
