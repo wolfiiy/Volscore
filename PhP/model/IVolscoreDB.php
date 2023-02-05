@@ -4,6 +4,7 @@ require_once 'Model.php';
 require_once 'Team.php';
 require_once 'Game.php';
 require_once 'Member.php';
+require_once 'Set.php';
 
 interface IVolscoreDb {
     /**
@@ -27,6 +28,21 @@ interface IVolscoreDb {
 
     public static function getGame($number); //#### Not Implemented
     public static function getPlayers($teamid); //#### Not Implemented
+
+    /**
+     * Returns true if there is a winner (based on the points scored )
+     */
+    public static function gameIsOver($game) : bool;
+
+    /**
+     * returns all the sets of the given game
+     */
+    public static function getSets($game);
+
+    /**
+     * Add a new set to the game
+     */
+    public static function addSet($game);
 
     /**
      * Get the captain of a specific team
