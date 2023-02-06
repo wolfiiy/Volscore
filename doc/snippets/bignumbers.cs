@@ -100,7 +100,7 @@ void WriteNumber(int number, int posx, int posy)
         }
     };
 
-    int nbDigits = (int)Math.Log10(number);                 // number of digits in the number to display
+    int nbDigits = number == 0 ? 0 : (int)Math.Log10(number); // number of digits in the number to display
     for (int digit = nbDigits; digit >= 0; digit--)         // Loop on all digits of the number, left to right
     {
         int d = (number / (int)Math.Pow(10, digit)) % 10;   // extract the Nth number
