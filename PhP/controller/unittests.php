@@ -73,23 +73,19 @@ foreach ($pastgames as $game) {
     while (!VolscoreDB::gameIsOver($game)) {
         $newset = VolscoreDB::addSet($game);
         $servpos = 1;
-        $recscore = 0;
-        $visscore = 0;
         $serving = 0;
         $scoring;
-        while ($recscore < 25 && $visscore < 25) {
+        while (!VolscoreDB::setIsOver($newset)) {
             $scoring = random_int(0, 1);
             if ($scoring == 0) {
                 $query = "INSERT INTO points_on_serve (team_id, set_id, position_of_server) " .
-                         "VALUES({$game->receiving_id},{$newset},{$servpos})";
+                         "VALUES({$game->receiving_id},{$newset->id},{$servpos})";
                 VolscoreDB::executeInsertQuery($query);
-                $recscore++;
                 $serving = 0;
             } else {
                 $query = "INSERT INTO points_on_serve (team_id, set_id, position_of_server) " .
-                         "VALUES({$game->visiting_id},{$newset},{$servpos})";
+                         "VALUES({$game->visiting_id},{$newset->id},{$servpos})";
                          VolscoreDB::executeInsertQuery($query);
-                         $visscore++;
                 if ($scoring != $serving) $servpos = $servpos % 6 + 1;
                 $serving = 1;
             }
@@ -141,7 +137,7 @@ if (count(VolscoreDB::getGamesByTime(TimeInThe::Present)) == 1) {
     echo "Present <span style='background-color:red; padding:3px'>ko</span>,";
 }
 $futureGames = count(VolscoreDB::getGamesByTime(TimeInThe::Past));
-if ($futureGames < 12 || $futureGames > 3) {
+if ($futureGames < 2 || $futureGames > 3) {
     echo "Future <span style='background-color:red; padding:3px'>ko</span>,";
 } else {
     echo "Future <span style='background-color:green; padding:3px'>OK</span>,";

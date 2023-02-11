@@ -205,13 +205,40 @@ class VolscoreDB implements IVolscoreDb {
         // TODO handle 5th set score at 15
     }
       
-    public static function addSet($game) 
+    public static function setIsOver($set) : bool
     {
-        $dbh = self::connexionDB();
+        $score1 = 0;
+        $score2 = 0;
+        $limit = $set->number == 5 ? 15 : 25;
+        $pdo = self::connexionDB();
+        $stmt = $pdo->prepare("SELECT COUNT(id) as points, team_id 
+                            FROM points_on_serve 
+                            WHERE set_id = :set_id 
+                            GROUP BY team_id");
+        $stmt->bindValue(':set_id', $set->id);
+        $stmt->execute();
+
+        $result = $stmt->fetchAll();
+        if(count($result) >= 1) $score1 = $result[0]['points'];
+        if(count($result) >= 2) $score2 = $result[1]['points'];
+
+        // Assess
+        if($score1 < $limit && $score2 < $limit) return false; // no one has enough points
+        if(abs($score2-$score1) < 2) return false; // one team has enough points but a 1-point lead only
+        return true; // if we get there, we have a winner
+
+    }
+
+    public static function addSet($game) : Set
+    {
         $sets = VolscoreDB::getSets($game);
         if (count($sets) >= 5) return -2;
-        $query = "INSERT INTO sets (number,game_id) VALUES(". (count($sets)+1) .",". $game->number .");";
-        return self::executeInsertQuery($query);
+        $newset = new Set();
+        $newset->game = $game->number;
+        $newset->number = count($sets)+1;
+        $query = "INSERT INTO sets (number,game_id) VALUES(". $newset->number .",". $newset->game .");";
+        $newset->id = self::executeInsertQuery($query);
+        return $newset;
     }
       
 }

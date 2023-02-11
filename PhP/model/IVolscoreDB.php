@@ -45,6 +45,11 @@ interface IVolscoreDb {
     public static function gameIsOver($game) : bool;
 
     /**
+     * Returns true if the set is finished (based on the points scored, including 2 points lead and 5th set at 15 )
+     */
+    public static function setIsOver($set) : bool;
+
+    /**
      * returns all the sets of the given game
      */
     public static function getSets($game);
@@ -52,7 +57,7 @@ interface IVolscoreDb {
     /**
      * Add a new set to the game
      */
-    public static function addSet($game);
+    public static function addSet($game) : Set;
 
     /**
      * Get the captain of a specific team
