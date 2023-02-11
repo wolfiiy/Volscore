@@ -66,6 +66,35 @@ class VolscoreDB implements IVolscoreDb {
             return null;
         }
     }
+
+    public static function getGamesByTime($period) : array
+    {
+        $query = "SELECT games.id as number, type, level,category,league,receiving_id as receivingTeamId,r.name as receivingTeamName,visiting_id as visitingTeamId,v.name as visitingTeamName,location as place,venue,moment " .
+                 "FROM games INNER JOIN teams r ON games.receiving_id = r.id INNER JOIN teams v ON games.visiting_id = v.id ";
+    
+        switch ($period) {
+            case TimeInThe::Past:
+                $query .= "WHERE moment < now()";
+                break;
+            case TimeInThe::Present:
+                $query .= "WHERE DATE(moment) = DATE(now())";
+                break;
+            case TimeInThe::Future:
+                $query .= "WHERE moment > now()";
+                break;
+        }
+        $query .= " ORDER BY moment, games.id";
+        try {
+            $pdo = self::connexionDB();
+            $statement = $pdo->prepare($query);
+            $statement->setFetchMode(PDO::FETCH_CLASS, 'Game');
+            $statement->execute();
+            return $statement->fetchAll();
+        } catch (PDOException $e) {
+            echo "Error: " . $e->getMessage();
+        }
+        return array(); // empty in case of error
+    }
     
     public static function getTeam($number) : Team
     {

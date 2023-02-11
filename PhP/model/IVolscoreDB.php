@@ -5,6 +5,7 @@ require_once 'Team.php';
 require_once 'Game.php';
 require_once 'Member.php';
 require_once 'Set.php';
+require_once 'TimeInThe.php';
 
 interface IVolscoreDb {
     /**
@@ -22,9 +23,18 @@ interface IVolscoreDb {
 
     /**
      * Get all games in the system
-     * returns an array of Game objects
+     * returns an array of Game objects, sorted by game time, older first
      */
     public static function getGames() : array;
+
+    /**
+     *Retourne la liste des matches qui sont dans une période donnée
+     *Les matches du 'Present' sont les matches d'aujourd'hui, quelle que soit l'heure.
+     *Un match qui se passe ce soir à 20h00 sera donc selectionné à 16h00 par 'Present' et 'Future' 
+     *$period : Une des valeurs de l'énum TimeInThe: 'Past', 'Present', 'Future'
+     *Retourne: Une liste triée par date/heure, le match le plus ancien en premier
+     */
+    public static function getGamesByTime($period) : array ;
 
     public static function getGame($number); //#### Not Implemented
     public static function getPlayers($teamid); //#### Not Implemented

@@ -1,3 +1,4 @@
+<div style='font-family:Arial, Helvetica, sans-serif'>
 <?php
 echo "<h1>DB</h1>";
 
@@ -102,9 +103,9 @@ echo "<h1>Tests</h1>";
 echo "Test getTeam(number) -> ";
 $team = VolscoreDB::getTeam(3);
 if ($team->name === "Froideville") {
-    echo "OK";
+    echo "<span style='background-color:green; padding:3px'>OK</span>";
 } else {
-    echo "ko";
+    echo "<span style='background-color:red; padding:3px'>ko</span>";
 }
 echo "<hr>";
 
@@ -112,9 +113,9 @@ echo "<hr>";
 echo "Test getCaptain(teamid) -> ";
 $cap = VolscoreDB::getCaptain(3);
 if ($cap->last_name === "Stewart") {
-    echo "OK";
+    echo "<span style='background-color:green; padding:3px'>OK</span>";
 } else {
-    echo "ko";
+    echo "<span style='background-color:red; padding:3px'>ko</span>";
 }
 echo "<hr>";
 
@@ -122,9 +123,28 @@ echo "<hr>";
 echo "Test getLibero(teamid) -> ";
 $lib = VolscoreDB::getLibero(2);
 if ($lib->last_name === "Eaton") {
-    echo "OK";
+    echo "<span style='background-color:green; padding:3px'>OK</span>";
 } else {
-    echo "ko";
+    echo "<span style='background-color:red; padding:3px'>ko</span>";
+}
+echo "<hr>";
+
+echo "Test getGamesByTime -> ";
+if (count(VolscoreDB::getGamesByTime(TimeInThe::Past)) == 3) {
+    echo "Past <span style='background-color:green; padding:3px'>OK</span>,";
+} else {
+    echo "Past <span style='background-color:red; padding:3px'>ko</span>,";
+}
+if (count(VolscoreDB::getGamesByTime(TimeInThe::Present)) == 1) {
+    echo "Present <span style='background-color:green; padding:3px'>OK</span>,";
+} else {
+    echo "Present <span style='background-color:red; padding:3px'>ko</span>,";
+}
+$futureGames = count(VolscoreDB::getGamesByTime(TimeInThe::Past));
+if ($futureGames < 12 || $futureGames > 3) {
+    echo "Future <span style='background-color:red; padding:3px'>ko</span>,";
+} else {
+    echo "Future <span style='background-color:green; padding:3px'>OK</span>,";
 }
 echo "<hr>";
 
@@ -140,3 +160,4 @@ foreach ($games as $game) {
     }
 }
 ?>
+</div>
