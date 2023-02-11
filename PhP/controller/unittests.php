@@ -107,7 +107,7 @@ echo "<hr>";
 
 
 echo "Test getCaptain(teamid) -> ";
-$cap = VolscoreDB::getCaptain(3);
+$cap = VolscoreDB::getCaptain(VolscoreDB::getTeam(3));
 if ($cap->last_name === "Stewart") {
     echo "<span style='background-color:green; padding:3px'>OK</span>";
 } else {
@@ -117,7 +117,7 @@ echo "<hr>";
 
 
 echo "Test getLibero(teamid) -> ";
-$lib = VolscoreDB::getLibero(2);
+$lib = VolscoreDB::getLibero(VolscoreDB::getTeam(2));
 if ($lib->last_name === "Eaton") {
     echo "<span style='background-color:green; padding:3px'>OK</span>";
 } else {

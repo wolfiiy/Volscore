@@ -22,6 +22,26 @@ interface IVolscoreDb {
     public static function getTeam($number) : Team;
 
     /**
+     * Get all players of a given team
+     */
+    public static function getPlayers($team) : array ; //#### Not Implemented
+
+    /**
+     * Get the captain of a specific team
+     * parameter $teamid is the number of the team
+     * returns a Member object
+     */
+    public static function getCaptain($team) : Member;
+
+    /**
+     * Get the libero of a specific team
+     * parameter $teamid is the number of the team
+     * returns a Member object
+     */
+    public static function getLibero($team) : Member;
+
+
+    /**
      * Get all games in the system
      * returns an array of Game objects, sorted by game time, older first
      */
@@ -36,23 +56,10 @@ interface IVolscoreDb {
      */
     public static function getGamesByTime($period) : array ;
 
-    public static function getGame($number); //#### Not Implemented
-    public static function getPlayers($teamid); //#### Not Implemented
-
     /**
-     * Returns true if there is a winner (based on the points scored )
+     * Create a new game in the db based on the Game object passed
      */
-    public static function gameIsOver($game) : bool;
-
-    /**
-     * Returns true if the set is finished (based on the points scored, including 2 points lead and 5th set at 15 )
-     */
-    public static function setIsOver($set) : bool;
-
-    /**
-     * returns all the sets of the given game
-     */
-    public static function getSets($game);
+    public static function createGame($game); //#### Not Implemented
 
     /**
      * Add a new set to the game
@@ -60,18 +67,31 @@ interface IVolscoreDb {
     public static function addSet($game) : Set;
 
     /**
-     * Get the captain of a specific team
-     * parameter $teamid is the number of the team
-     * returns a Member object
+     * Returns the number of sets the game has (0-5)
      */
-    public static function getCaptain($teamid) : Member;
+    public static function numberOfSet($game) : int; //#### Not Implemented
+
+    public static function getGame($number); //#### Not Implemented
 
     /**
-     * Get the libero of a specific team
-     * parameter $teamid is the number of the team
-     * returns a Member object
+     * Returns true if there is a winner (based on the points scored )
+     */ 
+    public static function gameIsOver($game) : bool;
+
+    /**
+     * Returns the specific set of the game 
      */
-    public static function getLibero($teamid) : Member;
+    public static function getSet($game, $setNumber) : int; //#### Not Implemented
+
+    /**
+     * Returns true if the set is finished (based on the points scored, including 2 points lead and 5th set at 15 )
+     */ 
+    public static function setIsOver($set) : bool;
+
+    /**
+     * returns all the sets of the given game
+     */ 
+    public static function getSets($game);
 
     public static function getBenchPlayers($gameid,$setid,$teamid); //#### Not Implemented
 }

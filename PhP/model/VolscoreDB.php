@@ -116,17 +116,18 @@ class VolscoreDB implements IVolscoreDb {
     {
         throw new Exception("Not implemented yet");
     }
-    public static function getPlayers($teamid)
+    
+    public static function getPlayers($team) : array
     {
         throw new Exception("Not implemented yet");
     }
 
-    public static function getCaptain($teamid) : Member
+    public static function getCaptain($team) : Member
     {
         try
         {
             $dbh = self::connexionDB();
-            $query = "SELECT * FROM members WHERE team_id = $teamid AND role='C'";
+            $query = "SELECT * FROM members WHERE team_id = {$team->id} AND role='C'";
             $statement = $dbh->prepare($query); // Prepare query
             $statement->execute(); // Executer la query
             $queryResult = $statement->fetch(); // Affiche les résultats
@@ -138,12 +139,12 @@ class VolscoreDB implements IVolscoreDb {
         }
     }
 
-    public static function getLibero($teamid) : Member
+    public static function getLibero($team) : Member
     {
         try
         {
             $dbh = self::connexionDB();
-            $query = "SELECT * FROM members WHERE team_id = $teamid AND libero=1";
+            $query = "SELECT * FROM members WHERE team_id = {$team->id} AND libero=1";
             $statement = $dbh->prepare($query); // Prepare query
             $statement->execute(); // Executer la query
             $queryResult = $statement->fetch(); // Affiche les résultats
@@ -153,6 +154,11 @@ class VolscoreDB implements IVolscoreDb {
             print 'Error!:' . $e->getMessage() . '<br/>';
             return null;
         }
+    }
+
+    public static function createGame($game)
+    {
+        throw new Exception("Not implemented yet");
     }
 
     public static function getBenchPlayers($gameid,$setid,$teamid)
@@ -205,6 +211,11 @@ class VolscoreDB implements IVolscoreDb {
         // TODO handle 5th set score at 15
     }
       
+    public static function getSet($game, $setNumber) : int //#### Not Implemented
+    {
+        throw new Exception("Not implemented yet");
+    }
+
     public static function setIsOver($set) : bool
     {
         $score1 = 0;
@@ -241,6 +252,11 @@ class VolscoreDB implements IVolscoreDb {
         return $newset;
     }
       
+    public static function numberOfSet($game) : int
+    {
+        throw new Exception("Not implemented yet");
+    }
+
 }
 
 
