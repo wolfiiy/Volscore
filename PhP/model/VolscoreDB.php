@@ -51,16 +51,12 @@ class VolscoreDB implements IVolscoreDb {
         {
             $dbh = self::connexionDB();
             $query = 
-                "SELECT games.id as number, type, level,category,league,receiving_id,r.name as receivingTeamName,visiting_id,v.name as visitingTeamName,location,venue,moment ".
+                "SELECT games.id as number, type, level,category,league,receiving_id as receivingTeamId,r.name as receivingTeamName,visiting_id as visitingTeamId,v.name as visitingTeamName,location as place,venue,moment ".
                 "FROM games INNER JOIN teams r ON games.receiving_id = r.id INNER JOIN teams v ON games.visiting_id = v.id";
             $statement = $dbh->prepare($query); // Prepare query
-            $statement->execute(); // Executer la query
-            $res = [];
-            while ($row = $statement->fetch()) {
-                $res[] = new Game($row);
-            }
-            $dbh = null;
-            return $res;
+            $statement->setFetchMode(PDO::FETCH_CLASS, 'Game');
+            $statement->execute();
+            return $statement->fetchAll();
         } catch (PDOException $e) {
             print 'Error!:' . $e->getMessage() . '<br/>';
             return null;

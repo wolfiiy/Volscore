@@ -96,6 +96,16 @@ foreach ($pastgames as $game) {
 // Start those tests now 
 echo "<h1>Tests</h1>";
 
+echo "Test getGames() -> ";
+$games = VolscoreDB::getGames();
+if (count($games) == 6 && $games[0]->receivingTeamName == "Froideville" && $games[1]->visitingTeamName == "Lutry" ) {
+    echo "<span style='background-color:green; padding:3px'>OK</span>";
+} else {
+    echo "<span style='background-color:red; padding:3px'>ko</span>";
+}
+echo "<hr>";
+
+
 echo "Test getTeam(number) -> ";
 $team = VolscoreDB::getTeam(3);
 if ($team->name === "Froideville") {
