@@ -163,8 +163,17 @@ namespace VolScore
             List<IVolscoreDB.Game> games = vdb.GetGames();
             Assert.AreEqual(6, games.Count);
             Assert.AreEqual("U17", games[0].League);
-            Assert.AreEqual("Yverdon", games[1].Place);
-            Assert.AreEqual("LUC", games[2].ReceivingTeamName);
+            Assert.AreEqual("Dorigny", games[1].Place);
+            Assert.AreEqual("Yverdon", games[2].ReceivingTeamName);
+        }
+
+        [TestMethod]
+        public void GetGamesByTimeTests()
+        {
+            Assert.AreEqual(3, vdb.GetGamesByTime(IVolscoreDB.TimeInThe.Past).Count);
+            Assert.AreEqual(1, vdb.GetGamesByTime(IVolscoreDB.TimeInThe.Present).Count);
+            int futureGames = vdb.GetGamesByTime(IVolscoreDB.TimeInThe.Future).Count;
+            if (futureGames < 2 || futureGames > 3) Assert.Fail(); // must do this in case you run the test at 11PM !!
         }
     }
 }

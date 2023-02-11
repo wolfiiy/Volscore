@@ -367,7 +367,7 @@ namespace VolScore
             string query =
                 $"SELECT games.id, type, level,category,league,receiving_id,r.name as receiving,visiting_id,v.name as visiting,location,venue,moment " +
                 $"FROM games INNER JOIN teams r ON games.receiving_id = r.id INNER JOIN teams v ON games.visiting_id = v.id "+
-                $"ORDER BY games.id";
+                $"ORDER BY moment, games.id";
             MySqlCommand cmd = new MySqlCommand(query, Connection);
             MySqlDataReader reader = cmd.ExecuteReader();
             while (reader.Read())
@@ -391,6 +391,52 @@ namespace VolScore
             reader.Close();
             return games;
         }
+
+        public List<Game> GetGamesByTime(TimeInThe period)
+        {
+            List<Game> games = new List<Game>();
+
+            string query =
+                $"SELECT games.id, type, level,category,league,receiving_id,r.name as receiving,visiting_id,v.name as visiting,location,venue,moment " +
+                $"FROM games INNER JOIN teams r ON games.receiving_id = r.id INNER JOIN teams v ON games.visiting_id = v.id ";
+
+            switch (period)
+            {
+                case TimeInThe.Past:
+                    query += $"WHERE moment < now()";
+                    break;
+                case TimeInThe.Present:
+                    query += $"WHERE DATE(moment) = DATE(now())";
+                    break;
+                case TimeInThe.Future:
+                    query += $"WHERE moment > now()";
+                    break;
+            }
+            query += $" ORDER BY moment, games.id";
+            MySqlCommand cmd = new MySqlCommand(query, Connection);
+            MySqlDataReader reader = cmd.ExecuteReader();
+            while (reader.Read())
+            {
+                Game newgame = new Game(
+                                reader.GetInt32(0),  // Number
+                                reader.GetString(1), // Type
+                                reader.GetString(2), // Level
+                                reader.GetString(3), // category
+                                reader.GetString(4), // league
+                                reader.GetInt32(5),  // receiving_id
+                                reader.GetString(6), // receiving name
+                                reader.GetInt32(7),  // visiting id
+                                reader.GetString(8), // visiting name
+                                reader.GetString(9), // Location
+                                reader.GetString(10), // Venue
+                                reader.GetDateTime(11));
+
+                games.Add(newgame);
+            }
+            reader.Close();
+            return games;
+        }
+
 
         public List<Set> GetSets(Game game)
         {

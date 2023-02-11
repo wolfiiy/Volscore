@@ -95,6 +95,8 @@ namespace VolScore
             }
         }
 
+        enum TimeInThe { Past, Present, Future }
+
         #endregion
         #region Functions
         /// <summary>
@@ -138,8 +140,18 @@ namespace VolScore
         /// <summary>
         /// Retourne la liste de tous les matches enregistrés
         /// </summary>
-        /// <returns></returns>
+        /// <returns>Une liste triée par date/heure, le match le plus ancien en premier</returns>
         public List<Game> GetGames();
+
+
+        /// <summary>
+        /// Retourne la liste des matches qui sont dans une période donnée
+        /// Les matches du 'Present' sont les matches d'aujourd'hui, quelle que soit l'heure.
+        /// Un match qui se passe ce soir à 20h00 sera donc selectionné à 16h00 par 'Present' et 'Future' 
+        /// </summary>
+        /// <param name="period">Une des valeurs 'Past', 'Present', 'Future'</param>
+        /// <returns>Une liste triée par date/heure, le match le plus ancien en premier</returns>
+        public List<Game> GetGamesByTime(TimeInThe period);
 
 
         /// <summary>
