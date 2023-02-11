@@ -92,6 +92,7 @@ $(document).ready(function(){initNavTree('interface_vol_score_1_1_i_volscore_d_b
 <div class="header">
   <div class="summary">
 <a href="#nested-classes">Classes</a> &#124;
+<a href="#pub-types">Public Types</a> &#124;
 <a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="interface_vol_score_1_1_i_volscore_d_b-members.html">List of all members</a>  </div>
   <div class="headertitle"><div class="title">VolScore.IVolscoreDB Interface Reference</div></div>
@@ -109,6 +110,11 @@ Classes</h2></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_vol_score_1_1_i_volscore_d_b_1_1_team.html">Team</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-types" name="pub-types"></a>
+Public Types</h2></td></tr>
+<tr class="memitem:a3d1205a1bf303a0c23a1edc133e48d7c"><td class="memItemLeft" align="right" valign="top"><a id="a3d1205a1bf303a0c23a1edc133e48d7c" name="a3d1205a1bf303a0c23a1edc133e48d7c"></a>enum &#160;</td><td class="memItemRight" valign="bottom"><b>TimeInThe</b> </td></tr>
+<tr class="separator:a3d1205a1bf303a0c23a1edc133e48d7c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
@@ -130,6 +136,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:acf69d26ed24ed96b35fb40a0a90ba558"><td class="memItemLeft" align="right" valign="top">List&lt; <a class="el" href="struct_vol_score_1_1_i_volscore_d_b_1_1_game.html">Game</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interface_vol_score_1_1_i_volscore_d_b.html#acf69d26ed24ed96b35fb40a0a90ba558">GetGames</a> ()</td></tr>
 <tr class="memdesc:acf69d26ed24ed96b35fb40a0a90ba558"><td class="mdescLeft">&#160;</td><td class="mdescRight">Retourne la liste de tous les matches enregistrés   <a href="interface_vol_score_1_1_i_volscore_d_b.html#acf69d26ed24ed96b35fb40a0a90ba558">More...</a><br /></td></tr>
 <tr class="separator:acf69d26ed24ed96b35fb40a0a90ba558"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad4fce3fdd425b82c7d509e3af139dc9b"><td class="memItemLeft" align="right" valign="top">List&lt; <a class="el" href="struct_vol_score_1_1_i_volscore_d_b_1_1_game.html">Game</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interface_vol_score_1_1_i_volscore_d_b.html#ad4fce3fdd425b82c7d509e3af139dc9b">GetGamesByTime</a> (TimeInThe period)</td></tr>
+<tr class="memdesc:ad4fce3fdd425b82c7d509e3af139dc9b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Retourne la liste des matches qui sont dans une période donnée Les matches du 'Present' sont les matches d'aujourd'hui, quelle que soit l'heure. Un match qui se passe ce soir à 20h00 sera donc selectionné à 16h00 par 'Present' et 'Future'   <a href="interface_vol_score_1_1_i_volscore_d_b.html#ad4fce3fdd425b82c7d509e3af139dc9b">More...</a><br /></td></tr>
+<tr class="separator:ad4fce3fdd425b82c7d509e3af139dc9b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac9d57f6ad7e7a38729540831c079e20b"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interface_vol_score_1_1_i_volscore_d_b.html#ac9d57f6ad7e7a38729540831c079e20b">CreateGame</a> (<a class="el" href="struct_vol_score_1_1_i_volscore_d_b_1_1_game.html">Game</a> game)</td></tr>
 <tr class="memdesc:ac9d57f6ad7e7a38729540831c079e20b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Crée un nouveau match dans la base de données avec les données fournies   <a href="interface_vol_score_1_1_i_volscore_d_b.html#ac9d57f6ad7e7a38729540831c079e20b">More...</a><br /></td></tr>
 <tr class="separator:ac9d57f6ad7e7a38729540831c079e20b"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -409,9 +418,38 @@ Public Member Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Retourne la liste de tous les matches enregistrés  </p>
-<dl class="section return"><dt>Returns</dt><dd></dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>Une liste triée par date/heure, le match le plus ancien en premier</dd></dl>
 
 <p>Implemented in <a class="el" href="class_vol_score_1_1_volscore_d_b.html#a61090f39370f4086fa123af27fbc2a39">VolScore.VolscoreDB</a>.</p>
+
+</div>
+</div>
+<a id="ad4fce3fdd425b82c7d509e3af139dc9b" name="ad4fce3fdd425b82c7d509e3af139dc9b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad4fce3fdd425b82c7d509e3af139dc9b">&#9670;&#160;</a></span>GetGamesByTime()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">List&lt; <a class="el" href="struct_vol_score_1_1_i_volscore_d_b_1_1_game.html">Game</a> &gt; VolScore.IVolscoreDB.GetGamesByTime </td>
+          <td>(</td>
+          <td class="paramtype">TimeInThe&#160;</td>
+          <td class="paramname"><em>period</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Retourne la liste des matches qui sont dans une période donnée Les matches du 'Present' sont les matches d'aujourd'hui, quelle que soit l'heure. Un match qui se passe ce soir à 20h00 sera donc selectionné à 16h00 par 'Present' et 'Future'  </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">period</td><td>Une des valeurs 'Past', 'Present', 'Future'</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Une liste triée par date/heure, le match le plus ancien en premier</dd></dl>
+
+<p>Implemented in <a class="el" href="class_vol_score_1_1_volscore_d_b.html#a37dae399774eb0cdfa3a87ff399ae17a">VolScore.VolscoreDB</a>.</p>
 
 </div>
 </div>

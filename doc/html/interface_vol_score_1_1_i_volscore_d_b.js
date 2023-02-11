@@ -11,6 +11,7 @@ var interface_vol_score_1_1_i_volscore_d_b =
     [ "GetCaptain", "interface_vol_score_1_1_i_volscore_d_b.html#a98ac7d2a67c0e68b11339ea87d899036", null ],
     [ "GetGame", "interface_vol_score_1_1_i_volscore_d_b.html#a362a16e817f4a491c3439019ce121954", null ],
     [ "GetGames", "interface_vol_score_1_1_i_volscore_d_b.html#acf69d26ed24ed96b35fb40a0a90ba558", null ],
+    [ "GetGamesByTime", "interface_vol_score_1_1_i_volscore_d_b.html#ad4fce3fdd425b82c7d509e3af139dc9b", null ],
     [ "GetLibero", "interface_vol_score_1_1_i_volscore_d_b.html#a8eb8247cee754b3c42efde7b590b36e7", null ],
     [ "GetPlayers", "interface_vol_score_1_1_i_volscore_d_b.html#a46073070d240be5a3ad1030aa28bc540", null ],
     [ "GetSet", "interface_vol_score_1_1_i_volscore_d_b.html#a83353ca6efcf232dd9c53a536792cfd8", null ],
