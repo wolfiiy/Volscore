@@ -87,35 +87,15 @@ namespace VolScore
                 while (!vdb.GameIsOver(game))
                 {
                     Set newset = vdb.AddSet(game);
-                    int servpos = 1;
-                    int recscore = 0;
-                    int visscore = 0;
-                    int serving = 0; // TODO fix this, it's wrong ! we should keep track of position for each team, not globally
-                    int scoring;
                     while (!vdb.SetIsOver(newset))
                     {
-                        scoring = random.Next(2);
-                        if (scoring == 0)
+                        if (random.Next(2) == 0)
                         {
-                            query =
-                                $"INSERT INTO points_on_serve (team_id, set_id, position_of_server) " +
-                                $"VALUES({game.ReceivingTeamId},{newset.Id},{servpos});";
-                            cmd = new MySqlCommand(query, vdb.Connection);
-                            cmd.ExecuteNonQuery();
-                            recscore++;
-                            serving = 0;
+                            vdb.AddPoint(newset, true);
                         } else
                         {
-                            query =
-                                $"INSERT INTO points_on_serve (team_id, set_id, position_of_server) " +
-                                $"VALUES({game.VisitingTeamId},{newset.Id},{servpos});";
-                            cmd = new MySqlCommand(query, vdb.Connection);
-                            cmd.ExecuteNonQuery();
-                            visscore++; ;
-                            if (scoring != serving) servpos = servpos % 6 + 1; // other team serving before --> rotation
-                            serving = 1;
+                            vdb.AddPoint(newset, false);
                         }
-                        ;
                     }
                 }
             }
