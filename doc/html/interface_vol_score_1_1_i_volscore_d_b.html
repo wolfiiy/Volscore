@@ -148,6 +148,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:ad6d572ac91d4630f284f5bbf12cf66b5"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interface_vol_score_1_1_i_volscore_d_b.html#ad6d572ac91d4630f284f5bbf12cf66b5">NumberOfSets</a> (<a class="el" href="struct_vol_score_1_1_i_volscore_d_b_1_1_game.html">Game</a> game)</td></tr>
 <tr class="memdesc:ad6d572ac91d4630f284f5bbf12cf66b5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Retourne le nombre de sets que le match possède, donc entre 0 et 5   <a href="interface_vol_score_1_1_i_volscore_d_b.html#ad6d572ac91d4630f284f5bbf12cf66b5">More...</a><br /></td></tr>
 <tr class="separator:ad6d572ac91d4630f284f5bbf12cf66b5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aaabee347c2760c935b85850d5f67817c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interface_vol_score_1_1_i_volscore_d_b.html#aaabee347c2760c935b85850d5f67817c">AddPoint</a> (<a class="el" href="struct_vol_score_1_1_i_volscore_d_b_1_1_set.html">Set</a> set, bool receiving)</td></tr>
+<tr class="memdesc:aaabee347c2760c935b85850d5f67817c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Ajoute un point à une des deux équipes du set   <a href="interface_vol_score_1_1_i_volscore_d_b.html#aaabee347c2760c935b85850d5f67817c">More...</a><br /></td></tr>
+<tr class="separator:aaabee347c2760c935b85850d5f67817c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a362a16e817f4a491c3439019ce121954"><td class="memItemLeft" align="right" valign="top"><a class="el" href="struct_vol_score_1_1_i_volscore_d_b_1_1_game.html">Game</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interface_vol_score_1_1_i_volscore_d_b.html#a362a16e817f4a491c3439019ce121954">GetGame</a> (int number)</td></tr>
 <tr class="memdesc:a362a16e817f4a491c3439019ce121954"><td class="mdescLeft">&#160;</td><td class="mdescRight">Retourne une structure contenant les informations de description du match   <a href="interface_vol_score_1_1_i_volscore_d_b.html#a362a16e817f4a491c3439019ce121954">More...</a><br /></td></tr>
 <tr class="separator:a362a16e817f4a491c3439019ce121954"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -168,6 +171,45 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a8cf9ba77cc65f19f595474288e0c2fe2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Member Function Documentation</h2>
+<a id="aaabee347c2760c935b85850d5f67817c" name="aaabee347c2760c935b85850d5f67817c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aaabee347c2760c935b85850d5f67817c">&#9670;&#160;</a></span>AddPoint()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void VolScore.IVolscoreDB.AddPoint </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="struct_vol_score_1_1_i_volscore_d_b_1_1_set.html">Set</a>&#160;</td>
+          <td class="paramname"><em>set</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>receiving</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Ajoute un point à une des deux équipes du set  </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">set</td><td></td></tr>
+    <tr><td class="paramname">receiving</td><td>Ajoute le point à l'équipe recevante si TRUE, visiteuse sinon</td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>Implemented in <a class="el" href="class_vol_score_1_1_volscore_d_b.html#a56f6023fee1591150f2dc76d896be66b">VolScore.VolscoreDB</a>.</p>
+
+</div>
+</div>
 <a id="ab41620ae5b509257f6cde59af390214f" name="ab41620ae5b509257f6cde59af390214f"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ab41620ae5b509257f6cde59af390214f">&#9670;&#160;</a></span>AddSet()</h2>
 
@@ -698,7 +740,7 @@ Public Member Functions</h2></td></tr>
 </div>
 </div>
 <hr/>The documentation for this interface was generated from the following file:<ul>
-<li>C:/Users/Xavier/source/repos/Volscore/C#/Volscore/IVolscoreDB.cs</li>
+<li>C:/Users/px05iql/source/repos/Volscore/C#/Volscore/IVolscoreDB.cs</li>
 </ul>
 </div><!-- contents -->
 </div><!-- doc-content -->

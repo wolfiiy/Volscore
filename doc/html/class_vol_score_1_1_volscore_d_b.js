@@ -1,6 +1,7 @@
 var class_vol_score_1_1_volscore_d_b =
 [
     [ "VolscoreDB", "class_vol_score_1_1_volscore_d_b.html#a39fd0635b962c841454fa6b7ccc98e10", null ],
+    [ "AddPoint", "class_vol_score_1_1_volscore_d_b.html#a56f6023fee1591150f2dc76d896be66b", null ],
     [ "AddSet", "class_vol_score_1_1_volscore_d_b.html#a3052b4e25f475fa99d49a6802c86a1f5", null ],
     [ "CreateGame", "class_vol_score_1_1_volscore_d_b.html#a70ce3250fb80dd6157bfed61fc4432fc", null ],
     [ "DefinePlayersPositions", "class_vol_score_1_1_volscore_d_b.html#a326126390990ebe454198a3260e91313", null ],

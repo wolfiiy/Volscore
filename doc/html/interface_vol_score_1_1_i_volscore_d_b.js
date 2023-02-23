@@ -4,6 +4,7 @@ var interface_vol_score_1_1_i_volscore_d_b =
     [ "Member", "struct_vol_score_1_1_i_volscore_d_b_1_1_member.html", "struct_vol_score_1_1_i_volscore_d_b_1_1_member" ],
     [ "Set", "struct_vol_score_1_1_i_volscore_d_b_1_1_set.html", "struct_vol_score_1_1_i_volscore_d_b_1_1_set" ],
     [ "Team", "struct_vol_score_1_1_i_volscore_d_b_1_1_team.html", "struct_vol_score_1_1_i_volscore_d_b_1_1_team" ],
+    [ "AddPoint", "interface_vol_score_1_1_i_volscore_d_b.html#aaabee347c2760c935b85850d5f67817c", null ],
     [ "AddSet", "interface_vol_score_1_1_i_volscore_d_b.html#ab41620ae5b509257f6cde59af390214f", null ],
     [ "CreateGame", "interface_vol_score_1_1_i_volscore_d_b.html#ac9d57f6ad7e7a38729540831c079e20b", null ],
     [ "DefinePlayersPositions", "interface_vol_score_1_1_i_volscore_d_b.html#a8cf9ba77cc65f19f595474288e0c2fe2", null ],
