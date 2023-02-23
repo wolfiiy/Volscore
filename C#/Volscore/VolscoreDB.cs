@@ -325,7 +325,7 @@ namespace VolScore
         {
             string query =
                 $"INSERT INTO games (type,level,category,league,location,venue,moment,receiving_id,visiting_id) "+
-                $"VALUES('{game.Type}', '{game.Level}', '{game.Category}', '{game.League}', '{game.Place}', '{game.Venue}', '{game.Moment}', {game.ReceivingTeamId}, {game.VisitingTeamId});";
+                $"VALUES('{game.Type}', '{game.Level}', '{game.Category}', '{game.League}', '{game.Place}', '{game.Venue}', '{game.Moment.ToString("yyyy-MM-dd HH:mm")}', {game.ReceivingTeamId}, {game.VisitingTeamId});";
 
             MySqlCommand cmd = new MySqlCommand(query, Connection);
             cmd.ExecuteNonQuery();

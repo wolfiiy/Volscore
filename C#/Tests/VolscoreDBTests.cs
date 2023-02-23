@@ -52,6 +52,9 @@ namespace VolScore
             cmd = new MySqlCommand(query, vdb.Connection);
             cmd.ExecuteNonQuery();
 
+            moment = DateTime.Now.AddDays(10);
+            vdb.CreateGame(new IVolscoreDB.Game(1,"Coupe","Régional-Valais","F","F3",random.Next(1,7),"",random.Next(1,7),"","Fully","Grande Halle", moment));
+
             // Add scores to games in the past
             // Start with listing past games
             List<Game> pastgames = new List<Game>();
@@ -141,7 +144,7 @@ namespace VolScore
         public void GetGamesTests()
         {
             List<IVolscoreDB.Game> games = vdb.GetGames();
-            Assert.AreEqual(6, games.Count);
+            Assert.AreEqual(7, games.Count);
             Assert.AreEqual("U17", games[0].League);
             Assert.AreEqual("Dorigny", games[1].Place);
             Assert.AreEqual("Yverdon", games[2].ReceivingTeamName);
@@ -153,7 +156,7 @@ namespace VolScore
             Assert.AreEqual(3, vdb.GetGamesByTime(IVolscoreDB.TimeInThe.Past).Count);
             Assert.AreEqual(1, vdb.GetGamesByTime(IVolscoreDB.TimeInThe.Present).Count);
             int futureGames = vdb.GetGamesByTime(IVolscoreDB.TimeInThe.Future).Count;
-            if (futureGames < 2 || futureGames > 3) Assert.Fail(); // must do this in case you run the test at 11PM !!
+            if (futureGames < 2 || futureGames > 4) Assert.Fail(); // must do this in case you run the test at 11PM !!
         }
     }
 }
