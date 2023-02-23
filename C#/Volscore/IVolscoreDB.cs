@@ -186,6 +186,12 @@ namespace VolScore
         /// <returns></returns>
         public int NumberOfSets(Game game);
 
+        /// <summary>
+        /// Ajoute un point à une des deux équipes du set
+        /// </summary>
+        /// <param name="set"></param>
+        /// <param name="receiving">Ajoute le point à l'équipe recevante si TRUE, visiteuse sinon</param>
+        public void AddPoint(Set set, bool receiving);
 
         /// <summary>
         /// Retourne une structure contenant les informations de description du match

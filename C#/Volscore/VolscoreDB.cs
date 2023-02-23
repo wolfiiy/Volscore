@@ -11,6 +11,7 @@ using System.Collections.Generic;
 using VolScore;
 using static VolScore.IVolscoreDB;
 using Org.BouncyCastle.Utilities;
+using System.Collections;
 
 namespace VolScore
 {
@@ -506,6 +507,17 @@ namespace VolScore
             if (score1 < limit && score2 < limit) return false; // no one has enough points
             if (Math.Abs(score2-score1) < 2) return false; // one team has enough points but a 1-point lead only
             return true; // if we get there, we have a winner
+        }
+
+        public void AddPoint(Set set, bool receiving)
+        {
+            Game game = GetGame(set.Game);
+            string query =
+                 $"INSERT INTO points_on_serve (team_id, set_id, position_of_server) " +
+                 $"VALUES({(receiving ? game.ReceivingTeamId : game.VisitingTeamId)},{set.Id},1);";
+            MySqlCommand cmd = new MySqlCommand(query, Connection);
+            cmd.ExecuteNonQuery();
+
         }
 
         #endregion
