@@ -194,6 +194,14 @@ namespace VolScore
             Assert.AreEqual(3, set1.ScoreReceiving); // score must be 3-2 now
             Assert.AreEqual(2, set1.ScoreVisiting);
 
+            // Test remove point
+            vdb.RemovePoint(set1);
+            set1 = vdb.GetSet(newGame, 1); // re-read for updated scores
+            Assert.AreEqual(1, set1.ScoreVisiting); // score of visiting must be back to 1
+            vdb.RemovePoint(set1);
+            set1 = vdb.GetSet(newGame, 1); // re-read for updated scores
+            Assert.AreEqual(2, set1.ScoreReceiving); // score of receiving must be back to 1
+
             // Cleanup
             vdb.DeleteGame(newGame.Number);
             try

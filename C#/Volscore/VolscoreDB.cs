@@ -540,6 +540,13 @@ namespace VolScore
 
         }
 
+        public void RemovePoint(Set set)
+        {
+            string query = $"DELETE FROM points_on_serve WHERE set_id = {set.Id} ORDER BY id DESC LIMIT 1;";
+            MySqlCommand cmd = new MySqlCommand(query, Connection);
+            cmd.ExecuteNonQuery();
+        }
+
         #endregion
     }
 }

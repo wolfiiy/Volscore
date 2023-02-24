@@ -203,6 +203,12 @@ namespace VolScore
         public void AddPoint(Set set, bool receiving);
 
         /// <summary>
+        /// Supprime le dernier point marqué dans le set, quelle que soit l'équipe
+        /// </summary>
+        /// <param name="set"></param>
+        public void RemovePoint(Set set);
+
+        /// <summary>
         /// Retourne une structure contenant les informations de description du match
         /// </summary>
         /// <param name="number"></param>
