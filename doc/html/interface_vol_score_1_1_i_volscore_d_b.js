@@ -6,8 +6,9 @@ var interface_vol_score_1_1_i_volscore_d_b =
     [ "Team", "struct_vol_score_1_1_i_volscore_d_b_1_1_team.html", "struct_vol_score_1_1_i_volscore_d_b_1_1_team" ],
     [ "AddPoint", "interface_vol_score_1_1_i_volscore_d_b.html#aaabee347c2760c935b85850d5f67817c", null ],
     [ "AddSet", "interface_vol_score_1_1_i_volscore_d_b.html#ab41620ae5b509257f6cde59af390214f", null ],
-    [ "CreateGame", "interface_vol_score_1_1_i_volscore_d_b.html#ac9d57f6ad7e7a38729540831c079e20b", null ],
+    [ "CreateGame", "interface_vol_score_1_1_i_volscore_d_b.html#a56d5aeb18a5bd3a3b617d47efdce1e54", null ],
     [ "DefinePlayersPositions", "interface_vol_score_1_1_i_volscore_d_b.html#a8cf9ba77cc65f19f595474288e0c2fe2", null ],
+    [ "DeleteGame", "interface_vol_score_1_1_i_volscore_d_b.html#a4e14006dbfb7df98dfe8c8610aa40301", null ],
     [ "GameIsOver", "interface_vol_score_1_1_i_volscore_d_b.html#a67cd752d68e4cffb4d5ec9d90a1df092", null ],
     [ "GetCaptain", "interface_vol_score_1_1_i_volscore_d_b.html#a98ac7d2a67c0e68b11339ea87d899036", null ],
     [ "GetGame", "interface_vol_score_1_1_i_volscore_d_b.html#a362a16e817f4a491c3439019ce121954", null ],
@@ -20,5 +21,6 @@ var interface_vol_score_1_1_i_volscore_d_b =
     [ "GetTeam", "interface_vol_score_1_1_i_volscore_d_b.html#a0423185b67a99aa104577a74e37d6084", null ],
     [ "GetTeams", "interface_vol_score_1_1_i_volscore_d_b.html#a380e2ad465ceb3924c4627e9fe89cce4", null ],
     [ "NumberOfSets", "interface_vol_score_1_1_i_volscore_d_b.html#ad6d572ac91d4630f284f5bbf12cf66b5", null ],
+    [ "RemovePoint", "interface_vol_score_1_1_i_volscore_d_b.html#a52d58690a03bff26ca8cae8df8baa6de", null ],
     [ "SetIsOver", "interface_vol_score_1_1_i_volscore_d_b.html#ab7e79776dc0509adc221c502787a81dc", null ]
 ];
