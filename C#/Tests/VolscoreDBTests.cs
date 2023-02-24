@@ -1,4 +1,5 @@
 using MySql.Data.MySqlClient;
+using System;
 using System.Diagnostics;
 using VolScore;
 using static VolScore.IVolscoreDB;
@@ -52,6 +53,7 @@ namespace VolScore
             cmd = new MySqlCommand(query, vdb.Connection);
             cmd.ExecuteNonQuery();
 
+            // Use CreateGame
             moment = DateTime.Now.AddDays(10);
             vdb.CreateGame(new IVolscoreDB.Game(1,"Coupe","Régional-Valais","F","F3",random.Next(1,7),"",random.Next(1,7),"","Fully","Grande Halle", moment));
 
@@ -157,6 +159,55 @@ namespace VolScore
             Assert.AreEqual(1, vdb.GetGamesByTime(IVolscoreDB.TimeInThe.Present).Count);
             int futureGames = vdb.GetGamesByTime(IVolscoreDB.TimeInThe.Future).Count;
             if (futureGames < 2 || futureGames > 4) Assert.Fail(); // must do this in case you run the test at 11PM !!
+        }
+
+        [TestMethod]
+        public void CRUDGameWithSetsTest()
+        {
+            Game newGame = vdb.CreateGame(new IVolscoreDB.Game(1, "Test", "VS", "F", "F3", 1, "", 2, "", "Fully", "Grande Halle", DateTime.Now.AddDays(12)));
+            Assert.AreEqual(0, vdb.NumberOfSets(newGame));
+            vdb.AddSet(newGame);
+            vdb.AddSet(newGame);
+            vdb.AddSet(newGame);
+            vdb.AddSet(newGame);
+            vdb.AddSet(newGame);
+            Assert.AreEqual(5, vdb.NumberOfSets(newGame));
+
+            // can't be more than 5 sets in a game
+            try
+            {
+                vdb.AddSet(newGame);
+                Assert.IsTrue(false);
+            }
+            catch { }
+
+            // Check sets and scores
+            Set set1 = vdb.GetSet(newGame, 1);
+            Assert.AreEqual(0, set1.ScoreReceiving); // score must be 0-0 at this stage
+            Assert.AreEqual(0, set1.ScoreVisiting);
+            vdb.AddPoint(set1, true);
+            vdb.AddPoint(set1, true);
+            vdb.AddPoint(set1, false);
+            vdb.AddPoint(set1, true);
+            vdb.AddPoint(set1, false);
+            set1 = vdb.GetSet(newGame, 1); // re-read for updated scores
+            Assert.AreEqual(3, set1.ScoreReceiving); // score must be 3-2 now
+            Assert.AreEqual(2, set1.ScoreVisiting);
+
+            // Cleanup
+            vdb.DeleteGame(newGame.Number);
+            try
+            {
+                vdb.GetGame(newGame.Number); // must crash
+                Assert.IsTrue(false);
+            }
+            catch { }
+            try
+            {
+                vdb.DeleteGame(newGame.Number); // must crash too
+                Assert.IsTrue(false);
+            }
+            catch { }
         }
     }
 }

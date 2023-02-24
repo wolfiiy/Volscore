@@ -159,13 +159,22 @@ namespace VolScore
         /// </summary>
         /// <param name="game"></param>
         /// <returns>
-        /// Le numéro du match s'il a pu être créé, sinon:
+        /// Le match s'il a pu être créé, sinon:
         /// 
         /// -1 si la première équipe n'existe pas
         /// -2 si la deuxième équipe n'existe pas
         /// 
         /// </returns>
-        public int CreateGame(Game game);
+        public Game CreateGame(Game game);
+
+
+        /// <summary>
+        /// Supprime un match dans la base de données 
+        /// </summary>
+        /// <param name="game"></param>
+        /// <returns>
+        /// </returns>
+        public void DeleteGame(int gameid);
 
 
         /// <summary>
