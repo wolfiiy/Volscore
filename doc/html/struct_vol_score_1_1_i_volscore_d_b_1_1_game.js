@@ -8,6 +8,8 @@ var struct_vol_score_1_1_i_volscore_d_b_1_1_game =
     [ "Place", "struct_vol_score_1_1_i_volscore_d_b_1_1_game.html#a3c0cb3980fb0c0d877fb71afe08760a4", null ],
     [ "ReceivingTeamId", "struct_vol_score_1_1_i_volscore_d_b_1_1_game.html#a7a912afc727569fd938aa3b3a59cbeb8", null ],
     [ "ReceivingTeamName", "struct_vol_score_1_1_i_volscore_d_b_1_1_game.html#af30a58329803c42280d644b8896b932b", null ],
+    [ "ScoreReceiving", "struct_vol_score_1_1_i_volscore_d_b_1_1_game.html#ae1ed8cb6717e08d9e2307f59bc83d8f1", null ],
+    [ "ScoreVisiting", "struct_vol_score_1_1_i_volscore_d_b_1_1_game.html#afaf171c587785799c698ad9132ebef7c", null ],
     [ "Type", "struct_vol_score_1_1_i_volscore_d_b_1_1_game.html#ab65d6f042091fa0c9af22620f3854875", null ],
     [ "Venue", "struct_vol_score_1_1_i_volscore_d_b_1_1_game.html#ac35f704e6aec494971ff54e7d3e3d486", null ],
     [ "VisitingTeamId", "struct_vol_score_1_1_i_volscore_d_b_1_1_game.html#a1f06765af34505ba2e85fdc346f22b61", null ],
