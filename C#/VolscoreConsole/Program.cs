@@ -25,6 +25,7 @@ List<IVolscoreDB.Game> games = vdb.GetGames();
 foreach (IVolscoreDB.Game game in games)
 {
     Console.WriteLine($"Match {game.Number}: {game.ReceivingTeamName} vs {game.VisitingTeamName}, {game.Moment.ToString("d MMMM yyyy à HH:mm")}");
+    Console.WriteLine($"  Score: {game.ScoreReceiving}-{game.ScoreVisiting}");
     foreach (IVolscoreDB.Set set in vdb.GetSets(game))
     {
         Console.WriteLine($"   {set.ScoreReceiving} - {set.ScoreVisiting}");
