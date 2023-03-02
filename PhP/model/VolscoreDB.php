@@ -56,7 +56,19 @@ class VolscoreDB implements IVolscoreDb {
             $statement = $dbh->prepare($query); // Prepare query
             $statement->setFetchMode(PDO::FETCH_CLASS, 'Game');
             $statement->execute();
-            return $statement->fetchAll();
+            $res = $statement->fetchAll();
+            foreach ($res as $i => $game) {
+                $res[$i]->scoreReceiving = 0;
+                $res[$i]->scoreVisiting = 0;
+                foreach (self::getSets($game) as $set) {
+                    if ($set->scoreReceiving > $set->scoreVisiting) {
+                        $res[$i]->scoreReceiving++;
+                    } else {
+                        $res[$i]->scoreVisiting++;
+                    }
+                }
+            }
+            return $res;
         } catch (PDOException $e) {
             print 'Error!:' . $e->getMessage() . '<br/>';
             return null;
@@ -85,7 +97,19 @@ class VolscoreDB implements IVolscoreDb {
             $statement = $pdo->prepare($query);
             $statement->setFetchMode(PDO::FETCH_CLASS, 'Game');
             $statement->execute();
-            return $statement->fetchAll();
+            $res = $statement->fetchAll();
+            foreach ($res as $i => $game) {
+                $res[$i]->scoreReceiving = 0;
+                $res[$i]->scoreVisiting = 0;
+                foreach (self::getSets($game) as $set) {
+                    if ($set->scoreReceiving > $set->scoreVisiting) {
+                        $res[$i]->scoreReceiving++;
+                    } else {
+                        $res[$i]->scoreVisiting++;
+                    }
+                }
+            }
+            return $res;
         } catch (PDOException $e) {
             echo "Error: " . $e->getMessage();
         }
@@ -166,17 +190,16 @@ class VolscoreDB implements IVolscoreDb {
     {
         $dbh = self::connexionDB();
         $res = array();
-      
+        
         $query = "SELECT sets.id, number, start, end, game_id, ".
-                 "(SELECT COUNT(points_on_serve.id) FROM points_on_serve WHERE team_id = receiving_id and set_id = sets.id) as recscore, ".
-                 "(SELECT COUNT(points_on_serve.id) FROM points_on_serve WHERE team_id = visiting_id and set_id = sets.id) as visscore ".
-                 "FROM games INNER JOIN sets ON games.id = sets.game_id ".
-                 "WHERE game_id = $game->number ".
-                 "ORDER BY sets.number";
-      
+        "(SELECT COUNT(points_on_serve.id) FROM points_on_serve WHERE team_id = receiving_id and set_id = sets.id) as recscore, ".
+        "(SELECT COUNT(points_on_serve.id) FROM points_on_serve WHERE team_id = visiting_id and set_id = sets.id) as visscore ".
+        "FROM games INNER JOIN sets ON games.id = sets.game_id ".
+        "WHERE game_id = $game->number ".
+        "ORDER BY sets.number";
+        
         $statement = $dbh->prepare($query); // Prepare query
         $statement->execute(); // Executer la query
-        $queryResult = $statement->fetch(); 
         while ($row = $statement->fetch()) {
             $newset = array(
                 "game" => $row['game_id'],
