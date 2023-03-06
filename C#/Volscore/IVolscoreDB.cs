@@ -173,6 +173,16 @@ namespace VolScore
 
 
         /// <summary>
+        /// Modifie un match dans la base de données avec les données fournies
+        /// </summary>
+        /// <param name="game"></param>
+        /// <returns>
+        /// true si la modification a pu être faite
+        /// </returns>
+        public bool UpdateGame(Game game);
+
+
+        /// <summary>
         /// Supprime un match dans la base de données 
         /// </summary>
         /// <param name="game"></param>

@@ -217,5 +217,18 @@ namespace VolScore
             }
             catch { }
         }
+
+        [TestMethod]
+        public void TestGameUpdate()
+        {
+            Game game = vdb.GetGame(1);
+            Assert.AreNotEqual(game.League, "LNA");
+            game.League = "LNA";
+            if (!vdb.UpdateGame(game)) Assert.Fail();
+            game = vdb.GetGame(1);
+            Assert.AreEqual(game.League, "LNA");
+            game.Number = 121212;
+            if (vdb.UpdateGame(game)) Assert.Fail();
+        }
     }
 }
