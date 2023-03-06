@@ -22,5 +22,6 @@ var interface_vol_score_1_1_i_volscore_d_b =
     [ "GetTeams", "interface_vol_score_1_1_i_volscore_d_b.html#a380e2ad465ceb3924c4627e9fe89cce4", null ],
     [ "NumberOfSets", "interface_vol_score_1_1_i_volscore_d_b.html#ad6d572ac91d4630f284f5bbf12cf66b5", null ],
     [ "RemovePoint", "interface_vol_score_1_1_i_volscore_d_b.html#a52d58690a03bff26ca8cae8df8baa6de", null ],
-    [ "SetIsOver", "interface_vol_score_1_1_i_volscore_d_b.html#ab7e79776dc0509adc221c502787a81dc", null ]
+    [ "SetIsOver", "interface_vol_score_1_1_i_volscore_d_b.html#ab7e79776dc0509adc221c502787a81dc", null ],
+    [ "UpdateGame", "interface_vol_score_1_1_i_volscore_d_b.html#aa9c96eabb613ab4ae684771658112f4f", null ]
 ];

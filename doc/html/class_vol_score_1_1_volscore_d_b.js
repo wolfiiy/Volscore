@@ -20,5 +20,6 @@ var class_vol_score_1_1_volscore_d_b =
     [ "NumberOfSets", "class_vol_score_1_1_volscore_d_b.html#a0b9f6038efcea344de7d9ebd3f7c1ed6", null ],
     [ "RemovePoint", "class_vol_score_1_1_volscore_d_b.html#aac2ebb6c8b2df9670a5973b5da5633e3", null ],
     [ "SelectAllUsers", "class_vol_score_1_1_volscore_d_b.html#ac393896046b7ec0fb0b5ebfe77c68d26", null ],
-    [ "SetIsOver", "class_vol_score_1_1_volscore_d_b.html#a19d073363f0c6cf1c311b3446acc1391", null ]
+    [ "SetIsOver", "class_vol_score_1_1_volscore_d_b.html#a19d073363f0c6cf1c311b3446acc1391", null ],
+    [ "UpdateGame", "class_vol_score_1_1_volscore_d_b.html#a248d3f31bd1ae366d317626d7c5ae259", null ]
 ];
