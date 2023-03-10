@@ -132,9 +132,40 @@ class VolscoreDB implements IVolscoreDb {
             return null;
         }
     }
-    public static function getGame($number)
+    public static function getGame($number) : Game
     {
-        throw new Exception("Not implemented yet");
+        try
+        {
+            $dbh = self::connexionDB();
+            $query =
+                "SELECT games.id as number, type, level,category,league,receiving_id as receivingTeamId,r.name as receivingTeamName,visiting_id as visitingTeamId,v.name as visitingTeamName,location as place,venue,moment " .
+                "FROM games INNER JOIN teams r ON games.receiving_id = r.id INNER JOIN teams v ON games.visiting_id = v.id " .
+                "WHERE games.id=$number";
+            $statement = $dbh->prepare($query); // Prepare query
+            $statement->execute(); // Executer la query
+            $queryResult = $statement->fetch(); 
+            $dbh = null;
+            $res = new Game($queryResult);
+            // Update score
+            $res->scoreReceiving = 0;
+            $res->scoreVisiting = 0;
+            $sets = self::GetSets($res);
+            foreach ($sets as $set)
+            {
+                if ($set->scoreReceiving > $set->scoreVisiting)
+                {
+                    $res->scoreReceiving++;
+                }
+                else
+                {
+                    $res->scoreVisiting++;
+                }
+            }
+            return $res;
+        } catch (PDOException $e) {
+            print 'Error!:' . $e->getMessage() . '<br/>';
+            return null;
+        }
     }
     
     public static function getPlayers($team) : array
@@ -152,6 +183,7 @@ class VolscoreDB implements IVolscoreDb {
             $statement->execute(); // Executer la query
             $queryResult = $statement->fetch(); // Affiche les résultats
             $dbh = null;
+            
             return new Member($queryResult);
         } catch (PDOException $e) {
             print 'Error!:' . $e->getMessage() . '<br/>';
@@ -271,6 +303,15 @@ class VolscoreDB implements IVolscoreDb {
         return $newset;
     }
       
+    public static function addPoint($set, $receiving)
+    {
+        $game = self::GetGame($set->game);
+        $query =
+             "INSERT INTO points_on_serve (team_id, set_id, position_of_server) " .
+             "VALUES(". ($receiving ? $game->receivingTeamId : $game->visitingTeamId) . ",".$set->id.",1);";
+        self::executeInsertQuery($query);
+    }
+
     public static function numberOfSet($game) : int
     {
         throw new Exception("Not implemented yet");

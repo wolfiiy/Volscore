@@ -78,14 +78,10 @@ foreach ($pastgames as $game) {
         while (!VolscoreDB::setIsOver($newset)) {
             $scoring = random_int(0, 1);
             if ($scoring == 0) {
-                $query = "INSERT INTO points_on_serve (team_id, set_id, position_of_server) " .
-                         "VALUES({$game->receiving_id},{$newset->id},{$servpos})";
-                VolscoreDB::executeInsertQuery($query);
+                VolscoreDB::addPoint($newset,true);
                 $serving = 0;
             } else {
-                $query = "INSERT INTO points_on_serve (team_id, set_id, position_of_server) " .
-                         "VALUES({$game->visiting_id},{$newset->id},{$servpos})";
-                         VolscoreDB::executeInsertQuery($query);
+                VolscoreDB::addPoint($newset,false);
                 if ($scoring != $serving) $servpos = $servpos % 6 + 1;
                 $serving = 1;
             }

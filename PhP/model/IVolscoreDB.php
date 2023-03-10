@@ -67,11 +67,20 @@ interface IVolscoreDb {
     public static function addSet($game) : Set;
 
     /**
+     * Add a point to the set
+     * The point is added to the receiving team if $receiving == true, to the visiting team otherwise
+     */
+    public static function addPoint($set, $receiving);
+
+    /**
      * Returns the number of sets the game has (0-5)
      */
     public static function numberOfSet($game) : int; //#### Not Implemented
 
-    public static function getGame($number); //#### Not Implemented
+    /**
+     * Returns a Game object built with the data fetched in the db
+     */
+    public static function getGame($number) : Game; 
 
     /**
      * Returns true if there is a winner (based on the points scored )
