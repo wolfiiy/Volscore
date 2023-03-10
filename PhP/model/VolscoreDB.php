@@ -218,7 +218,7 @@ class VolscoreDB implements IVolscoreDb {
         throw new Exception("Not implemented yet");
     }
 
-    public static function getSets($game) 
+    public static function getSets($game) : array
     {
         $dbh = self::connexionDB();
         $res = array();
@@ -312,9 +312,9 @@ class VolscoreDB implements IVolscoreDb {
         self::executeInsertQuery($query);
     }
 
-    public static function numberOfSet($game) : int
+    public static function numberOfSets($game) : int
     {
-        throw new Exception("Not implemented yet");
+        return count(self::getSets($game));
     }
 
 }

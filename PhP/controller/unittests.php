@@ -142,11 +142,19 @@ if (count(VolscoreDB::getGamesByTime(TimeInThe::Present)) == 1) {
 } else {
     echo "Present <span style='background-color:red; padding:3px'>ko</span>,";
 }
-$futureGames = count(VolscoreDB::getGamesByTime(TimeInThe::Past));
+$futureGames = count(VolscoreDB::getGamesByTime(TimeInThe::Future));
 if ($futureGames < 2 || $futureGames > 3) {
     echo "Future <span style='background-color:red; padding:3px'>ko</span>,";
 } else {
     echo "Future <span style='background-color:green; padding:3px'>OK</span>,";
+}
+echo "<hr>";
+
+echo "Test numberOfSets -> ";
+if (VolscoreDB::numberOfSets(VolscoreDB::getGame(1)) > 0 && VolscoreDB::numberOfSets(VolscoreDB::getGame(7)) == 0) {
+    echo "<span style='background-color:green; padding:3px'>OK</span>,";
+} else {
+    echo "<span style='background-color:red; padding:3px'>ko</span>,";
 }
 echo "<hr>";
 
