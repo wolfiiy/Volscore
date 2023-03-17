@@ -224,8 +224,8 @@ class VolscoreDB implements IVolscoreDb {
         $res = array();
         
         $query = "SELECT sets.id, number, start, end, game_id, ".
-        "(SELECT COUNT(points_on_serve.id) FROM points_on_serve WHERE team_id = receiving_id and set_id = sets.id) as recscore, ".
-        "(SELECT COUNT(points_on_serve.id) FROM points_on_serve WHERE team_id = visiting_id and set_id = sets.id) as visscore ".
+        "(SELECT COUNT(points.id) FROM points WHERE team_id = receiving_id and set_id = sets.id) as recscore, ".
+        "(SELECT COUNT(points.id) FROM points WHERE team_id = visiting_id and set_id = sets.id) as visscore ".
         "FROM games INNER JOIN sets ON games.id = sets.game_id ".
         "WHERE game_id = $game->number ".
         "ORDER BY sets.number";
@@ -274,7 +274,7 @@ class VolscoreDB implements IVolscoreDb {
         $limit = $set->number == 5 ? 15 : 25;
         $pdo = self::connexionDB();
         $stmt = $pdo->prepare("SELECT COUNT(id) as points, team_id 
-                            FROM points_on_serve 
+                            FROM points 
                             WHERE set_id = :set_id 
                             GROUP BY team_id");
         $stmt->bindValue(':set_id', $set->id);
@@ -307,7 +307,7 @@ class VolscoreDB implements IVolscoreDb {
     {
         $game = self::GetGame($set->game);
         $query =
-             "INSERT INTO points_on_serve (team_id, set_id, position_of_server) " .
+             "INSERT INTO points (team_id, set_id, position_of_server) " .
              "VALUES(". ($receiving ? $game->receivingTeamId : $game->visitingTeamId) . ",".$set->id.",1);";
         self::executeInsertQuery($query);
     }
