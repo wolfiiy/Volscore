@@ -108,6 +108,7 @@ CREATE TABLE `points` (
 CREATE TABLE `positions` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `set_id` int(11) NOT NULL,
+  `team_id` int(11) NOT NULL,
   `player_position_1_id` int(11) NOT NULL,
   `player_position_2_id` int(11) NOT NULL,
   `player_position_3_id` int(11) NOT NULL,
@@ -116,6 +117,7 @@ CREATE TABLE `positions` (
   `player_position_6_id` int(11) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `fk_position_sets1_idx` (`set_id`),
+  KEY `fk_position_teams_idx` (`team_id`),
   KEY `fk_positions_members1_idx` (`player_position_1_id`),
   KEY `fk_positions_members2_idx` (`player_position_2_id`),
   KEY `fk_positions_members3_idx` (`player_position_3_id`),
@@ -123,6 +125,7 @@ CREATE TABLE `positions` (
   KEY `fk_positions_members5_idx` (`player_position_5_id`),
   KEY `fk_positions_members6_idx` (`player_position_6_id`),
   CONSTRAINT `fk_position_sets1` FOREIGN KEY (`set_id`) REFERENCES `sets` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `fk_position_teams` FOREIGN KEY (`team_id`) REFERENCES `teams` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `fk_positions_members1` FOREIGN KEY (`player_position_1_id`) REFERENCES `members` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `fk_positions_members2` FOREIGN KEY (`player_position_2_id`) REFERENCES `members` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `fk_positions_members3` FOREIGN KEY (`player_position_3_id`) REFERENCES `members` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
