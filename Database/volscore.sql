@@ -86,17 +86,17 @@ INSERT INTO `members` VALUES (1,1,'C','Gavin','Franks',91453,1,NULL),(2,1,'J','B
 
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `points_on_serve` (
+CREATE TABLE `points` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `team_id` int(11) NOT NULL,
   `set_id` int(11) NOT NULL,
-  `position_of_server` int(11) NOT NULL COMMENT 'The position (1-6) of the player who made the serve(s)',
+  `position_of_server` int(11) NOT NULL COMMENT 'The position (1-6) of the last server of the team which scored the point.',
   PRIMARY KEY (`id`),
-  KEY `fk_points_on_serve_teams1_idx` (`team_id`),
-  KEY `fk_points_on_serve_sets1_idx` (`set_id`),
-  CONSTRAINT `fk_points_on_serve_sets1` FOREIGN KEY (`set_id`) REFERENCES `sets` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION,
-  CONSTRAINT `fk_points_on_serve_teams1` FOREIGN KEY (`team_id`) REFERENCES `teams` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+  KEY `fk_points_teams1_idx` (`team_id`),
+  KEY `fk_points_sets1_idx` (`set_id`),
+  CONSTRAINT `fk_points_sets1` FOREIGN KEY (`set_id`) REFERENCES `sets` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION,
+  CONSTRAINT `fk_points_teams1` FOREIGN KEY (`team_id`) REFERENCES `teams` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT 'Contains all points scored.';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -129,6 +129,26 @@ CREATE TABLE `positions` (
   CONSTRAINT `fk_positions_members4` FOREIGN KEY (`player_position_4_id`) REFERENCES `members` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `fk_positions_members5` FOREIGN KEY (`player_position_5_id`) REFERENCES `members` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `fk_positions_members6` FOREIGN KEY (`player_position_6_id`) REFERENCES `members` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `substitutions`
+--
+
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `substitutions` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `position_id` int(11) NOT NULL COMMENT 'References the "position sheet" of a specific set',
+  `player_position_out` int(11) NOT NULL COMMENT 'The position of the player who exits',
+  `player_in_id` int(11) NOT NULL COMMENT 'The player who enters',
+  `returned` tinyint(4) NOT NULL DEFAULT 0 COMMENT 'Indicates that the starting player has returned (and can no longer leave during this set)',
+  PRIMARY KEY (`id`),
+  KEY `fk_positions_idx` (`position_id`),
+  KEY `fk_player_sub_idx` (`player_in_id`),
+  CONSTRAINT `fk_positions` FOREIGN KEY (`position_id`) REFERENCES `positions` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `fk_player_sub` FOREIGN KEY (`player_in_id`) REFERENCES `members` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
