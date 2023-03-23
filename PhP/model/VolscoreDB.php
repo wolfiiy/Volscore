@@ -189,6 +189,23 @@ class VolscoreDB implements IVolscoreDb {
         }
     }
 
+    public static function getMember($memberid) : ?Member
+    {
+        try
+        {
+            $dbh = self::connexionDB();
+            $query = "SELECT * FROM members WHERE id = $memberid";
+            $statement = $dbh->prepare($query); // Prepare query
+            $statement->execute(); // Executer la query
+            if (!$queryResult = $statement->fetch()) return null;
+            $dbh = null;
+            return new Member($queryResult);
+        } catch (PDOException $e) {
+            print 'Error!:' . $e->getMessage() . '<br/>';
+            return null;
+        }
+    }
+
     public static function getCaptain($team) : Member
     {
         try
@@ -337,7 +354,15 @@ class VolscoreDB implements IVolscoreDb {
     {
         $game = self::getGame($gameid);
         if ($game == null) return false;
+        $member = self::getMember($memberid);
+        if ($member == null) return false;
+        if ($member->team_id != $game->receivingTeamId && $member->team_id != $game->visitingTeamId) return false;
 
+        $query =
+             "INSERT INTO players (game_id, member_id, number) " .
+             "VALUES($gameid,$memberid,".$member->number.");";
+        self::executeInsertQuery($query);
+        return true;
     }
 }
 

@@ -29,6 +29,11 @@ interface IVolscoreDb {
     public static function getMembers($teamid) : array ;
 
     /**
+     * Get all players of a given team
+     */
+    public static function getMember($memberid) : ?Member ;
+
+    /**
      * Get the captain of a specific team
      * parameter $teamid is the number of the team
      * returns a Member object

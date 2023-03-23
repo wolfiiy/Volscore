@@ -99,6 +99,14 @@ foreach ($pastgames as $game) {
 }
 
 // Add players to games (liste d'engagement)
+foreach (VolscoreDB::getGames() as $game) {
+    foreach (VolscoreDB::getMembers($game->receivingTeamId) as $member) {
+        VolscoreDB::makePlayer($member->id, $game->number);
+    }
+    foreach (VolscoreDB::getMembers($game->visitingTeamId) as $member) {
+        VolscoreDB::makePlayer($member->id, $game->number);
+    }
+}
 
 // Start those tests now 
 echo "<h1>Tests</h1>";
@@ -130,6 +138,29 @@ if ($cap->last_name === "Stewart") {
 } else {
     echo "<span style='background-color:red; padding:3px'>ko</span>";
 }
+echo "<hr>";
+
+
+echo "Test getMember(memberid) -> ";
+if (VolscoreDB::getMember(33)->last_name === "Holmes") {
+    echo "<span style='background-color:green; padding:3px'>OK</span>";
+} else {
+    echo "<span style='background-color:red; padding:3px'>ko</span>";
+}
+
+echo "<hr>";
+
+
+echo "Test makePlayer(memberid,gameid) -> ";
+if (!VolscoreDB::makePlayer(999,1) && 
+    !VolscoreDB::makePlayer(1,999) &&
+    !VolscoreDB::makePlayer(1,1) &&
+    VolscoreDB::makePlayer(5,1)) {
+    echo "<span style='background-color:green; padding:3px'>OK</span>";
+} else {
+    echo "<span style='background-color:red; padding:3px'>ko</span>";
+}
+
 echo "<hr>";
 
 
