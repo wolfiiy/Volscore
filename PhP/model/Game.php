@@ -22,4 +22,10 @@ class Game extends Model {
     public function isMarkable() : bool {
         return (date('Y-m-d') === date('Y-m-d',strtotime($this->moment)));
     }
+
+    public function isEditable() : bool {
+        $now = date('Y-m-d H:i');
+        $then = date('Y-m-d H:i',strtotime($this->moment));
+        return (date('Y-m-d H:i') < date('Y-m-d H:i',strtotime($this->moment)));
+    }
 }

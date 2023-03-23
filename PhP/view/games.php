@@ -13,9 +13,15 @@ ob_start();
     <?php
     foreach ($games as $game)
     {
-        echo "<tr><td>".$game->number."</td><td>".$game->receivingTeamName."</td><td>".$game->visitingTeamName."</td><td>".$game->scoreReceiving."-".$game->scoreVisiting."</td><td>";
+        echo "<tr><td>".$game->number."</td><td>".$game->receivingTeamName."</td><td>".$game->visitingTeamName."</td><td>".(($game->scoreReceiving+$game->scoreVisiting) > 0 ? $game->scoreReceiving."-".$game->scoreVisiting : "")."</td><td>";
         if ($game->isMarkable()) {
-            echo "<a href='?action=mark&id=".$game->number."' class='btn'>Marquer</a>";
+            echo "<a href='?action=mark&id=".$game->number."' class='btn btn-sm btn-primary m-1'>Marquer</a>";
+        }
+        if ($game->isEditable()) {
+            echo "<a href='?action=edit&id=".$game->number."' class='btn btn-sm btn-primary m-1'>Modifier</a>";
+        }
+        if (VolscoreDB::gameIsOver($game)) {
+            echo "<a href='?action=sheet&id=".$game->number."' class='btn btn-sm btn-primary m-1'>Consulter</a>";
         }
         echo "</td></tr>";
     }
