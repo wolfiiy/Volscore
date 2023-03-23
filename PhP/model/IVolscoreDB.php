@@ -26,7 +26,7 @@ interface IVolscoreDb {
     /**
      * Get all players of a given team
      */
-    public static function getPlayers($team) : array ; //#### Not Implemented
+    public static function getMembers($teamid) : array ;
 
     /**
      * Get the captain of a specific team
@@ -106,5 +106,13 @@ interface IVolscoreDb {
     public static function setIsOver($set) : bool;
 
     public static function getBenchPlayers($gameid,$setid,$teamid); //#### Not Implemented
+
+    /**
+     * Takes a member of a team and links him to a specific game, 
+     * making a player out of him in the process
+     * Returns true if it was possible
+     */
+    public static function makePlayer($memberid,$gameid) : bool;
+
 #endregion
 }

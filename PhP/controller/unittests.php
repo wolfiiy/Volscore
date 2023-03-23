@@ -98,6 +98,8 @@ foreach ($pastgames as $game) {
     }
 }
 
+// Add players to games (liste d'engagement)
+
 // Start those tests now 
 echo "<h1>Tests</h1>";
 
@@ -134,6 +136,15 @@ echo "<hr>";
 echo "Test getLibero(teamid) -> ";
 $lib = VolscoreDB::getLibero(VolscoreDB::getTeam(2));
 if ($lib->last_name === "Eaton") {
+    echo "<span style='background-color:green; padding:3px'>OK</span>";
+} else {
+    echo "<span style='background-color:red; padding:3px'>ko</span>";
+}
+
+echo "<hr>";
+echo "Test getMembers(teamid) -> ";
+
+if (count(VolscoreDB::getMembers(2)) == 12 && VolscoreDB::getMembers(5)[0]->first_name == "Theodore") {
     echo "<span style='background-color:green; padding:3px'>OK</span>";
 } else {
     echo "<span style='background-color:red; padding:3px'>ko</span>";
