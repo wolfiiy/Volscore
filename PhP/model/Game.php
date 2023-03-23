@@ -18,4 +18,8 @@ class Game extends Model {
     public $place;                  //!< Lieu: Dorigny, Ecublens, Pailly
     public $venue;                  //!< Nom de la salle de sport
     public $moment;                 //!< Date et heure du début du match
+
+    public function isMarkable() : bool {
+        return (date('Y-m-d') === date('Y-m-d',strtotime($this->moment)));
+    }
 }
