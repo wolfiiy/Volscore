@@ -15,7 +15,7 @@ ob_start();
     {
         echo "<tr><td>".$game->number."</td><td>".$game->receivingTeamName."</td><td>".$game->visitingTeamName."</td><td>".$game->scoreReceiving."-".$game->scoreVisiting."</td><td>";
         if ($game->isMarkable()) {
-            echo "<a class='btn'>Marquer</a>";
+            echo "<a href='?action=mark&id=".$game->number."' class='btn'>Marquer</a>";
         }
         echo "</td></tr>";
     }

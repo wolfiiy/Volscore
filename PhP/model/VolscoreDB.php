@@ -134,7 +134,7 @@ class VolscoreDB implements IVolscoreDb {
             return null;
         }
     }
-    public static function getGame($number) : Game
+    public static function getGame($number) : ?Game
     {
         try
         {
@@ -145,7 +145,7 @@ class VolscoreDB implements IVolscoreDb {
                 "WHERE games.id=$number";
             $statement = $dbh->prepare($query); // Prepare query
             $statement->execute(); // Executer la query
-            $queryResult = $statement->fetch(); 
+            if (!($queryResult = $statement->fetch())) throw new Exception("Game not found"); 
             $dbh = null;
             $res = new Game($queryResult);
             // Update score
@@ -164,8 +164,7 @@ class VolscoreDB implements IVolscoreDb {
                 }
             }
             return $res;
-        } catch (PDOException $e) {
-            print 'Error!:' . $e->getMessage() . '<br/>';
+        } catch (Exception $e) {
             return null;
         }
     }

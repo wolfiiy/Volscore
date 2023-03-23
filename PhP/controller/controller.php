@@ -29,6 +29,18 @@ function showGames()
     require_once 'view/games.php';
 }
 
+function markGame($id) {
+    if ($id == null) {
+        require_once 'view/error.php';
+    } else {
+        $game = VolscoreDB::getGame($id);
+        if ($game == null) {
+            require_once 'view/error.php';
+        } else {
+            require_once 'view/prepareGame.php';
+        }
+    }
+}
 function executeUnitTests() 
 {
     require 'unittests.php';

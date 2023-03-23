@@ -8,6 +8,9 @@ require_once 'vendor/autoload.php';
 
 switch ($action)
 {
+    case 'mark':
+        markGame($_GET['id']);
+        break;
     case 'teams':
         showTeams();
         break;

@@ -62,7 +62,7 @@ interface IVolscoreDb {
     /**
      * Returns a Game object built with the data fetched in the db
      */
-    public static function getGame($number) : Game; 
+    public static function getGame($number) : ?Game; 
     
     /**
      * Returns true if there is a winner (based on the points scored )
