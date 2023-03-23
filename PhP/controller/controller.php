@@ -37,6 +37,8 @@ function markGame($id) {
         if ($game == null) {
             require_once 'view/error.php';
         } else {
+            $receivingRoster = VolscoreDB::getRoster($id,$game->receivingTeamId);
+            $visitingRoster = VolscoreDB::getRoster($id,$game->visitingTeamId);
             require_once 'view/prepareGame.php';
         }
     }

@@ -113,6 +113,12 @@ interface IVolscoreDb {
     public static function getBenchPlayers($gameid,$setid,$teamid); //#### Not Implemented
 
     /**
+     * Returns the list of members who have been registered as players for the
+     * given team in the given game (liste d'engagement)
+     */
+    public static function getRoster($gameid, $teamid) : array;
+
+    /**
      * Takes a member of a team and links him to a specific game, 
      * making a player out of him in the process
      * Returns true if it was possible

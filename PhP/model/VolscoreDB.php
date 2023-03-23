@@ -251,6 +251,28 @@ class VolscoreDB implements IVolscoreDb {
         throw new Exception("Not implemented yet");
     }
 
+    public static function getRoster($gameid, $teamid) : array
+    {
+        try
+        {
+            $dbh = self::connexionDB();
+            $query = "SELECT members.id,members.first_name,members.last_name,members.role,members.license,players.number ".
+                    "FROM players INNER JOIN members ON member_id = members.id ". 
+                    "WHERE game_id = $gameid AND members.team_id = $teamid";
+            $statement = $dbh->prepare($query); // Prepare query    
+            $statement->execute(); // Executer la query
+            $res = [];
+            while ($row = $statement->fetch()) {
+                $res[] = new Member($row);
+            }
+            $dbh = null;
+            return $res;
+        } catch (PDOException $e) {
+            print 'Error!:' . $e->getMessage() . '<br/>';
+            return null;
+        }
+    }
+
     public static function getSets($game) : array
     {
         $dbh = self::connexionDB();
@@ -292,7 +314,6 @@ class VolscoreDB implements IVolscoreDb {
             if ($set->scoreReceiving < $set->scoreVisiting) $viswin++;
         }
         return ($recwin == 3 || $viswin == 3);
-        // TODO handle 5th set score at 15
     }
       
     public static function getSet($game, $setNumber) : int //#### Not Implemented
