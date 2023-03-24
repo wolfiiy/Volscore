@@ -35,14 +35,14 @@ interface IVolscoreDb {
 
     /**
      * Get the captain of a specific team
-     * parameter $teamid is the number of the team
+     * parameter $team is a Team object
      * returns a Member object
      */
     public static function getCaptain($team) : Member;
     
     /**
      * Get the libero of a specific team
-     * parameter $teamid is the number of the team
+     * parameter $team is a Team object
      * returns a Member object
      */
     public static function getLibero($team) : Member;
@@ -117,6 +117,13 @@ interface IVolscoreDb {
      * given team in the given game (liste d'engagement)
      */
     public static function getRoster($gameid, $teamid) : array;
+
+    /**
+     * Certifies that the player is present, showed his license and has the correct number
+     * on his shirt for the given game 
+     * ATTENTION: we pass the memberid which must match members.id, NOT players.id
+     */
+    public static function validatePlayer($gameid,$memberid);
 
     /**
      * Takes a member of a team and links him to a specific game, 

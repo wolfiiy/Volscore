@@ -273,6 +273,11 @@ class VolscoreDB implements IVolscoreDb {
         }
     }
 
+    public static function validatePlayer($gameid,$memberid)
+    {
+        throw new Exception("Not implemented yet");
+    }
+
     public static function getSets($game) : array
     {
         $dbh = self::connexionDB();
