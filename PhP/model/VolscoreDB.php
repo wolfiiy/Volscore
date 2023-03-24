@@ -7,10 +7,11 @@ class VolscoreDB implements IVolscoreDb {
     {
         require '.credentials.php';
         $PDO = new PDO('mysql:host=localhost;dbname=volscore', 'root', 'root');
+        $PDO->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         return $PDO;
     }
     
-    public static function executeInsertQuery($query) : int
+    public static function executeInsertQuery($query) : ?int
     {
         try
         {
@@ -21,7 +22,6 @@ class VolscoreDB implements IVolscoreDb {
             $dbh = null;
             return $res;
         } catch (PDOException $e) {
-            print 'Error!:' . $e->getMessage() . '<br/>';
             return null;
         }
     }
@@ -241,9 +241,11 @@ class VolscoreDB implements IVolscoreDb {
         }
     }
 
-    public static function createGame($game)
+    public static function createGame($game) : ?int
     {
-        throw new Exception("Not implemented yet");
+        $query = "INSERT INTO games (type,level,category,league,location,venue,moment,receiving_id,visiting_id) ". 
+        "VALUES('{$game->type}','{$game->level}','{$game->category}','{$game->league}','{$game->location}','{$game->venue}','{$game->moment}',{$game->receivingTeamId},{$game->visitingTeamId});";
+        return self::executeInsertQuery($query);
     }
 
     public static function getBenchPlayers($gameid,$setid,$teamid)

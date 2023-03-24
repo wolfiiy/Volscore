@@ -76,8 +76,10 @@ interface IVolscoreDb {
 
     /**
      * Create a new game in the db based on the Game object passed
+     * The value returned is the game number.
+     * If the game has not been created, the value returned is null
      */ 
-    public static function createGame($game); //#### Not Implemented
+    public static function createGame($game) : ?int; 
 
     /**
      * Add a new set to the game

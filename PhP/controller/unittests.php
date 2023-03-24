@@ -209,6 +209,18 @@ if (VolscoreDB::numberOfSets(VolscoreDB::getGame(1)) > 0 && VolscoreDB::numberOf
 }
 echo "<hr>";
 
+echo "Test createGame -> ";
+$ng1 = new Game(['type' => 'Coupe', 'level' => 'Régional-Fribourg', 'category' => 'F', 'league' => 'F4', 'location' => 'Oron', 'venue' => 'Complexe sportif', 'moment' => "$today 20:00", 'visitingTeamId' => $vis, 'receivingTeamId' => $rec]);
+$ng2 = new Game(['type' => 'Coupe', 'level' => 'Régional-Fribourg', 'category' => 'F', 'league' => 'F5', 'location' => 'Oron', 'venue' => 'Complexe sportif', 'moment' => "$today 20:00", 'visitingTeamId' => 9999, 'receivingTeamId' => $rec]);
+$ng3 = new Game(['type' => 'Coupe', 'level' => 'Régional-Fribourg', 'category' => 'F', 'league' => 'F6', 'location' => 'Oron', 'venue' => 'Complexe sportif', 'moment' => "$today 20:00", 'visitingTeamId' => $vis, 'receivingTeamId' => 9999]);
+if (VolscoreDB::createGame($ng1) && !VolscoreDB::createGame($ng2) && !VolscoreDB::createGame($ng3)) {
+    echo "<span style='background-color:green; padding:3px'>OK</span>,";
+} else {
+    echo "<span style='background-color:red; padding:3px'>ko</span>,";
+}
+echo "<hr>";
+
+
 // show the games
 
 echo "<h1>Matchs</h1>";
