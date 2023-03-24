@@ -25,6 +25,19 @@ class VolscoreDB implements IVolscoreDb {
             return null;
         }
     }
+
+    public static function executeUpdateQuery($query)
+    {
+        try
+        {
+            $dbh = self::connexionDB();
+            $statement = $dbh->prepare($query); // Prepare query
+            $statement->execute(); // Executer la query
+            $dbh = null;
+        } catch (PDOException $e) {
+        }
+    }
+
     public static function getTeams() : array
     {
         try
@@ -277,7 +290,8 @@ class VolscoreDB implements IVolscoreDb {
 
     public static function validatePlayer($gameid,$memberid)
     {
-        throw new Exception("Not implemented yet");
+        $query = "UPDATE players SET validated = 1 WHERE game_id=$gameid AND member_id=$memberid";
+        return self::executeUpdateQuery($query);
     }
 
     public static function getSets($game) : array
