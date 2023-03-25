@@ -9,7 +9,7 @@
 </head>
 <body>
 <header class="text-center">
-    <h1>VolScore</h1>
+    <a href="/" style="text-decoration:none;"><h1>VolScore</h1></a>
 </header>
 <div class="container">
 <?= $content ?>

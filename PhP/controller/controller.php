@@ -39,9 +39,18 @@ function markGame($id) {
         } else {
             $receivingRoster = VolscoreDB::getRoster($id,$game->receivingTeamId);
             $visitingRoster = VolscoreDB::getRoster($id,$game->visitingTeamId);
-            require_once 'view/prepareGame.php';
+            if (!(rosterIsValid($receivingRoster) && rosterIsValid($visitingRoster))) {
+                require_once 'view/prepareGame.php';
+            } else {
+                prepareSet(VolscoreDB::addSet($game),$game);                
+            }
         }
     }
+}
+
+function prepareSet($set, $game)
+{
+    require_once 'view/prepareSet.php';
 }
 
 function validateTeamForGame($teamid,$gameid)
