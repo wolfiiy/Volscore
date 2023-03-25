@@ -75,10 +75,12 @@ class VolscoreDB implements IVolscoreDb {
                 $game->scoreReceiving = 0;
                 $game->scoreVisiting = 0;
                 foreach (self::getSets($game) as $set) {
-                    if ($set->scoreReceiving > $set->scoreVisiting) {
-                        $game->scoreReceiving++;
-                    } else {
-                        $game->scoreVisiting++;
+                    if (VolscoreDB::setIsOver($set)) {
+                        if ($set->scoreReceiving > $set->scoreVisiting) {
+                            $game->scoreReceiving++;
+                        } else {
+                            $game->scoreVisiting++;
+                        }
                     }
                 }
                 $res[] = $game;
@@ -167,13 +169,15 @@ class VolscoreDB implements IVolscoreDb {
             $sets = self::getSets($res);
             foreach ($sets as $set)
             {
-                if ($set->scoreReceiving > $set->scoreVisiting)
-                {
-                    $res->scoreReceiving++;
-                }
-                else
-                {
-                    $res->scoreVisiting++;
+                if (VolscoreDB::setIsOver($set)) {
+                    if ($set->scoreReceiving > $set->scoreVisiting)
+                    {
+                        $res->scoreReceiving++;
+                    }
+                    else
+                    {
+                        $res->scoreVisiting++;
+                    }
                 }
             }
             return $res;
