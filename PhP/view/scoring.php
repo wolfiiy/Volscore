@@ -10,16 +10,16 @@ ob_start();
     <tr><td><?= $set->scoreReceiving ?></td><td><?= $set->scoreVisiting ?></td></tr>
     <tr>
         <td>
-            <form method="post" action="?action=scorepoint">
+            <form method="post" action="?action=scorePoint">
                 <input type="hidden" name="setid" value="<?= $set->id ?>" />
-                <input type="hidden" name="teamid" value="<?= $game->receivingTeamId ?>" />
+                <input type="hidden" name="receiving" value="1" />
                 <input type="submit" value="Point" />
             </form>
         </td>
         <td>
-            <form method="post" action="?action=scorepoint">
+            <form method="post" action="?action=scorePoint">
                 <input type="hidden" name="setid" value="<?= $set->id ?>" />
-                <input type="hidden" name="teamid" value="<?= $game->visitingTeamId ?>" />
+                <input type="hidden" name="receiving" value="0" />
                 <input type="submit" value="Point" />
             </form>
         </td>

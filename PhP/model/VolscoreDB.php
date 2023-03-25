@@ -390,16 +390,16 @@ class VolscoreDB implements IVolscoreDb {
         $sets = VolscoreDB::getSets($game);
         if (count($sets) >= 5) return -2;
         $newset = new Set();
-        $newset->game = $game->number;
+        $newset->game_id = $game->number;
         $newset->number = count($sets)+1;
-        $query = "INSERT INTO sets (number,game_id) VALUES(". $newset->number .",". $newset->game .");";
+        $query = "INSERT INTO sets (number,game_id) VALUES(". $newset->number .",". $newset->game_id .");";
         $newset->id = self::executeInsertQuery($query);
         return $newset;
     }
       
     public static function addPoint($set, $receiving)
     {
-        $game = self::GetGame($set->game);
+        $game = self::getGame($set->game_id);
         $query =
              "INSERT INTO points (team_id, set_id, position_of_server) " .
              "VALUES(". ($receiving ? $game->receivingTeamId : $game->visitingTeamId) . ",".$set->id.",1);";

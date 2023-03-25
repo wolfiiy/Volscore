@@ -83,6 +83,22 @@ function resumeScoring($gameid)
     }
 }
 
+function scorePoint($setid,$receiving)
+{
+    $set = VolscoreDb::getSet($setid);
+    VolscoreDB::addPoint($set,$receiving);
+    if (!VolscoreDB::setIsOver($set)) {
+        header('Location: ?action=keepScore&setid='.$setid);
+    } else {
+        $game = VolscoreDB::getGame($set->game_id);
+        if (!VolscoreDB::gameIsOver($game)) {
+            header('Location: ?action=prepareSet&id='.VolscoreDB::addSet($game)->id);
+        } else {
+            header('Location: ?action=games');
+        }
+    }
+}
+
 function validateTeamForGame($teamid,$gameid)
 {
     foreach(VolscoreDB::getRoster($gameid,$teamid) as $member) {
