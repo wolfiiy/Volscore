@@ -21,6 +21,9 @@ switch ($action)
     case 'keepScore':
         keepScore($_GET['setid']);
         break;
+    case 'continueGame':
+        continueGame($_GET['gameid']);
+        break;
     case 'resumeScoring':
         resumeScoring($_GET['gameid']);
         break;

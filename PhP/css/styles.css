@@ -9,6 +9,7 @@ td, th {
 
 .score {
     font-size: 100px;
+    font-weight: bolder;
     text-align: center;
     height: 230px;
 }

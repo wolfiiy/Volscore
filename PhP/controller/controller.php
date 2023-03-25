@@ -80,6 +80,20 @@ function keepScore($setid)
     require_once 'view/scoring.php';
 }
 
+/**
+ * Called from the end of set page
+ */
+function continueGame($gameid)
+{
+    $game = VolscoreDB::getGame($gameid);
+    if (VolscoreDB::gameIsOver($game)) {
+        require_once 'view/gameOver.php';
+    } else {
+        $nextSet = VolscoreDB::addSet($game);
+        header('Location: ?action=prepareSet&id='.$nextSet->id);
+    }
+}
+
 function resumeScoring($gameid)
 {
     $game = VolscoreDB::getGame($gameid);
@@ -98,12 +112,8 @@ function scorePoint($setid,$receiving)
     if (!VolscoreDB::setIsOver($set)) {
         header('Location: ?action=keepScore&setid='.$setid);
     } else {
-        $game = VolscoreDB::getGame($set->game_id);
-        if (!VolscoreDB::gameIsOver($game)) {
-            header('Location: ?action=prepareSet&id='.VolscoreDB::addSet($game)->id);
-        } else {
-            header('Location: ?action=games');
-        }
+        $set = VolscoreDb::getSet($setid); // to have the last point in the score
+        require_once 'view/endOfSet.php';
     }
 }
 
