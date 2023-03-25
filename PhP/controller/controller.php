@@ -31,6 +31,7 @@ function showGames()
 
 function markGame($id) {
     if ($id == null) {
+        $message = "On essaye des trucs ???";
         require_once 'view/error.php';
     } else {
         $game = VolscoreDB::getGame($id);
@@ -38,6 +39,13 @@ function markGame($id) {
             require_once 'view/error.php';
         } else {
             $receivingRoster = VolscoreDB::getRoster($id,$game->receivingTeamId);
+            if (count($receivingRoster) < 6) {
+                $message = "La liste d'engagement de {$game->receivingTeamName} est incomplète";
+                $redirectUrl = "?action=games";
+                $redirectMsg = "Retour";
+                require_once 'view/error.php';
+                die();
+            }
             $visitingRoster = VolscoreDB::getRoster($id,$game->visitingTeamId);
             if (!(rosterIsValid($receivingRoster) && rosterIsValid($visitingRoster))) {
                 require_once 'view/prepareGame.php';
