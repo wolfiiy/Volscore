@@ -316,7 +316,7 @@ class VolscoreDB implements IVolscoreDb {
                 "game" => $row['game_id'],
                 "number" => $row['number']
             );
-            $newset['Id'] = $row['id'];
+            $newset['id'] = $row['id'];
             if (!is_null($row['start'])) $newset['start'] = $row['start'];
             if (!is_null($row['end'])) $newset['end'] = $row['end'];
             if (!is_null($row['recscore'])) $newset['scoreReceiving'] = intval($row['recscore']);

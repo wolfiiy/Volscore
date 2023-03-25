@@ -65,6 +65,24 @@ function setPositions ($gameid, $setid, $teamid, $pos1, $pos2, $pos3, $pos4, $po
     header('Location: ?action=prepareSet&id='.$setid);
 }
 
+function keepScore($setid)
+{
+    $set = VolscoreDB::getSet($setid);
+    $game = VolscoreDB::getGame($set->game_id);
+    require_once 'view/scoring.php';
+}
+
+function resumeScoring($gameid)
+{
+    $game = VolscoreDB::getGame($gameid);
+    $setInProgress = $game->setInProgress();
+    if ($setInProgress == null) {
+        keepScore(VolscoreDB::addSet($game)->id);
+    } else {
+        keepScore($setInProgress->id);
+    }
+}
+
 function validateTeamForGame($teamid,$gameid)
 {
     foreach(VolscoreDB::getRoster($gameid,$teamid) as $member) {

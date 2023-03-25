@@ -28,4 +28,15 @@ class Game extends Model {
         $then = date('Y-m-d H:i',strtotime($this->moment));
         return (date('Y-m-d H:i') < date('Y-m-d H:i',strtotime($this->moment)));
     }
+
+    /**
+     * Returns the set that is in progress, i.e:started but not finished
+     * returns 0 if none
+     */
+    public function setInProgress() : ?Set {
+        $sets = VolscoreDB::getSets($this);
+        if (count($sets) == 0) return null;
+        if (VolscoreDB::setIsOver($sets[count($sets)-1])) return null;
+        return $sets[count($sets)-1];
+    }
 }

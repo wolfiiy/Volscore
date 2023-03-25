@@ -18,6 +18,12 @@ switch ($action)
     case 'prepareSet':
         prepareSet($_GET['id']);
         break;
+    case 'keepScore':
+        keepScore($_GET['setid']);
+        break;
+    case 'resumeScoring':
+        resumeScoring($_GET['gameid']);
+        break;
     case 'setPositions':
         setPositions($_POST['gameid'],$_POST['setid'],$_POST['teamid'],$_POST['position1'],$_POST['position2'],$_POST['position3'],$_POST['position4'],$_POST['position5'],$_POST['position6']);
         break;
