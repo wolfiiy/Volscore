@@ -271,7 +271,7 @@ class VolscoreDB implements IVolscoreDb {
         try
         {
             $dbh = self::connexionDB();
-            $query = "SELECT members.id,members.first_name,members.last_name,members.role,members.license,players.number,players.validated ".
+            $query = "SELECT members.id,members.first_name,members.last_name,members.role,members.license,players.id as playerid, players.number,players.validated ".
                     "FROM players INNER JOIN members ON member_id = members.id ". 
                     "WHERE game_id = $gameid AND members.team_id = $teamid";
             $statement = $dbh->prepare($query); // Prepare query    
@@ -280,7 +280,7 @@ class VolscoreDB implements IVolscoreDb {
             while ($row = $statement->fetch()) {
                 $member = new Member($row);
                 // WARNING: Trick: add some contextual player info to the Member object
-                $member->playerInfo = ['number' => $row['number'], 'validated' => $row['validated']];
+                $member->playerInfo = ['playerid' => $row['playerid'], 'number' => $row['number'], 'validated' => $row['validated']];
                 $res[] = $member;
             }
             $dbh = null;
@@ -409,6 +409,15 @@ class VolscoreDB implements IVolscoreDb {
         self::executeInsertQuery($query);
         return true;
     }
+
+    public static function setPositions($setid, $teamid, $pos1, $pos2, $pos3, $pos4, $pos5, $pos6)
+    {
+        $query =
+             "INSERT INTO positions (set_id, team_id, player_position_1_id, player_position_2_id, player_position_3_id, player_position_4_id, player_position_5_id, player_position_6_id) " .
+             "VALUES($setid, $teamid, $pos1, $pos2, $pos3, $pos4, $pos5, $pos6);";
+        self::executeInsertQuery($query);
+    }
+
 }
 
 

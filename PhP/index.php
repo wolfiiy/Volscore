@@ -15,6 +15,9 @@ switch ($action)
     case 'validate':
         validateTeamForGame($_GET['team'],$_GET['game']);
         break;
+    case 'setPositions':
+        setPositions($_POST['setid'],$_POST['teamid'],$_POST['position1'],$_POST['position2'],$_POST['position3'],$_POST['position4'],$_POST['position5'],$_POST['position6']);
+        break;
     case 'teams':
         showTeams();
         break;

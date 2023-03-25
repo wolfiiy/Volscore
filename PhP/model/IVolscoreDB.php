@@ -128,6 +128,10 @@ interface IVolscoreDb {
     public static function validatePlayer($gameid,$memberid);
 
     /**
+     * Stores the players starting positions for a specific team in a specific set
+     */
+    public static function setPositions($setid, $teamid, $pos1, $pos2, $pos3, $pos4, $pos5, $pos6);
+    /**
      * Takes a member of a team and links him to a specific game, 
      * making a player out of him in the process
      * Returns true if it was possible

@@ -50,6 +50,14 @@ function markGame($id) {
 
 function prepareSet($set, $game)
 {
+    $receivingRoster = VolscoreDB::getRoster($game->number,$game->receivingTeamId);
+    $visitingRoster = VolscoreDB::getRoster($game->number,$game->visitingTeamId);
+    require_once 'view/prepareSet.php';
+}
+
+function setPositions ($setid, $teamid, $pos1, $pos2, $pos3, $pos4, $pos5, $pos6) 
+{
+    VolscoreDB::setPositions($setid, $teamid, $pos1, $pos2, $pos3, $pos4, $pos5, $pos6);
     require_once 'view/prepareSet.php';
 }
 
