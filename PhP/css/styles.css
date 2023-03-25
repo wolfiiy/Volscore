@@ -7,6 +7,26 @@ td, th {
     padding-left: 20px;
 }
 
+.score {
+    font-size: 100px;
+    text-align: center;
+    height: 230px;
+}
+
+.setscore {
+    text-align: center;
+}
+
+.teamname {
+    font-size: 50px;
+    width: 300px;
+    text-align: center;
+}
+
+.actions {
+    text-align: center;
+}
+
 /* Thanks http://jsfiddle.net/mirohristov/awayF/473/ */
 .checkmark {
     display:inline-block;
