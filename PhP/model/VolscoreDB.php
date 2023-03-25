@@ -271,14 +271,17 @@ class VolscoreDB implements IVolscoreDb {
         try
         {
             $dbh = self::connexionDB();
-            $query = "SELECT members.id,members.first_name,members.last_name,members.role,members.license,players.number ".
+            $query = "SELECT members.id,members.first_name,members.last_name,members.role,members.license,players.number,players.validated ".
                     "FROM players INNER JOIN members ON member_id = members.id ". 
                     "WHERE game_id = $gameid AND members.team_id = $teamid";
             $statement = $dbh->prepare($query); // Prepare query    
             $statement->execute(); // Executer la query
             $res = [];
             while ($row = $statement->fetch()) {
-                $res[] = new Member($row);
+                $member = new Member($row);
+                // WARNING: Trick: add some contextual player info to the Member object
+                $member->playerInfo = ['number' => $row['number'], 'validated' => $row['validated']];
+                $res[] = $member;
             }
             $dbh = null;
             return $res;

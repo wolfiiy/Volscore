@@ -6,3 +6,35 @@ td, th {
     vertical-align: top;
     padding-left: 20px;
 }
+
+/* Thanks http://jsfiddle.net/mirohristov/awayF/473/ */
+.checkmark {
+    display:inline-block;
+    width: 22px;
+    height:22px;
+    background: #38d917;
+    border-radius:50%;
+    -ms-transform: rotate(45deg); /* IE 9 */
+    -webkit-transform: rotate(45deg); /* Chrome, Safari, Opera */
+    transform: rotate(45deg);
+}
+
+.checkmark:before{
+    content:"";
+    position: absolute;
+    width:3px;
+    height:9px;
+    background-color:#fff;
+    left:11px;
+    top:6px;
+}
+
+.checkmark:after{
+    content:"";
+    position: absolute;
+    width:3px;
+    height:3px;
+    background-color:#fff;
+    left:8px;
+    top:12px;
+}

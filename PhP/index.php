@@ -5,11 +5,15 @@ $action = isset($_GET['action']) ? $_GET['action'] : 'home';
 require_once 'controller/controller.php';
 require_once 'model/VolscoreDB.php';
 require_once 'vendor/autoload.php';
+require_once 'helpers/helpers.php';
 
 switch ($action)
 {
     case 'mark':
         markGame($_GET['id']);
+        break;
+    case 'validate':
+        validateTeamForGame($_GET['team'],$_GET['game']);
         break;
     case 'teams':
         showTeams();

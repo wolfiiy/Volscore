@@ -43,6 +43,15 @@ function markGame($id) {
         }
     }
 }
+
+function validateTeamForGame($teamid,$gameid)
+{
+    foreach(VolscoreDB::getRoster($gameid,$teamid) as $member) {
+        VolscoreDB::validatePlayer($gameid,$member->id);
+    }
+    header('Location: ?action=mark&id='.$gameid);
+}
+
 function executeUnitTests() 
 {
     require 'unittests.php';
