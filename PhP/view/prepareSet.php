@@ -62,7 +62,9 @@ ob_start();
         </td>
     </tr>
 </table>
-
+<?php if (count($receivingPositions) == 6 && count($visitingPositions) == 6) : ?>
+    <a href="?action=keepScore&setid=<?= $set->id ?>" class="btn btn-primary">Démarrer le set</a>
+<?php endif; ?>
 <?php
 $content = ob_get_clean();
 require_once 'gabarit.php';
