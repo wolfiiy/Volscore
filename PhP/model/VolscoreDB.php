@@ -164,7 +164,7 @@ class VolscoreDB implements IVolscoreDb {
             // Update score
             $res->scoreReceiving = 0;
             $res->scoreVisiting = 0;
-            $sets = self::GetSets($res);
+            $sets = self::getSets($res);
             foreach ($sets as $set)
             {
                 if ($set->scoreReceiving > $set->scoreVisiting)
@@ -340,9 +340,21 @@ class VolscoreDB implements IVolscoreDb {
         return ($recwin == 3 || $viswin == 3);
     }
       
-    public static function getSet($game, $setNumber) : int //#### Not Implemented
+    public static function getSet($setid) : Set
     {
-        throw new Exception("Not implemented yet");
+        try
+        {
+            $dbh = self::connexionDB();
+            $query = "SELECT * FROM sets WHERE id=$setid";
+            $statement = $dbh->prepare($query); // Prepare query
+            $statement->execute(); // Executer la query
+            $queryResult = $statement->fetch(); // Affiche les résultats
+            $dbh = null;
+            return new Set($queryResult);
+        } catch (PDOException $e) {
+            print 'Error!:' . $e->getMessage() . '<br/>';
+            return null;
+        }
     }
 
     public static function setIsOver($set) : bool
@@ -418,6 +430,36 @@ class VolscoreDB implements IVolscoreDb {
         self::executeInsertQuery($query);
     }
 
+    public static function getPositions($setid, $teamid) : array
+    {
+        try
+        {
+            $res = [];
+            $dbh = self::connexionDB();
+            $query = "SELECT * FROM positions WHERE set_id=$setid AND team_id=$teamid;";
+            $statement = $dbh->prepare($query); // Prepare query    
+            $statement->execute(); // Executer la query
+            $positions = $statement->fetch();
+            if (!$positions) return $res;
+            // build the list
+            for ($pos = 1; $pos <= 6; $pos++) {
+                $query = "SELECT members.id,members.first_name,members.last_name,members.role,members.license,players.id as playerid, players.number ".
+                "FROM players INNER JOIN members ON member_id = members.id INNER JOIN positions ON player_position_".$pos."_id = players.id ". 
+                "WHERE set_id = $setid AND positions.team_id = $teamid";
+                $statement = $dbh->prepare($query); // Prepare query    
+                $statement->execute(); // Executer la query
+                $row = $statement->fetch();
+                $member = new Member($row);
+                // WARNING: Trick: add some contextual player info to the Member object
+                $member->playerInfo = ['playerid' => $row['playerid'], 'number' => $row['number']];
+                $res[] = $member;
+            }
+            return $res;
+        } catch (PDOException $e) {
+            print 'Error!:' . $e->getMessage() . '<br/>';
+            return null;
+        }
+    }
 }
 
 

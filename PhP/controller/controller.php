@@ -42,23 +42,27 @@ function markGame($id) {
             if (!(rosterIsValid($receivingRoster) && rosterIsValid($visitingRoster))) {
                 require_once 'view/prepareGame.php';
             } else {
-                prepareSet(VolscoreDB::addSet($game),$game);                
+                header('Location: ?action=prepareSet&id='.VolscoreDB::addSet($game)->id);
             }
         }
     }
 }
 
-function prepareSet($set, $game)
+function prepareSet($setid)
 {
+    $set = VolscoreDB::getSet($setid);
+    $game = VolscoreDB::getGame($set->game_id);
     $receivingRoster = VolscoreDB::getRoster($game->number,$game->receivingTeamId);
     $visitingRoster = VolscoreDB::getRoster($game->number,$game->visitingTeamId);
+    $receivingPositions = VolscoreDB::getPositions($set->id, $game->receivingTeamId);
+    $visitingPositions = VolscoreDB::getPositions($set->id, $game->visitingTeamId);
     require_once 'view/prepareSet.php';
 }
 
-function setPositions ($setid, $teamid, $pos1, $pos2, $pos3, $pos4, $pos5, $pos6) 
+function setPositions ($gameid, $setid, $teamid, $pos1, $pos2, $pos3, $pos4, $pos5, $pos6) 
 {
     VolscoreDB::setPositions($setid, $teamid, $pos1, $pos2, $pos3, $pos4, $pos5, $pos6);
-    require_once 'view/prepareSet.php';
+    header('Location: ?action=prepareSet&id='.$setid);
 }
 
 function validateTeamForGame($teamid,$gameid)

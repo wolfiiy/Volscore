@@ -9,38 +9,56 @@ ob_start();
     <tr><th>Positions <?= $game->receivingTeamName ?></th><th>Positions <?= $game->visitingTeamName ?></th></tr>
     <tr>
         <td>
-            <form method="post" action="?action=setPositions">
-                <input type="hidden" name="setid" value=<?= $set->id ?> />
-                <input type="hidden" name="teamid" value=<?= $game->receivingTeamId ?> />
-                <?php for ($pos = 1; $pos <= 6; $pos++) : ?>
-                <?= $pos ?> : 
-                <select name="position<?= $pos ?>">
-                    <option value=0></option>
-                    <?php foreach ($receivingRoster as $player) : ?>
-                        <option value=<?= $player->playerInfo['playerid'] ?>><?= $player->playerInfo['number'] ?>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<?= $player->last_name ?></option>
+            <?php if (count($receivingPositions) == 6) : ?>
+                <table>
+                    <?php foreach ($receivingPositions as $player) : ?>
+                        <tr><td><?= $player->playerInfo['number'] ?></td><td><?= $player->last_name ?></td></tr>
                     <?php endforeach; ?>
-                </select>
-                <br>
-                <?php endfor; ?>
-                <input type="submit" class="btn btn-primary btn-sm" value="Enregistrer"/>
-            </form>
-        </td>
-        <td>
-            <form method="post" action="?action=setPositions">
-                <input type="hidden" name="setid" value=<?= $set->id ?> />
-                <input type="hidden" name="teamid" value=<?= $game->visitingTeamId ?> />
-                <?php for ($pos = 1; $pos <= 6; $pos++) : ?>
+                </table>
+            <?php else : ?>
+                <form method="post" action="?action=setPositions">
+                    <input type="hidden" name="gameid" value=<?= $game->number ?> />
+                    <input type="hidden" name="setid" value=<?= $set->id ?> />
+                    <input type="hidden" name="teamid" value=<?= $game->receivingTeamId ?> />
+                    <?php for ($pos = 1; $pos <= 6; $pos++) : ?>
                     <?= $pos ?> : 
                     <select name="position<?= $pos ?>">
                         <option value=0></option>
-                        <?php foreach ($visitingRoster as $player) : ?>
+                        <?php foreach ($receivingRoster as $player) : ?>
                             <option value=<?= $player->playerInfo['playerid'] ?>><?= $player->playerInfo['number'] ?>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<?= $player->last_name ?></option>
                         <?php endforeach; ?>
                     </select>
                     <br>
-                <?php endfor; ?>
-                <input type="submit" class="btn btn-primary btn-sm" value="Enregistrer"/>
-            </form>
+                    <?php endfor; ?>
+                    <input type="submit" class="btn btn-primary btn-sm" value="Enregistrer"/>
+                </form>
+            <?php endif; ?>
+        </td>
+        <td>
+            <?php if (count($visitingPositions) == 6) : ?>
+                <table>
+                    <?php foreach ($visitingPositions as $player) : ?>
+                        <tr><td><?= $player->playerInfo['number'] ?></td><td><?= $player->last_name ?></td></tr>
+                    <?php endforeach; ?>
+                </table>
+            <?php else : ?>
+                <form method="post" action="?action=setPositions">
+                    <input type="hidden" name="gameid" value=<?= $game->number ?> />
+                    <input type="hidden" name="setid" value=<?= $set->id ?> />
+                    <input type="hidden" name="teamid" value=<?= $game->visitingTeamId ?> />
+                    <?php for ($pos = 1; $pos <= 6; $pos++) : ?>
+                        <?= $pos ?> : 
+                        <select name="position<?= $pos ?>">
+                            <option value=0></option>
+                            <?php foreach ($visitingRoster as $player) : ?>
+                                <option value=<?= $player->playerInfo['playerid'] ?>><?= $player->playerInfo['number'] ?>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<?= $player->last_name ?></option>
+                            <?php endforeach; ?>
+                        </select>
+                        <br>
+                    <?php endfor; ?>
+                    <input type="submit" class="btn btn-primary btn-sm" value="Enregistrer"/>
+                </form>
+            <?php endif; ?>
         </td>
     </tr>
 </table>

@@ -103,9 +103,9 @@ interface IVolscoreDb {
     public static function numberOfSets($game) : int;
 
     /**
-     * Returns the specific set of the game 
+     * Returns a specific set 
      */ 
-    public static function getSet($game, $setNumber) : int; //#### Not Implemented
+    public static function getSet($setid) : Set;
 
     /**
      * Returns true if the set is finished (based on the points scored, including 2 points lead and 5th set at 15 )
@@ -131,6 +131,12 @@ interface IVolscoreDb {
      * Stores the players starting positions for a specific team in a specific set
      */
     public static function setPositions($setid, $teamid, $pos1, $pos2, $pos3, $pos4, $pos5, $pos6);
+
+    /**
+     * Get the players starting positions for a specific team in a specific set
+     */
+    public static function getPositions($setid, $teamid) : array;
+
     /**
      * Takes a member of a team and links him to a specific game, 
      * making a player out of him in the process
