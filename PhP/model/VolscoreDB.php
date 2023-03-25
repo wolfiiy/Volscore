@@ -345,7 +345,11 @@ class VolscoreDB implements IVolscoreDb {
         try
         {
             $dbh = self::connexionDB();
-            $query = "SELECT * FROM sets WHERE id=$setid";
+            $query = "SELECT *,". 
+                "(SELECT COUNT(points.id) FROM points WHERE team_id = receiving_id and set_id = sets.id) as scoreReceiving, ".
+                "(SELECT COUNT(points.id) FROM points WHERE team_id = visiting_id and set_id = sets.id) as scoreVisiting ".
+                "FROM games INNER JOIN sets ON games.id = sets.game_id ". 
+                "WHERE sets.id=$setid";
             $statement = $dbh->prepare($query); // Prepare query
             $statement->execute(); // Executer la query
             $queryResult = $statement->fetch(); // Affiche les résultats
