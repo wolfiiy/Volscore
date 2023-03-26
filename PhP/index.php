@@ -39,6 +39,9 @@ switch ($action)
     case 'games':
         showGames();
         break;
+    case 'sheet':
+        showGame($_GET['gameid']);
+        break;
     case 'unittests':
         executeUnitTests();
         break;

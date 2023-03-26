@@ -1,0 +1,107 @@
+#sheetframe {
+    border: 1px solid black;
+    width: 1024px;
+    height: 768px;
+    padding: 1px;
+    display: flex;
+    flex-direction: column;
+    font-size: small;
+}
+
+#sheetheader {
+    width: 1020px;
+    height: 90px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+#sheetfooter {
+    width: 1020px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+#gamedescription {
+    width: 1020px;
+    height: 60px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+#gameteams {
+    border: 1px solid black;
+    width: 40%;
+}
+#gamelocation {
+    border: 1px solid black;
+    width: 20%;
+}
+#gamevenue {
+    border: 1px solid black;
+    width: 20%;
+}
+#gamedate {
+    border: 1px solid black;
+    width: 10%;
+}
+#gametime {
+    border: 1px solid black;
+    width: 10%;
+}
+
+#competition {
+    display: flex;
+    flex-direction: row;
+}
+
+#penalties {
+    border: 1px solid black;
+    width: 100%;
+}
+
+#remarks {
+    border: 1px solid black;
+    width: 100%;
+}
+
+#approvals {
+    border: 1px solid black;
+    width: 100%;
+}
+
+#summary {
+    border: 1px solid black;
+    width: 100%;
+}
+
+#teams {
+    border: 1px solid black;
+    width: 50%;
+}
+
+.logo {
+    height:60px; 
+    padding:2px;
+}
+
+.headerslot {
+    width: 250px;
+}
+
+.sectiontitle {
+    background-color: lightgray;
+}
+
+#gameresultdetails {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+.setresult {
+    border: 1px solid gray;
+    width: 330px;
+    margin: 4px;
+}

@@ -29,6 +29,20 @@ function showGames()
     require_once 'view/games.php';
 }
 
+function showGame($gameid)
+{
+    if ($gameid == null) {
+        $message = "On essaye des trucs ???";
+        require_once 'view/error.php';
+    } else {
+        $game = VolscoreDB::getGame($gameid);
+        $sets = VolscoreDB::getSets($game);
+        $receivingRoster = VolscoreDB::getRoster($gameid,$game->receivingTeamId);
+        $visitingRoster = VolscoreDB::getRoster($gameid,$game->visitingTeamId);
+        require_once 'view/gamesheet/main.php';
+    }
+}
+
 function markGame($id) {
     if ($id == null) {
         $message = "On essaye des trucs ???";

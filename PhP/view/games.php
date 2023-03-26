@@ -21,7 +21,7 @@ ob_start();
             echo "<a href='?action=edit&id=".$game->number."' class='btn btn-sm btn-primary m-1'>Modifier</a>";
         }
         if (VolscoreDB::gameIsOver($game)) {
-            echo "<a href='?action=sheet&id=".$game->number."' class='btn btn-sm btn-primary m-1'>Consulter</a>";
+            echo "<a href='?action=sheet&gameid=".$game->number."' class='btn btn-sm btn-primary m-1'>Consulter</a>";
         } elseif (count(VolscoreDB::getSets($game)) > 0) {
             echo "<a href='?action=resumeScoring&gameid=".$game->number."' class='btn btn-sm btn-primary m-1'>Continuer</a>";
         }
