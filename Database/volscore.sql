@@ -91,6 +91,7 @@ CREATE TABLE `points` (
   `team_id` int(11) NOT NULL,
   `set_id` int(11) NOT NULL,
   `position_of_server` int(11) NOT NULL COMMENT 'The position (1-6) of the last server of the team which scored the point.',
+  `timestamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
   KEY `fk_points_teams1_idx` (`team_id`),
   KEY `fk_points_sets1_idx` (`set_id`),
