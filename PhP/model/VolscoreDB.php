@@ -365,6 +365,35 @@ class VolscoreDB implements IVolscoreDb {
         }
     }
 
+    public static function getSetScoringSequence($set) : array
+    {
+        try
+        {
+            $dbh = self::connexionDB();
+            $query = "SELECT * FROM points WHERE set_id={$set->id}";
+            $statement = $dbh->prepare($query); // Prepare query
+            $statement->execute(); // Executer la query
+            $receivingScores = [];
+            $visitingScores = [];
+            $servingTeamId = 0;
+            $points = 0;
+            while ($point = $statement->fetch()) {
+                $points++;
+                if ($point['team_id'] != $servingTeamId) {
+                    $lastTotal = isset($pointsOnServe[$servingTeamId]) ? $pointsOnServe[$servingTeamId][count($pointsOnServe[$servingTeamId])-1] : 0;
+                    $pointsOnServe[$servingTeamId][] = $lastTotal+$points;
+                    $points = 0;
+                    $servingTeamId = $point['team_id'];
+                }
+            }
+            $dbh = null;
+            return $pointsOnServe;
+        } catch (PDOException $e) {
+            print 'Error!:' . $e->getMessage() . '<br/>';
+            return null;
+        }
+    }
+
     public static function setIsOver($set) : bool
     {
         $score1 = 0;
@@ -401,24 +430,45 @@ class VolscoreDB implements IVolscoreDb {
         return $newset;
     }
       
+    private static function getLastPoint ($set)
+    {
+        $pdo = self::connexionDB();
+        $stmt = $pdo->prepare("SELECT * FROM points WHERE set_id = :set_id ORDER BY id DESC LIMIT 1");
+        $stmt->bindValue(':set_id', $set->id);
+        $stmt->execute();
+        return ($stmt->fetch());
+    }
+
+    private static function getPointBeforeLast ($set)
+    {
+        $pdo = self::connexionDB();
+        $stmt = $pdo->prepare("SELECT * FROM points WHERE set_id = :set_id ORDER BY id DESC LIMIT 2");
+        $stmt->bindValue(':set_id', $set->id);
+        $stmt->execute();
+        $stmt->fetch(); // "burn" one
+        return ($stmt->fetch());
+    }
+
+    private static function getLastPointOfTeam ($set, $teamid)
+    {
+        $pdo = self::connexionDB();
+        $stmt = $pdo->prepare("SELECT * FROM points WHERE set_id = :set_id AND team_id = $teamid ORDER BY id DESC LIMIT 1");
+        $stmt->bindValue(':set_id', $set->id);
+        $stmt->execute();
+        return ($stmt->fetch());
+    }
+
     public static function addPoint($set, $receiving)
     {
         $game = self::getGame($set->game_id);
         $scoringTeamId = ($receiving ? $game->receivingTeamId : $game->visitingTeamId);
 
         // get last point of the set
-        $pdo = self::connexionDB();
-        $stmt = $pdo->prepare("SELECT * FROM points WHERE set_id = :set_id ORDER BY id DESC LIMIT 1");
-        $stmt->bindValue(':set_id', $set->id);
-        $stmt->execute();
-        $lastPoint = $stmt->fetch();
+        $lastPoint = self::getLastPoint($set);
         // get last point of the set score by that team
-        $stmt = $pdo->prepare("SELECT * FROM points WHERE set_id = :set_id AND team_id = $scoringTeamId ORDER BY id DESC LIMIT 1");
-        $stmt->bindValue(':set_id', $set->id);
-        $stmt->execute();
-        $lastPointOfTeam = $stmt->fetch();
-        // use info for rotation
+        $lastPointOfTeam = self::getLastPointOfTeam($set, $scoringTeamId);
 
+        // use info for rotation        
         if (!$lastPoint) {
             $position = 1; // at the beginning of the game, serve is on position 1 on both sides
         } elseif ($lastPointOfTeam === false) {
@@ -428,11 +478,45 @@ class VolscoreDB implements IVolscoreDb {
         } else {
             $position = $lastPoint['position_of_server']; // no change
         }
-
+        
+        $pdo = self::connexionDB();
         $query =
              "INSERT INTO points (team_id, set_id, position_of_server) " .
              "VALUES(". ($receiving ? $game->receivingTeamId : $game->visitingTeamId) . ",".$set->id.",$position);";
         self::executeInsertQuery($query);
+    }
+
+    public static function nextServer($set) : Member
+    {
+        $game = self::getGame($set->game_id);
+        // get last point of the set
+        $lastPoint = self::getLastPoint($set);
+
+        // use info
+        if (!$lastPoint) {
+            $servingTeamId = $game->receivingTeamId; // by default for now (ignore toss)
+            $position = 1;
+        } else {            
+            $servingTeamId = $lastPoint['team_id']; 
+            $before = self::getPointBeforeLast($set);
+            if (!$before) { // only 1 point has been scored so far
+                if ($lastPoint['team_id'] == $game->receivingTeamId) { // receiving team continues to serve
+                    $position = 1;
+                } else {
+                    $position = 2;
+                }
+            } else { // many points played
+                if ($lastPoint['team_id'] == $before['team_id']) { // the server scored, no rotation
+                    $position = $lastPoint['position_of_server'];
+                } else {
+                    $position = $before['position_of_server'] % 6 + 1; // change of serve -> rotation
+                }
+            }
+        }
+
+        // find the player
+        $positions = self::getPositions($set->id,$servingTeamId);
+        return $positions[$position-1];
     }
 
     public static function numberOfSets($game) : int
@@ -476,7 +560,7 @@ class VolscoreDB implements IVolscoreDb {
             if (!$positions) return $res;
             // build the list
             for ($pos = 1; $pos <= 6; $pos++) {
-                $query = "SELECT members.id,members.first_name,members.last_name,members.role,members.license,players.id as playerid, players.number ".
+                $query = "SELECT members.id,members.first_name,members.last_name,members.role,members.license,members.team_id,players.id as playerid, players.number ".
                 "FROM players INNER JOIN members ON member_id = members.id INNER JOIN positions ON player_position_".$pos."_id = players.id ". 
                 "WHERE set_id = $setid AND positions.team_id = $teamid";
                 $statement = $dbh->prepare($query); // Prepare query    

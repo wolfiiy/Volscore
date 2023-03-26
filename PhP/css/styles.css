@@ -59,3 +59,8 @@ td, th {
     left:8px;
     top:12px;
 }
+
+.serving {
+    background-color: orange;
+    border-radius: 5px;
+}
