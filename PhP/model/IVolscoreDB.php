@@ -108,6 +108,16 @@ interface IVolscoreDb {
     public static function getSet($setid) : Set;
 
     /**
+     * Returns the scores for each player in the set
+     */
+    public static function getSetScoringSequence($set) : array;
+    
+    /**
+     * Returns the player who will serve the next point in the set
+     */
+    public static function nextServer($set) : Member;
+    
+    /**
      * Returns true if the set is finished (based on the points scored, including 2 points lead and 5th set at 15 )
      */  
     public static function setIsOver($set) : bool;

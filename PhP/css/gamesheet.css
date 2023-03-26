@@ -105,3 +105,16 @@
     width: 330px;
     margin: 4px;
 }
+.playerpoints {
+    width: 16.5%;
+    border-bottom: 1px solid gray;
+    border-right: 1px solid gray;
+    text-align: center;
+}
+.scoringsequence {
+    width: 50%;
+    border: 1px solid black;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+}

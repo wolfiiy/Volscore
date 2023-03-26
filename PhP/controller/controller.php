@@ -91,6 +91,9 @@ function keepScore($setid)
 {
     $set = VolscoreDB::getSet($setid);
     $game = VolscoreDB::getGame($set->game_id);
+    $nextUp = VolscoreDB::nextServer($set);
+    $receivingPositions = VolscoreDB::getPositions($set->id, $game->receivingTeamId);
+    $visitingPositions = VolscoreDB::getPositions($set->id, $game->visitingTeamId);
     require_once 'view/scoring.php';
 }
 
