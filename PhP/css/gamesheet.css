@@ -111,10 +111,28 @@
     border-right: 1px solid gray;
     text-align: center;
 }
+.playernumber {
+    width: 16.5%;
+    border-bottom: 1px solid gray;
+    border-right: 1px solid gray;
+    text-align: center;
+}
 .scoringsequence {
-    width: 50%;
+    width: 100%;
     border: 1px solid black;
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
+}
+.setpositions {
+    width: 100%;
+    border: 1px solid black;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+.teamsetresult {
+    width: 50%;
+    display: flex;
+    flex-direction: column;
 }

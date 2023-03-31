@@ -77,27 +77,6 @@ while ($row = $statement->fetch()) {
     array_push($pastgames, $newgame);
 }
 
-// Add scores to each past game
-foreach ($pastgames as $game) {
-    while (!VolscoreDB::gameIsOver($game)) {
-        $newset = VolscoreDB::addSet($game);
-        $servpos = 1;
-        $serving = 0;
-        $scoring;
-        while (!VolscoreDB::setIsOver($newset)) {
-            $scoring = random_int(0, 1);
-            if ($scoring == 0) {
-                VolscoreDB::addPoint($newset,true);
-                $serving = 0;
-            } else {
-                VolscoreDB::addPoint($newset,false);
-                if ($scoring != $serving) $servpos = $servpos % 6 + 1;
-                $serving = 1;
-            }
-        }
-    }
-}
-
 // Add players to games (liste d'engagement)
 foreach (VolscoreDB::getGames() as $game) {
     foreach (VolscoreDB::getMembers($game->receivingTeamId) as $member) {
@@ -107,6 +86,36 @@ foreach (VolscoreDB::getGames() as $game) {
         VolscoreDB::makePlayer($member->id, $game->number);
     }
 }
+
+// Add scores to each past game
+foreach ($pastgames as $game) {
+    $game = VolscoreDB::getGame($game->number); // because some fields are not initialized
+    while (!VolscoreDB::gameIsOver($game)) {
+        $newset = VolscoreDB::addSet($game);
+
+        // create positions for this set
+        $dbh = VolscoreDB::connexionDB();
+        $query = "SELECT players.id FROM players INNER JOIN members ON players.member_id = members.id WHERE game_id = ".$game->number." AND team_id = ".$game->receivingTeamId." ORDER BY RAND();";
+        $statement = $dbh->prepare($query); // Prepare query
+        $statement->execute(); // Executer la query
+        $poss = [];
+        while ($row = $statement->fetch()) $poss[] = $row['id'];
+        VolscoreDB::setPositions($newset->id,$game->receivingTeamId,$poss[0],$poss[1],$poss[2],$poss[3],$poss[4],$poss[5]);
+        $query = "SELECT players.id FROM players INNER JOIN members ON players.member_id = members.id WHERE game_id = ".$game->number." AND team_id = ".$game->visitingTeamId." ORDER BY RAND();";
+        $statement = $dbh->prepare($query); // Prepare query
+        $statement->execute(); // Executer la query
+        $poss = [];
+        while ($row = $statement->fetch()) $poss[] = $row['id'];
+        VolscoreDB::setPositions($newset->id,$game->visitingTeamId,$poss[0],$poss[1],$poss[2],$poss[3],$poss[4],$poss[5]);
+        while (!VolscoreDB::setIsOver($newset)) {
+            if (random_int(0, 1) == 0) {
+                VolscoreDB::addPoint($newset,true);
+            } else {
+                VolscoreDB::addPoint($newset,false);
+            }    
+        }    
+    }    
+}    
 
 // Start those tests now 
 echo "<h1>Tests</h1>";

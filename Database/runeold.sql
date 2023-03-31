@@ -1,0 +1,3 @@
+DROP DATABASE IF EXISTS `runeold`;
+CREATE DATABASE `runeold` /*!40100 DEFAULT CHARACTER SET utf8mb3 */;
+USE `runeold`;

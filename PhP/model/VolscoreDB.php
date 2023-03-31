@@ -386,6 +386,10 @@ class VolscoreDB implements IVolscoreDb {
                     $servingTeamId = $point['team_id'];
                 }
             }
+            // score the last points
+            $points++;
+            $lastTotal = isset($pointsOnServe[$servingTeamId]) ? $pointsOnServe[$servingTeamId][count($pointsOnServe[$servingTeamId])-1] : 0;
+            $pointsOnServe[$servingTeamId][] = $lastTotal+$points;
             $dbh = null;
             return $pointsOnServe;
         } catch (PDOException $e) {
