@@ -70,6 +70,11 @@ interface IVolscoreDb {
     public static function getGame($number) : ?Game; 
     
     /**
+     * Updates an existing game
+     */
+    public static function saveGame($game);
+    
+    /**
      * Returns true if there is a winner (based on the points scored )
      */ 
     public static function gameIsOver($game) : bool;

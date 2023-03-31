@@ -35,6 +35,7 @@ CREATE TABLE `games` (
   `moment` datetime DEFAULT NULL,
   `receiving_id` int(11) NOT NULL,
   `visiting_id` int(11) NOT NULL,
+  `toss` int(1) NOT NULL DEFAULT 0 COMMENT 'Receiving: 1, Visiting: 2',
   PRIMARY KEY (`id`),
   KEY `fk_games_teams_idx` (`receiving_id`),
   KEY `fk_games_teams1_idx` (`visiting_id`),
@@ -48,7 +49,7 @@ CREATE TABLE `games` (
 --
 
 /*!40000 ALTER TABLE `games` DISABLE KEYS */;
-INSERT INTO `games` VALUES (1,'Championnat','R','M','U17','Froideville','Salle des Platanes','2023-01-20 20:00:00',3,2),(2,'Championnat','R','M','U17','Yverdon','Salle des Iles','2023-01-20 20:45:00',6,5),(3,'Championnat','R','M','U17','Dorigny','Salle Omnisport','2023-01-20 20:00:00',1,4);
+INSERT INTO `games` VALUES (1,'Championnat','R','M','U17','Froideville','Salle des Platanes','2023-01-20 20:00:00',3,2,0),(2,'Championnat','R','M','U17','Yverdon','Salle des Iles','2023-01-20 20:45:00',6,5,0),(3,'Championnat','R','M','U17','Dorigny','Salle Omnisport','2023-01-20 20:00:00',1,4,0);
 /*!40000 ALTER TABLE `games` ENABLE KEYS */;
 
 --

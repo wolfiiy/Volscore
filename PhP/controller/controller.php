@@ -63,11 +63,23 @@ function markGame($id) {
             $visitingRoster = VolscoreDB::getRoster($id,$game->visitingTeamId);
             if (!(rosterIsValid($receivingRoster) && rosterIsValid($visitingRoster))) {
                 require_once 'view/prepareGame.php';
-            } else {
-                header('Location: ?action=prepareSet&id='.VolscoreDB::addSet($game)->id);
+            } else { // Both teams are OK, let's check the toss
+                if ($game->toss > 0) {
+                    header('Location: ?action=prepareSet&id='.VolscoreDB::addSet($game)->id);
+                } else {
+                    require_once 'view/prepareGame.php';
+                }
             }
         }
     }
+}
+
+function registerToss($gameid,$winner)
+{
+    $game = VolscoreDB::getGame($gameid);
+    $game->toss = $winner;
+    VolscoreDB::saveGame($game);
+    header('Location: ?action=markGame&id='.$gameid);
 }
 
 function prepareSet($setid)

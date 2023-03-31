@@ -155,7 +155,7 @@ class VolscoreDB implements IVolscoreDb {
         {
             $dbh = self::connexionDB();
             $query =
-                "SELECT games.id as number, type, level,category,league,receiving_id as receivingTeamId,r.name as receivingTeamName,visiting_id as visitingTeamId,v.name as visitingTeamName,location as place,venue,moment " .
+                "SELECT games.id as number, type, level,category,league,receiving_id as receivingTeamId,r.name as receivingTeamName,visiting_id as visitingTeamId,v.name as visitingTeamName,location as place,venue,moment,toss " .
                 "FROM games INNER JOIN teams r ON games.receiving_id = r.id INNER JOIN teams v ON games.visiting_id = v.id " .
                 "WHERE games.id=$number";
             $statement = $dbh->prepare($query); // Prepare query
@@ -185,6 +185,22 @@ class VolscoreDB implements IVolscoreDb {
             return null;
         }
     }
+
+    public static function saveGame($game)
+    {
+        $query = "UPDATE games SET ". 
+            "type = '{$game->type}',".
+            "level = '{$game->level}',".
+            "category = '{$game->category}',".
+            "league = '{$game->league}',".
+            "location = '{$game->location}',".
+            "venue = '{$game->venue}',".
+            "moment = '{$game->moment}',".
+            "toss = '{$game->toss}' ". 
+            "WHERE id={$game->number}";
+        return self::executeUpdateQuery($query);
+    }
+
     
     public static function getMembers($teamid) : array
     {

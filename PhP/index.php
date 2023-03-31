@@ -18,6 +18,9 @@ switch ($action)
     case 'prepareSet':
         prepareSet($_GET['id']);
         break;
+    case 'registerToss':
+        registerToss($_POST['gameid'], isset($_POST['cmdWinnerReceiving']) ? 1 : 2);
+        break;
     case 'keepScore':
         keepScore($_GET['setid']);
         break;
