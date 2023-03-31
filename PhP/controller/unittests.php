@@ -243,3 +243,4 @@ foreach ($games as $game) {
 }
 ?>
 </div>
+<a href="/"><h1>Home</h1></a>
