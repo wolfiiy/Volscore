@@ -8,6 +8,7 @@ class VolscoreDB implements IVolscoreDb {
         require '.credentials.php';
         $PDO = new PDO('mysql:host=localhost;dbname=volscore', 'root', 'root');
         $PDO->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        $PDO->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
         return $PDO;
     }
     
@@ -640,6 +641,27 @@ class VolscoreDB implements IVolscoreDb {
             print 'Error!:' . $e->getMessage() . '<br/>';
             return null;
         }
+    }
+
+    public static function getBookings($team,$set) : array
+    {
+        $query = "SELECT pts.`timestamp` , p.`number`, m.last_name, severity ,  ".
+                    "(SELECT COUNT(pts2.id) FROM points pts2 WHERE team_id = g.receiving_id and set_id = s.id and pts2.id <= pts.id) as scoreReceiving, ".
+                    "(SELECT COUNT(pts3.id) FROM points pts3 WHERE team_id = g.visiting_id and set_id = s.id and pts3.id <= pts.id) as scoreVisiting ".
+                "FROM bookings ".
+                    "INNER JOIN players p ON player_id = p.id ".
+                    "INNER JOIN members m ON member_id = m.id ".
+                    "INNER JOIN points pts ON point_id = pts.id ".
+                    "INNER JOIN `sets` s ON set_id = s.id ".
+                    "INNER JOIN games g ON s.game_id = g.id ".
+                "WHERE s.id= :setid and m.team_id= :teamid ;";
+        
+        $dbh = self::connexionDB();
+        $stmt = $dbh->prepare($query);
+        $stmt->bindValue(':setid',$set->id);
+        $stmt->bindValue(':teamid',$team->id);
+        $stmt->execute();
+        return $stmt->fetchall();
     }
 
 }

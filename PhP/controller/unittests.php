@@ -238,6 +238,30 @@ if (VolscoreDB::deleteTeam($kill->id) && !VolscoreDB::deleteTeam(1)) {
 }
 echo "<hr>";
 
+echo "Test getBookings -> ";
+
+VolscoreDB::executeInsertQuery("INSERT INTO bookings (player_id,point_id) VALUES(3,10);");
+
+$dbh = VolscoreDB::connexionDB();
+$query = "SELECT team_id FROM players INNER JOIN members ON member_id = members.id WHERE players.id = 3";
+$stmt = $dbh->prepare($query);
+$stmt->execute();
+$row = $stmt->fetch();
+$team = VolscoreDB::getTeam($row['team_id']);
+$set = VolscoreDB::getSet(1); // 10th point is in set 1
+
+$res="<span style='background-color:green; padding:3px'>OK</span>,";
+$oneBooking = VolscoreDB::getBookings($team,$set);
+if ( count($oneBooking) != 1) $res="<span style='background-color:red; padding:3px'>ko</span>,";
+$team->id = $team->id % 6 + 1;
+$noBooking = VolscoreDB::getBookings($team,$set);
+if ( count($noBooking) != 0) $res="<span style='background-color:red; padding:3px'>ko</span>,";
+echo $res;
+$dbh = null;
+
+
+echo "<hr>";
+
 
 // show the games
 

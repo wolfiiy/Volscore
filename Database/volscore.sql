@@ -82,7 +82,7 @@ INSERT INTO `members` VALUES (1,1,'C','Gavin','Franks',91453,1,NULL),(2,1,'J','B
 /*!40000 ALTER TABLE `members` ENABLE KEYS */;
 
 --
--- Table structure for table `position`
+-- Table structure for table `points`
 --
 
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
@@ -102,7 +102,7 @@ CREATE TABLE `points` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Table structure for table `positions`
+-- Table structure for table `players`
 --
 
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
@@ -217,6 +217,28 @@ CREATE TABLE `teams` (
 /*!40000 ALTER TABLE `teams` DISABLE KEYS */;
 INSERT INTO `teams` VALUES (2,'Ecublens'),(3,'Froideville'),(4,'Littoral'),(1,'LUC'),(5,'Lutry'),(6,'Yverdon'),(7,'kill me');
 /*!40000 ALTER TABLE `teams` ENABLE KEYS */;
+
+--
+-- Table structure for table `bookings`
+--
+
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `bookings` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `player_id` int(11) NOT NULL,
+  `point_id` int(11) NOT NULL,
+  `severity` int(1) NOT NULL DEFAULT 0 COMMENT '0 -> yellow, 1 -> red, 2 -> yellowred, 3 -> yellow and red',
+  PRIMARY KEY (`id`),
+  KEY `fk_bookings_players_idx` (`player_id`),
+  KEY `fk_bookings_points_idx` (`point_id`),
+  CONSTRAINT `fk_booking_player` FOREIGN KEY (`player_id`) REFERENCES `players` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION,
+  CONSTRAINT `fk_booking_point` FOREIGN KEY (`point_id`) REFERENCES `points` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT 'Contains bookings.';
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+
+
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
