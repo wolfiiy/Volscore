@@ -24,6 +24,11 @@ interface IVolscoreDb {
     public static function getTeam($number) : Team;
 
     /**
+     * Tells if a team has already played a game
+     */
+    public static function teamHasPlayed($team) : bool;
+
+    /**
      * Get all members of a given team
      */
     public static function getMembers($teamid) : array ;

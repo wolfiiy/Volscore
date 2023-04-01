@@ -149,6 +149,15 @@ class VolscoreDB implements IVolscoreDb {
             return null;
         }
     }
+
+    public static function teamHasPlayed($team) : bool
+    {
+        foreach (self::getGamesByTime(TimeInThe::past) as $game) {
+            if ($game->receivingTeamId == $team-id || $game->visitingTeamId == $team-id) return true;
+        }
+        return false;
+    }
+
     public static function getGame($number) : ?Game
     {
         try
