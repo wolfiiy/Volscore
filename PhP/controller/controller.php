@@ -87,6 +87,17 @@ function registerToss($gameid,$winner)
     header('Location: ?action=markGame&id='.$gameid);
 }
 
+// Copies the positions passed to the specified set of the specified game
+function reportPositions ($positions,$gameid,$setid,$teamid)
+{
+    $report = [];
+    foreach ($positions as $playerInPreviousSet) {
+        $playerToday = VolscoreDB::getPlayer($playerInPreviousSet->id,$gameid);
+        $report[] = $playerToday->playerid;
+    }
+    VolscoreDB::setPositions($setid,$teamid,$report[0],$report[1],$report[2],$report[3],$report[4],$report[5]);
+}
+
 function prepareSet($setid)
 {
     $set = VolscoreDB::getSet($setid);
@@ -94,7 +105,19 @@ function prepareSet($setid)
     $receivingRoster = VolscoreDB::getRoster($game->number,$game->receivingTeamId);
     $visitingRoster = VolscoreDB::getRoster($game->number,$game->visitingTeamId);
     $receivingPositions = VolscoreDB::getPositions($set->id, $game->receivingTeamId);
+    if (count($receivingPositions) < 6) {
+        $receivingPositions = VolscoreDB::getPositions(0, $game->receivingTeamId); // try to get those of the last set played
+        if (count($receivingPositions) == 6) { // got them, we have to transpose them to the current game
+            reportPositions($receivingPositions,$game->number,$setid,$game->receivingTeamId);
+        }
+    }
     $visitingPositions = VolscoreDB::getPositions($set->id, $game->visitingTeamId);
+    if (count($visitingPositions) < 6) {
+        $visitingPositions = VolscoreDB::getPositions(0, $game->visitingTeamId); // try to get those of the last set played
+        if (count($visitingPositions) == 6) { // got them, we have to transpose them to the current game
+            reportPositions($visitingPositions,$game->number,$setid,$game->visitingTeamId);
+        }
+    }
     require_once 'view/prepareSet.php';
 }
 

@@ -559,6 +559,24 @@ class VolscoreDB implements IVolscoreDb {
         return true;
     }
 
+    public static function getPlayer($memberid,$gameid) : ?Member
+    {
+        $pdo = self::connexionDB();
+        $query = "SELECT members.id,members.first_name,members.last_name,members.role,members.license,members.team_id,players.id as playerid, players.number ".
+        "FROM players INNER JOIN members ON member_id = members.id ". 
+        "WHERE members.id = $memberid AND players.game_id = $gameid";
+        $stmt = $pdo->prepare($query);
+        $stmt->execute();
+        if ($row = $stmt->fetch()) {
+            $player = new Member($row);
+            // WARNING: Trick: add some contextual player info to the Member object
+            $player->playerInfo = ['playerid' => $row['playerid'], 'number' => $row['number']];
+            return $player;
+        } else {
+            return null;
+        }
+    }
+
     public static function setPositions($setid, $teamid, $pos1, $pos2, $pos3, $pos4, $pos5, $pos6)
     {
         $query =
@@ -573,11 +591,18 @@ class VolscoreDB implements IVolscoreDb {
         {
             $res = [];
             $dbh = self::connexionDB();
-            $query = "SELECT * FROM positions WHERE set_id=$setid AND team_id=$teamid;";
+            if ($setid > 0) { 
+                $query = "SELECT * FROM positions WHERE set_id=$setid AND team_id=$teamid;";
+            } else { // get last used positions
+                $query = "SELECT * FROM positions WHERE team_id=$teamid ORDER BY id DESC LIMIT 1;";
+            }
             $statement = $dbh->prepare($query); // Prepare query    
             $statement->execute(); // Executer la query
             $positions = $statement->fetch();
             if (!$positions) return $res;
+            if ($setid == 0) { // get it from the position sheet
+                $setid = $positions['set_id'];
+            }
             // build the list
             for ($pos = 1; $pos <= 6; $pos++) {
                 $query = "SELECT members.id,members.first_name,members.last_name,members.role,members.license,members.team_id,players.id as playerid, players.number ".
@@ -597,6 +622,7 @@ class VolscoreDB implements IVolscoreDb {
             return null;
         }
     }
+
 }
 
 

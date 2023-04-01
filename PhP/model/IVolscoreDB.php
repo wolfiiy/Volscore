@@ -160,5 +160,11 @@ interface IVolscoreDb {
      */
     public static function makePlayer($memberid,$gameid) : bool;
 
+    /**
+     * Returns the member info in the context of a specific game
+     * Or null if the member was not part of that game
+     */
+    public static function getPlayer($memberid,$gameid) : ?Member;
+
 #endregion
 }
