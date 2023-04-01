@@ -158,6 +158,20 @@ class VolscoreDB implements IVolscoreDb {
         return false;
     }
 
+    public static function deleteTeam ($teamid) : bool
+    {
+        try
+        {
+            $dbh = self::connexionDB();
+            $statement = $dbh->prepare("DELETE FROM teams WHERE id=$teamid"); // Prepare query
+            $statement->execute(); // Executer la query
+            $dbh = null;
+            return true;
+        } catch (PDOException $e) {
+            return false;
+        }
+    }
+
     public static function getGame($number) : ?Game
     {
         try

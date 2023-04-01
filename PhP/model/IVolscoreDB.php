@@ -52,7 +52,14 @@ interface IVolscoreDb {
      */
     public static function getLibero($team) : Member;
     
-#endregion
+    /**
+     * Supprime une équipe
+     * Cette commande ne fonctionne que si l'équipe n'a commencé aucun match.
+     * Si ce n'est pas le cas, elle est supprimée, ainsi que tous ses membres et les matches planifiés
+     */
+    public static function deleteTeam ($teamid) : bool;
+
+    #endregion
 #region Matches
     /**
      * Get all games in the system

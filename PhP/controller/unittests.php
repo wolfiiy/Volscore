@@ -229,6 +229,15 @@ if (VolscoreDB::createGame($ng1) && !VolscoreDB::createGame($ng2) && !VolscoreDB
 }
 echo "<hr>";
 
+echo "Test deleteTeam -> ";
+$kill = VolscoreDB::getTeam(7);
+if (VolscoreDB::deleteTeam($kill->id) && !VolscoreDB::deleteTeam(1)) {
+    echo "<span style='background-color:green; padding:3px'>OK</span>,";
+} else {
+    echo "<span style='background-color:red; padding:3px'>ko</span>,";
+}
+echo "<hr>";
+
 
 // show the games
 
