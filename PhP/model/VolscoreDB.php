@@ -518,20 +518,7 @@ class VolscoreDB implements IVolscoreDb {
             $position = 1;
         } else {            
             $servingTeamId = $lastPoint['team_id']; 
-            $before = self::getPointBeforeLast($set);
-            if (!$before) { // only 1 point has been scored so far
-                if ($lastPoint['team_id'] == $game->receivingTeamId) { // receiving team continues to serve
-                    $position = 1;
-                } else {
-                    $position = 2;
-                }
-            } else { // many points played
-                if ($lastPoint['team_id'] == $before['team_id']) { // the server scored, no rotation
-                    $position = $lastPoint['position_of_server'];
-                } else {
-                    $position = $before['position_of_server'] % 6 + 1; // change of serve -> rotation
-                }
-            }
+            $position = $lastPoint['position_of_server']; 
         }
 
         // find the player
