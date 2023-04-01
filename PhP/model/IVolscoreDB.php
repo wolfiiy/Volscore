@@ -24,7 +24,7 @@ interface IVolscoreDb {
     public static function getTeam($number) : Team;
 
     /**
-     * Get all players of a given team
+     * Get all members of a given team
      */
     public static function getMembers($teamid) : array ;
 
@@ -73,7 +73,7 @@ interface IVolscoreDb {
      * Updates an existing game
      */
     public static function saveGame($game);
-    
+
     /**
      * Returns true if there is a winner (based on the points scored )
      */ 
@@ -149,6 +149,7 @@ interface IVolscoreDb {
 
     /**
      * Get the players starting positions for a specific team in a specific set
+     * If $setid == 0 , the last positions used by that team are returned
      */
     public static function getPositions($setid, $teamid) : array;
 

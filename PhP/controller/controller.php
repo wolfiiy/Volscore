@@ -43,24 +43,29 @@ function showGame($gameid)
     }
 }
 
-function markGame($id) {
-    if ($id == null) {
+function markGame($gameid) {
+    if ($gameid == null) {
         $message = "On essaye des trucs ???";
         require_once 'view/error.php';
     } else {
-        $game = VolscoreDB::getGame($id);
+        $game = VolscoreDB::getGame($gameid);
         if ($game == null) {
             require_once 'view/error.php';
         } else {
-            $receivingRoster = VolscoreDB::getRoster($id,$game->receivingTeamId);
-            if (count($receivingRoster) < 6) {
-                $message = "La liste d'engagement de {$game->receivingTeamName} est incomplète";
-                $redirectUrl = "?action=games";
-                $redirectMsg = "Retour";
-                require_once 'view/error.php';
-                die();
+            $receivingRoster = VolscoreDB::getRoster($gameid,$game->receivingTeamId);
+            if (count($receivingRoster) < 6) { // make it (as a temporary business rule)
+                foreach (VolscoreDB::getMembers($game->receivingTeamId) as $member) {
+                    VolscoreDB::makePlayer($member->id, $game->number);
+                }
+                $receivingRoster = VolscoreDB::getRoster($gameid,$game->receivingTeamId);
             }
-            $visitingRoster = VolscoreDB::getRoster($id,$game->visitingTeamId);
+            $visitingRoster = VolscoreDB::getRoster($gameid,$game->visitingTeamId);
+            if (count($visitingRoster) < 6) { // make it (as a temporary business rule)
+                foreach (VolscoreDB::getMembers($game->visitingTeamId) as $member) {
+                    VolscoreDB::makePlayer($member->id, $game->number);
+                }
+                $visitingRoster = VolscoreDB::getRoster($gameid,$game->visitingTeamId);
+            }
             if (!(rosterIsValid($receivingRoster) && rosterIsValid($visitingRoster))) {
                 require_once 'view/prepareGame.php';
             } else { // Both teams are OK, let's check the toss
