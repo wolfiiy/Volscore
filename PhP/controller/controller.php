@@ -37,6 +37,11 @@ function showGame($gameid)
     } else {
         $game = VolscoreDB::getGame($gameid);
         $sets = VolscoreDB::getSets($game);
+        $sanctions = [];
+        foreach ($sets as $set) {
+            $sanctions[$game->receivingTeamName][$set->number] = VolscoreDB::getBookings(VolscoreDB::getTeam($game->receivingTeamId),$set);
+            $sanctions[$game->visitingTeamName][$set->number] = VolscoreDB::getBookings(VolscoreDB::getTeam($game->visitingTeamId),$set);
+        }
         $receivingRoster = VolscoreDB::getRoster($gameid,$game->receivingTeamId);
         $visitingRoster = VolscoreDB::getRoster($gameid,$game->visitingTeamId);
         require_once 'view/gamesheet/main.php';

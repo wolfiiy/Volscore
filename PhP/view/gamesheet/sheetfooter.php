@@ -1,6 +1,6 @@
 <div id="sheetfooter">
     <div class="d-flex flex-column" style="width:25%">
-        <div id="penalties"><div class="sectiontitle">Sanctions</div></div>
+        <div id="penalties"><div class="sectiontitle">Sanctions</div><?php require_once 'view/gamesheet/sanctions.php' ?></div>
         <div id="remarks"><div class="sectiontitle">Remarques</div></div>
     </div>
     <div class="d-flex flex-column align-items-center" style="width:25%">
