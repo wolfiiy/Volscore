@@ -64,3 +64,8 @@ td, th {
     background-color: orange;
     border-radius: 5px;
 }
+
+.teamPrep {
+    width: 30%;
+    text-align: center;
+}
