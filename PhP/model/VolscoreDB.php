@@ -577,15 +577,23 @@ class VolscoreDB implements IVolscoreDb {
         }
     }
 
-    public static function setPositions($setid, $teamid, $pos1, $pos2, $pos3, $pos4, $pos5, $pos6)
+    public static function setPositions($setid, $teamid, $pos1, $pos2, $pos3, $pos4, $pos5, $pos6, $final=0)
     {
         $query =
-             "INSERT INTO positions (set_id, team_id, player_position_1_id, player_position_2_id, player_position_3_id, player_position_4_id, player_position_5_id, player_position_6_id) " .
-             "VALUES($setid, $teamid, $pos1, $pos2, $pos3, $pos4, $pos5, $pos6);";
+             "INSERT INTO positions (set_id, team_id, player_position_1_id, player_position_2_id, player_position_3_id, player_position_4_id, player_position_5_id, player_position_6_id, final) " .
+             "VALUES($setid, $teamid, $pos1, $pos2, $pos3, $pos4, $pos5, $pos6, $final);";
         self::executeInsertQuery($query);
     }
 
-    public static function getPositions($setid, $teamid) : array
+    public static function updatePositions($setid, $teamid, $pos1, $pos2, $pos3, $pos4, $pos5, $pos6, $final=0)
+    {
+        $query =
+             "UPDATE positions SET player_position_1_id=$pos1, player_position_2_id=$pos2, player_position_3_id=$pos3, player_position_4_id=$pos4, player_position_5_id=$pos5, player_position_6_id=$pos6,final=$final " .
+             "WHERE set_id = $setid AND team_id = $teamid;";
+        self::executeUpdateQuery($query);
+    }
+
+    public static function getPositions($setid, $teamid, &$isFinal = NULL) : array
     {
         try
         {
@@ -616,6 +624,7 @@ class VolscoreDB implements IVolscoreDb {
                 $member->playerInfo = ['playerid' => $row['playerid'], 'number' => $row['number']];
                 $res[] = $member;
             }
+            $isFinal = $positions['final'];
             return $res;
         } catch (PDOException $e) {
             print 'Error!:' . $e->getMessage() . '<br/>';

@@ -34,7 +34,7 @@ switch ($action)
         scorePoint($_POST['setid'],$_POST['receiving']);
         break;
     case 'setPositions':
-        setPositions($_POST['gameid'],$_POST['setid'],$_POST['teamid'],$_POST['position1'],$_POST['position2'],$_POST['position3'],$_POST['position4'],$_POST['position5'],$_POST['position6']);
+        setPositions($_POST['gameid'],$_POST['setid'],$_POST['teamid'],$_POST['position1'],$_POST['position2'],$_POST['position3'],$_POST['position4'],$_POST['position5'],$_POST['position6'],isset($_POST['final']) ? 1 : 0);
         break;
     case 'teams':
         showTeams();

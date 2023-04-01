@@ -144,8 +144,15 @@ interface IVolscoreDb {
 
     /**
      * Stores the players starting positions for a specific team in a specific set
+     * $final == 1 indicates that no more changes will be allowed
      */
-    public static function setPositions($setid, $teamid, $pos1, $pos2, $pos3, $pos4, $pos5, $pos6);
+    public static function setPositions($setid, $teamid, $pos1, $pos2, $pos3, $pos4, $pos5, $pos6, $final);
+
+    /**
+     * Updates the existing players starting positions for a specific team in a specific set
+     * $final == 1 indicates that no more changes will be allowed
+     */
+    public static function updatePositions($setid, $teamid, $pos1, $pos2, $pos3, $pos4, $pos5, $pos6, $final);
 
     /**
      * Get the players starting positions for a specific team in a specific set

@@ -13,4 +13,5 @@ class Position extends Model {
     public $player_position_4_id;   //!< Le joueur qui commence en position 4
     public $player_position_5_id;   //!< Le joueur qui commence en position 5
     public $player_position_6_id;   //!< Le joueur qui commence en position 6
+    public $final;                  //!< Les positions ne peuvent plus être changées si == 1
 }

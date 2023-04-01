@@ -137,6 +137,7 @@ CREATE TABLE `positions` (
   `player_position_4_id` int(11) NOT NULL,
   `player_position_5_id` int(11) NOT NULL,
   `player_position_6_id` int(11) NOT NULL,
+  `final`int(1) NOT NULL DEFAULT 0,
   PRIMARY KEY (`id`),
   KEY `fk_position_sets1_idx` (`set_id`),
   KEY `fk_position_teams_idx` (`team_id`),
