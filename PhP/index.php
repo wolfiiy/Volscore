@@ -24,6 +24,12 @@ switch ($action)
     case 'keepScore':
         keepScore($_GET['setid']);
         break;
+    case 'selectBooking':
+        showBookings($_GET['teamid'],$_GET['setid']);
+        break;
+    case 'registerBooking':
+        registerBooking($_POST['dpdPlayer'],$_POST['setid'],$_POST['severity']);
+        break;
     case 'continueGame':
         continueGame($_GET['gameid']);
         break;

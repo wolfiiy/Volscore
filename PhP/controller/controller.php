@@ -150,6 +150,20 @@ function keepScore($setid)
     require_once 'view/scoring.php';
 }
 
+function showBookings($teamid, $setid)
+{
+    $set = VolscoreDB::getSet($setid);
+    $roster = VolscoreDB::getRoster($set->game_id,$teamid);
+    $team = VolscoreDB::getTeam($teamid);
+    require_once 'view/selectBooking.php';
+}
+
+function registerBooking($playerid,$setid,$severity)
+{
+    VolscoreDB::giveBooking($playerid,$setid,$severity);
+    header('Location: ?action=keepScore&setid='.$setid);
+}
+
 /**
  * Called from the end of set page
  */

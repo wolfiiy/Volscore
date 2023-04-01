@@ -643,6 +643,14 @@ class VolscoreDB implements IVolscoreDb {
         }
     }
 
+    public static function giveBooking ($playerid, $setid, $severity)
+    {
+        $lastPoint = self::getLastPoint(self::getSet($setid));
+        $pdo = self::connexionDB();
+        $query = "INSERT INTO bookings (player_id, point_id, severity) VALUES($playerid, ".$lastPoint['id'].", $severity);";
+        self::executeInsertQuery($query);
+    }
+
     public static function getBookings($team,$set) : array
     {
         $query = "SELECT pts.`timestamp` , p.`number`, m.last_name, severity ,  ".

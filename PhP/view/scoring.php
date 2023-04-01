@@ -15,12 +15,15 @@ ob_start();
                 <ul class="<?= ($player->id == $nextUp->id ? 'serving' : '') ?>"><?= $player->number ?> <?= $player->last_name ?></ul>
             <?php endforeach; ?>
         </div>
-        <div class="actions">
+        <div class="actions d-flex flex-row justify-content-around m-2">
             <form method="post" action="?action=scorePoint">
                 <input type="hidden" name="setid" value="<?= $set->id ?>" />
                 <input type="hidden" name="receiving" value="1" />
-                <input type="submit" value="Point" />
+                <input class="btn btn-success" type="submit" value="Point" />
             </form>
+            <a class="btn btn-danger" href="?action=selectBooking&teamid=<?= $game->receivingTeamId ?>&setid=<?= $set->id ?>">
+                Sanctions
+            </a>
         </div>
     </div>
     <div class="d-flex flex-column order-<?= (($game->toss+$set->number) % 2 == 0) ? 2 : 1 ?>">
@@ -32,12 +35,15 @@ ob_start();
                 <ul class="<?= ($player->id == $nextUp->id ? 'serving' : '') ?>"><?= $player->number ?> <?= $player->last_name ?></ul>
             <?php endforeach; ?>
         </div>
-        <div class="actions">
+        <div class="actions d-flex flex-row justify-content-around m-2">
             <form method="post" action="?action=scorePoint">
                 <input type="hidden" name="setid" value="<?= $set->id ?>" />
                 <input type="hidden" name="receiving" value="0" />
-                <input type="submit" value="Point" />
+                <input class="btn btn-success" type="submit" value="Point" />
             </form>
+            <a class="btn btn-danger" href="?action=selectBooking&teamid=<?= $game->visitingTeamId ?>&setid=<?= $set->id ?>">
+                Sanctions
+            </a>
         </div>
     </div>
 </div>

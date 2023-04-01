@@ -186,11 +186,17 @@ interface IVolscoreDb {
     public static function getPlayer($memberid,$gameid) : ?Member;
 
     /**
+     * Registers a booking against a player in a given set
+     * - severity           0=yellow, 1=red, 2=yellow and red together, 3=yellow and red separate
+     */
+    public static function giveBooking ($playerid, $setid, $severity);
+
+    /**
      * Returns the list of bookings for a given team in a given game
      * The result is an array of associative arrays.
      * Each booking is one associative array with keys:
      * - timestamp          Time of the point after which the booking was given
-     * - number             of the playe
+     * - number             of the player
      * - last_name          of the player
      * - severity           0=yellow, 1=red, 2=yellow and red together, 3=yellow and red separate
      * - scoreReceiving     Score at the moment of the booking
