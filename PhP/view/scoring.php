@@ -10,40 +10,50 @@ ob_start();
         <div class="teamname"><?= $game->receivingTeamName ?></div>
         <div class="setscore"><?= $game->scoreReceiving ?></div>
         <div class="score"><?= $set->scoreReceiving ?></div>
-        <div>
+        <div class="d-flex flex-column align-items-center">
             <?php foreach ($receivingPositions as $player) : ?>
-                <ul class="<?= ($player->id == $nextUp->id ? 'serving' : '') ?>"><?= $player->number ?> <?= $player->last_name ?></ul>
+                <div class="<?= ($player->id == $nextUp->id ? 'serving' : '') ?>"><?= $player->number ?> <?= $player->last_name ?></div>
             <?php endforeach; ?>
         </div>
-        <div class="actions d-flex flex-row justify-content-around m-2">
+        <div class="row actions d-flex flex-column">
             <form method="post" action="?action=scorePoint">
                 <input type="hidden" name="setid" value="<?= $set->id ?>" />
                 <input type="hidden" name="receiving" value="1" />
-                <input class="btn btn-success" type="submit" value="Point" />
+                <input class="col-12 btn btn-success" type="submit" value="Point" />
             </form>
-            <a class="btn btn-danger" href="?action=selectBooking&teamid=<?= $game->receivingTeamId ?>&setid=<?= $set->id ?>">
-                Sanctions
-            </a>
+            <div class="d-flex flex-row justify-content-between">
+                <a class="btn btn-danger m-2" href="?action=selectBooking&teamid=<?= $game->receivingTeamId ?>&setid=<?= $set->id ?>">
+                    Sanctions
+                </a>
+                <a class="btn btn-secondary m-2" href="?action=timeout&teamid=<?= $game->receivingTeamId ?>&setid=<?= $set->id ?>">
+                Temps Mort
+                </a>
+            </div>
         </div>
     </div>
     <div class="d-flex flex-column order-<?= (($game->toss+$set->number) % 2 == 0) ? 2 : 1 ?>">
         <div class="teamname"><?= $game->visitingTeamName ?></div>
         <div class="setscore"><?= $game->scoreVisiting ?></div>
         <div class="score"><?= $set->scoreVisiting ?></div>
-        <div>
+        <div class="d-flex flex-column align-items-center">
             <?php foreach ($visitingPositions as $player) : ?>
-                <ul class="<?= ($player->id == $nextUp->id ? 'serving' : '') ?>"><?= $player->number ?> <?= $player->last_name ?></ul>
+                <div class="<?= ($player->id == $nextUp->id ? 'serving' : '') ?>"><?= $player->number ?> <?= $player->last_name ?></div>
             <?php endforeach; ?>
         </div>
-        <div class="actions d-flex flex-row justify-content-around m-2">
+        <div class="row actions d-flex flex-column">
             <form method="post" action="?action=scorePoint">
                 <input type="hidden" name="setid" value="<?= $set->id ?>" />
                 <input type="hidden" name="receiving" value="0" />
-                <input class="btn btn-success" type="submit" value="Point" />
+                <input class="col-12 btn btn-success" type="submit" value="Point" />
             </form>
-            <a class="btn btn-danger" href="?action=selectBooking&teamid=<?= $game->visitingTeamId ?>&setid=<?= $set->id ?>">
-                Sanctions
-            </a>
+            <div class="d-flex flex-row justify-content-between">
+                <a class="btn btn-danger m-2" href="?action=selectBooking&teamid=<?= $game->visitingTeamId ?>&setid=<?= $set->id ?>">
+                    Sanctions
+                </a>
+                <a class="btn btn-secondary m-2" href="?action=timeout&teamid=<?= $game->visitingTeamId ?>&setid=<?= $set->id ?>">
+                Temps Mort
+                </a>
+            </div>
         </div>
     </div>
 </div>
