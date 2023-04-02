@@ -187,6 +187,7 @@ interface IVolscoreDb {
 
     /**
      * Registers a booking against a player in a given set
+     * The booking will be automatically linked to last point played in the set at this time
      * - severity           0=yellow, 1=red, 2=yellow and red together, 3=yellow and red separate
      */
     public static function giveBooking ($playerid, $setid, $severity);
