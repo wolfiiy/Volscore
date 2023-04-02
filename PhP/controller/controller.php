@@ -89,7 +89,7 @@ function registerToss($gameid,$winner)
     $game = VolscoreDB::getGame($gameid);
     $game->toss = $winner;
     VolscoreDB::saveGame($game);
-    header('Location: ?action=markGame&id='.$gameid);
+    header('Location: ?action=mark&id='.$gameid);
 }
 
 // Copies the positions passed to the specified set of the specified game

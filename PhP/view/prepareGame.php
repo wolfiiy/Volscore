@@ -45,8 +45,8 @@ ob_start();
     <h3>Tirage au sort gagné par</h3>
     <form method="post" action="?action=registerToss">
         <input type="hidden" name="gameid" value=<?= $game->number ?> />
-        <button type="submit" class="btn btn-success btn-sm m-3" name="cmdWinnerReceiving"><?= $game->receivingTeamName ?></button>
-        <button type="submit" class="btn btn-success btn-sm m-3" name="cmdWinnerVisiting"><?= $game->visitingTeamName ?></button>
+        <button type="submit" class="btn btn-success btn-sm m-3" name="cmdTossWinner" value="1"><?= $game->receivingTeamName ?></button>
+        <button type="submit" class="btn btn-success btn-sm m-3" name="cmdTossWinner" value="2"><?= $game->visitingTeamName ?></button>
     </form>
 </div>
 <?php

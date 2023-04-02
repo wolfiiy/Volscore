@@ -19,7 +19,7 @@ switch ($action)
         prepareSet($_GET['id']);
         break;
     case 'registerToss':
-        registerToss($_POST['gameid'], isset($_POST['cmdWinnerReceiving']) ? 1 : 2);
+        registerToss($_POST['gameid'], $_POST['cmdTossWinner']);
         break;
     case 'keepScore':
         keepScore($_GET['setid']);
