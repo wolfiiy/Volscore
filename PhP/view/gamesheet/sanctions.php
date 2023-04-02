@@ -11,9 +11,8 @@
                             </div>
                             <?php foreach ($set as $sanction) : ?>
                                 <div>
-                                    <?= $sanction['number'] ?>
-                                    <?= $sanction['last_name'] ?>
-                                    <?= $sanction['severity'] ?> (<?= $sanction['scoreReceiving'] ?>-<?= $sanction['scoreVisiting'] ?>)
+                                    <img class="cards" src="images/sanction<?= $sanction['severity'] ?>.png" />
+                                    à <?= $sanction['scoreReceiving'] ?>-<?= $sanction['scoreVisiting'] ?>
                                 </div>
                             <?php endforeach; ?>
                         <?php endif; ?>
