@@ -155,6 +155,12 @@ function keepScore($setid)
     require_once 'view/scoring.php';
 }
 
+function timeout($teamid,$setid)
+{
+    VolscoreDB::addTimeOut($teamid,$setid);
+    header('Location: ?action=keepScore&setid='.$setid);
+}
+
 function showBookings($teamid, $setid)
 {
     $set = VolscoreDB::getSet($setid);

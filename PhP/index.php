@@ -24,6 +24,9 @@ switch ($action)
     case 'keepScore':
         keepScore($_GET['setid']);
         break;
+    case 'timeout':
+        timeout($_GET['teamid'],$_GET['setid']);
+        break;
     case 'selectBooking':
         showBookings($_GET['teamid'],$_GET['setid']);
         break;

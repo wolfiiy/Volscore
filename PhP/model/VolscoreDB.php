@@ -523,10 +523,16 @@ class VolscoreDB implements IVolscoreDb {
             $position = $lastPoint['position_of_server']; // no change
         }
         
-        $pdo = self::connexionDB();
         $query =
              "INSERT INTO points (team_id, set_id, position_of_server) " .
              "VALUES(". ($receiving ? $game->receivingTeamId : $game->visitingTeamId) . ",".$set->id.",$position);";
+        self::executeInsertQuery($query);
+    }
+
+    public static function addTimeOut($teamid, $setid)
+    {
+        $lastPoint = self::getLastPoint(self::getSet($setid));
+        $query = "INSERT INTO timeouts (team_id, set_id, point_id) VALUES($teamid,$setid,".$lastPoint['id'].");";
         self::executeInsertQuery($query);
     }
 
