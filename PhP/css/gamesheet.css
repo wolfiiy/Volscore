@@ -105,6 +105,12 @@
     width: 330px;
     margin: 4px;
 }
+.setnumber {
+    font-weight: bolder;
+}
+.setduration {
+    font-weight: lighter;
+}
 .playerpoints {
     width: 16.5%;
     border-bottom: 1px solid gray;

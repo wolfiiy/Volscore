@@ -114,17 +114,24 @@ interface IVolscoreDb {
      * Add a timeout to the given team in the given set
      */
     public static function addTimeout($teamid, $setid);
+    
+    /**
+     * Puts the current time as end time od the set 
+     * Note: the start time is saved when the very first point of the set is scored
+     */
+    public static function registerSetEndTimestamp($setid);
 
     /**
      * Get the timeouts of a team in a set
-     */
+     */    
     public static function getTimeouts($teamid,$setid) : array;
     
     /**
      * returns all the sets of the given game
      */ 
-    public static function getSets($game) : array;
 
+    public static function getSets($game) : array;
+    
     /**
      * Returns the number of sets the game has (0-5)
      */  

@@ -518,6 +518,9 @@ class VolscoreDB implements IVolscoreDb {
         // use info for rotation        
         if (!$lastPoint) {
             $position = 1; // at the beginning of the game, serve is on position 1 on both sides
+            // save set start time
+            $query = "UPDATE `sets` SET start = CURRENT_TIMESTAMP WHERE `sets`.id = ".$set->id;
+            self::executeUpdateQuery($query);
         } elseif (!$lastPointOfTeam) {
             $position = 2; // first point of the serve-receiving team
         } elseif ($lastPoint->team_id != $scoringTeamId){
@@ -557,6 +560,12 @@ class VolscoreDB implements IVolscoreDb {
         $stmt->bindValue(':teamid',$teamid);
         $stmt->execute();
         return $stmt->fetchall();
+    }
+
+    public static function registerSetEndTimestamp($setid)
+    {
+        $query = "UPDATE `sets` SET end = CURRENT_TIMESTAMP WHERE `sets`.id = ".$setid;
+        self::executeUpdateQuery($query);
     }
 
     public static function nextServer($set) : Member

@@ -27,4 +27,12 @@ function romanNumber($n) {
             return '?';
     }
 }
+
+function minutesBetween ($start, $end)
+{
+    if (!$start || !$end) return "?";
+    $start_date = new DateTime($start);
+    $since_start = $start_date->diff(new DateTime($end));
+    return $since_start->i;
+}
 ?>

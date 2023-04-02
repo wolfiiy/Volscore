@@ -41,6 +41,8 @@ function showGame($gameid)
         foreach ($sets as $set) {
             $sanctions[$game->receivingTeamName][$set->number] = VolscoreDB::getBookings(VolscoreDB::getTeam($game->receivingTeamId),$set);
             $sanctions[$game->visitingTeamName][$set->number] = VolscoreDB::getBookings(VolscoreDB::getTeam($game->visitingTeamId),$set);
+            $game->receivingTimeouts[$set->number] = VolscoreDB::getTimeouts($game->receivingTeamId,$set->id);
+            $game->visitingTimeouts[$set->number] = VolscoreDB::getTimeouts($game->visitingTeamId,$set->id);
         }
         $receivingRoster = VolscoreDB::getRoster($gameid,$game->receivingTeamId);
         $visitingRoster = VolscoreDB::getRoster($gameid,$game->visitingTeamId);
@@ -210,6 +212,7 @@ function scorePoint($setid,$receiving)
         header('Location: ?action=keepScore&setid='.$setid);
     } else {
         $set = VolscoreDb::getSet($setid); // to have the last point in the score
+        VolscoreDB::registerSetEndTimestamp($setid);
         require_once 'view/endOfSet.php';
     }
 }
