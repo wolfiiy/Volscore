@@ -474,13 +474,14 @@ class VolscoreDB implements IVolscoreDb {
         return $newset;
     }
       
-    private static function getLastPoint ($set)
+    private static function getLastPoint ($set) : ?Point
     {
         $pdo = self::connexionDB();
         $stmt = $pdo->prepare("SELECT * FROM points WHERE set_id = :set_id ORDER BY id DESC LIMIT 1");
         $stmt->bindValue(':set_id', $set->id);
         $stmt->execute();
-        return ($stmt->fetch());
+        if (!$record=$stmt->fetch()) return null;
+        return (new Point($record));
     }
 
     private static function getPointBeforeLast ($set)
@@ -490,16 +491,18 @@ class VolscoreDB implements IVolscoreDb {
         $stmt->bindValue(':set_id', $set->id);
         $stmt->execute();
         $stmt->fetch(); // "burn" one
-        return ($stmt->fetch());
+        if (!$record=$stmt->fetch()) return null;
+        return (new Point($record));
     }
 
-    private static function getLastPointOfTeam ($set, $teamid)
+    private static function getLastPointOfTeam ($set, $teamid) : ?Point
     {
         $pdo = self::connexionDB();
         $stmt = $pdo->prepare("SELECT * FROM points WHERE set_id = :set_id AND team_id = $teamid ORDER BY id DESC LIMIT 1");
         $stmt->bindValue(':set_id', $set->id);
         $stmt->execute();
-        return ($stmt->fetch());
+        if (!$record=$stmt->fetch()) return null;
+        return (new Point($record));
     }
 
     public static function addPoint($set, $receiving)
@@ -515,12 +518,12 @@ class VolscoreDB implements IVolscoreDb {
         // use info for rotation        
         if (!$lastPoint) {
             $position = 1; // at the beginning of the game, serve is on position 1 on both sides
-        } elseif ($lastPointOfTeam === false) {
+        } elseif (!$lastPointOfTeam) {
             $position = 2; // first point of the serve-receiving team
-        } elseif ($lastPoint['team_id'] != $scoringTeamId){
-            $position = $lastPointOfTeam['position_of_server'] % 6 + 1; // change of serve -> rotation
+        } elseif ($lastPoint->team_id != $scoringTeamId){
+            $position = $lastPointOfTeam->position_of_server % 6 + 1; // change of serve -> rotation
         } else {
-            $position = $lastPoint['position_of_server']; // no change
+            $position = $lastPoint->position_of_server; // no change
         }
         
         $query =
@@ -532,7 +535,7 @@ class VolscoreDB implements IVolscoreDb {
     public static function addTimeOut($teamid, $setid)
     {
         $lastPoint = self::getLastPoint(self::getSet($setid));
-        $query = "INSERT INTO timeouts (team_id, set_id, point_id) VALUES($teamid,$setid,".$lastPoint['id'].");";
+        $query = "INSERT INTO timeouts (team_id, set_id, point_id) VALUES($teamid,$setid,".$lastPoint->id.");";
         self::executeInsertQuery($query);
     }
 
@@ -547,8 +550,8 @@ class VolscoreDB implements IVolscoreDb {
             $servingTeamId = $game->receivingTeamId; // by default for now (ignore toss)
             $position = 1;
         } else {            
-            $servingTeamId = $lastPoint['team_id']; 
-            $position = $lastPoint['position_of_server']; 
+            $servingTeamId = $lastPoint->team_id; 
+            $position = $lastPoint->position_of_server; 
         }
 
         // find the player
@@ -653,7 +656,7 @@ class VolscoreDB implements IVolscoreDb {
     {
         $lastPoint = self::getLastPoint(self::getSet($setid));
         $pdo = self::connexionDB();
-        $query = "INSERT INTO bookings (player_id, point_id, severity) VALUES($playerid, ".$lastPoint['id'].", $severity);";
+        $query = "INSERT INTO bookings (player_id, point_id, severity) VALUES($playerid, ".$lastPoint->id.", $severity);";
         self::executeInsertQuery($query);
     }
 
