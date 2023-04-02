@@ -149,6 +149,8 @@ function keepScore($setid)
 {
     $set = VolscoreDB::getSet($setid);
     $game = VolscoreDB::getGame($set->game_id);
+    $game->receivingTimeouts = VolscoreDB::getTimeouts($game->receivingTeamId,$setid);
+    $game->visitingTimeouts = VolscoreDB::getTimeouts($game->visitingTeamId,$setid);
     $nextUp = VolscoreDB::nextServer($set);
     $receivingPositions = VolscoreDB::getPositions($set->id, $game->receivingTeamId);
     $visitingPositions = VolscoreDB::getPositions($set->id, $game->visitingTeamId);
@@ -157,7 +159,7 @@ function keepScore($setid)
 
 function timeout($teamid,$setid)
 {
-    VolscoreDB::addTimeOut($teamid,$setid);
+    VolscoreDB::addTimeout($teamid,$setid);
     header('Location: ?action=keepScore&setid='.$setid);
 }
 

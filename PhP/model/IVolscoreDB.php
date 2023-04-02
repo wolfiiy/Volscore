@@ -113,8 +113,13 @@ interface IVolscoreDb {
     /**
      * Add a timeout to the given team in the given set
      */
-    public static function addTimeOut($teamid, $setid);
+    public static function addTimeout($teamid, $setid);
 
+    /**
+     * Get the timeouts of a team in a set
+     */
+    public static function getTimeouts($teamid,$setid) : array;
+    
     /**
      * returns all the sets of the given game
      */ 

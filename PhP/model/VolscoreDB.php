@@ -539,6 +539,26 @@ class VolscoreDB implements IVolscoreDb {
         self::executeInsertQuery($query);
     }
 
+    public static function getTimeouts($teamid,$setid) : array
+    {
+        $query = "SELECT pts.`timestamp` ,".
+                    "(SELECT COUNT(pts2.id) FROM points pts2 WHERE team_id = g.receiving_id and set_id = s.id and pts2.id <= pts.id) as scoreReceiving, ".
+                    "(SELECT COUNT(pts3.id) FROM points pts3 WHERE team_id = g.visiting_id and set_id = s.id and pts3.id <= pts.id) as scoreVisiting ".
+                "FROM timeouts ".
+                    "INNER JOIN teams t ON team_id = t.id ".
+                    "INNER JOIN points pts ON point_id = pts.id ".
+                    "INNER JOIN `sets` s ON timeouts.set_id = s.id ".
+                    "INNER JOIN games g ON game_id = g.id ".
+                "WHERE s.id= :setid and t.id= :teamid ;";
+        
+        $dbh = self::connexionDB();
+        $stmt = $dbh->prepare($query);
+        $stmt->bindValue(':setid',$setid);
+        $stmt->bindValue(':teamid',$teamid);
+        $stmt->execute();
+        return $stmt->fetchall();
+    }
+
     public static function nextServer($set) : Member
     {
         $game = self::getGame($set->game_id);

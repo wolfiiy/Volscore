@@ -8,7 +8,8 @@ ob_start();
 <div class="d-flex flex-row justify-content-around">
     <div class="d-flex flex-column order-<?= (($game->toss+$set->number) % 2 == 0) ? 1 : 2 ?>">
         <div class="teamname"><?= $game->receivingTeamName ?></div>
-        <div class="setscore"><?= $game->scoreReceiving ?></div>
+        <div class="setscore"><?= $game->scoreReceiving ?> sets</div>
+        <div class="setscore"><?= count($game->receivingTimeouts) ?> timeouts</div>
         <div class="score"><?= $set->scoreReceiving ?></div>
         <div class="d-flex flex-column align-items-center">
             <?php foreach ($receivingPositions as $player) : ?>
@@ -25,15 +26,18 @@ ob_start();
                 <a class="btn btn-danger m-2" href="?action=selectBooking&teamid=<?= $game->receivingTeamId ?>&setid=<?= $set->id ?>">
                     Sanctions
                 </a>
-                <a class="btn btn-secondary m-2" href="?action=timeout&teamid=<?= $game->receivingTeamId ?>&setid=<?= $set->id ?>">
-                Temps Mort
-                </a>
+                <?php if (count($game->receivingTimeouts) < 2) : ?>
+                    <a class="btn btn-secondary m-2" href="?action=timeout&teamid=<?= $game->receivingTeamId ?>&setid=<?= $set->id ?>" <?= count($game->receivingTimeouts) > 1 ? "disabled" : "" ?>>
+                        Temps Mort
+                    </a>
+                <?php endif; ?>
             </div>
         </div>
     </div>
     <div class="d-flex flex-column order-<?= (($game->toss+$set->number) % 2 == 0) ? 2 : 1 ?>">
         <div class="teamname"><?= $game->visitingTeamName ?></div>
         <div class="setscore"><?= $game->scoreVisiting ?></div>
+        <div class="setscore"><?= count($game->visitingTimeouts) ?> timeouts</div>
         <div class="score"><?= $set->scoreVisiting ?></div>
         <div class="d-flex flex-column align-items-center">
             <?php foreach ($visitingPositions as $player) : ?>
@@ -50,9 +54,11 @@ ob_start();
                 <a class="btn btn-danger m-2" href="?action=selectBooking&teamid=<?= $game->visitingTeamId ?>&setid=<?= $set->id ?>">
                     Sanctions
                 </a>
-                <a class="btn btn-secondary m-2" href="?action=timeout&teamid=<?= $game->visitingTeamId ?>&setid=<?= $set->id ?>">
-                Temps Mort
-                </a>
+                <?php if (count($game->visitingTimeouts) < 2) : ?>
+                    <a class="btn btn-secondary m-2" href="?action=timeout&teamid=<?= $game->visitingTeamId ?>&setid=<?= $set->id ?>">
+                        Temps Mort
+                    </a>
+                <?php endif; ?>
             </div>
         </div>
     </div>
