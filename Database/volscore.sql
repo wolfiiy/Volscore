@@ -237,6 +237,27 @@ CREATE TABLE `bookings` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT 'Contains bookings.';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
+--
+-- Table structure for table `timeouts`
+--
+
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `timeouts` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `team_id` int(11) NOT NULL,
+  `set_id` int(11) NOT NULL,
+  `point_id` int(11) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `fk_timeouts_teams_idx` (`team_id`),
+  KEY `fk_sets_teams_idx` (`set_id`),
+  KEY `fk_timeouts_points_idx` (`point_id`),
+  CONSTRAINT `fk_timeout_team` FOREIGN KEY (`team_id`) REFERENCES `teams` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION,
+  CONSTRAINT `fk_timeout_set` FOREIGN KEY (`set_id`) REFERENCES `sets` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION,
+  CONSTRAINT `fk_timeout_point` FOREIGN KEY (`point_id`) REFERENCES `points` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
 
 
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
