@@ -153,8 +153,9 @@ class VolscoreDB implements IVolscoreDb {
 
     public static function teamHasPlayed($team) : bool
     {
-        foreach (self::getGamesByTime(TimeInThe::past) as $game) {
-            if ($game->receivingTeamId == $team-id || $game->visitingTeamId == $team-id) return true;
+        foreach (self::getGamesByTime(TimeInThe::Past) as $game) {
+            // a game is played if it's in the past and one team won 3 sets
+            if (($game->receivingTeamId == $team->id || $game->visitingTeamId == $team->id) && ($game->scoreReceiving == 3 || $game->scoreVisiting == 3)) return true;
         }
         return false;
     }

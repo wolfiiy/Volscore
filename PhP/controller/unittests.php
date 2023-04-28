@@ -87,11 +87,15 @@ foreach (VolscoreDB::getGames() as $game) {
     }
 }
 
+// Early assessment
+$teamHasPlayedIsOK = !VolscoreDB::teamHasPlayed(VolscoreDB::getTeam(1));
+
 // Add scores to each past game
 foreach ($pastgames as $game) {
     $game = VolscoreDB::getGame($game->number); // because some fields are not initialized
     while (!VolscoreDB::gameIsOver($game)) {
         $newset = VolscoreDB::addSet($game);
+        $aTeamThatHasPlayed = $game->receivingTeamId;
 
         // create positions for this set
         $dbh = VolscoreDB::connexionDB();
@@ -232,6 +236,14 @@ echo "<hr>";
 echo "Test deleteTeam -> ";
 $kill = VolscoreDB::getTeam(7);
 if (VolscoreDB::deleteTeam($kill->id) && !VolscoreDB::deleteTeam(1)) {
+    echo "<span style='background-color:green; padding:3px'>OK</span>,";
+} else {
+    echo "<span style='background-color:red; padding:3px'>ko</span>,";
+}
+echo "<hr>";
+
+echo "Test teamHasPlayed -> ";
+if ($teamHasPlayedIsOK && VolscoreDB::teamHasPlayed(VolscoreDB::getTeam($aTeamThatHasPlayed))) {
     echo "<span style='background-color:green; padding:3px'>OK</span>,";
 } else {
     echo "<span style='background-color:red; padding:3px'>ko</span>,";
