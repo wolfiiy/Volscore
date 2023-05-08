@@ -174,6 +174,23 @@ class VolscoreDB implements IVolscoreDb {
         }
     }
 
+    public static function renameTeam($number, $newname) : bool
+    {
+        if (strlen($newname) > 2) { // minimal length = 3
+            try
+            {
+                $dbh = self::connexionDB();
+                $statement = $dbh->prepare("UPDATE teams SET name='$newname' WHERE id=$number"); // Prepare query
+                $statement->execute(); // Executer la query
+                $dbh = null;
+                return true;
+            } catch (PDOException $e) {
+                return false;
+            }
+        }
+        return false;
+    }
+
     public static function getGame($number) : ?Game
     {
         try

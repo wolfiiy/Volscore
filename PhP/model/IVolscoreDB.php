@@ -25,6 +25,12 @@ interface IVolscoreDb {
     public static function getTeam($number) : Team;
 
     /**
+     * Rename a team
+     * Return false if the name was invalid or already existing
+     */
+    public static function renameTeam($number, $newname) : bool;
+
+    /**
      * Tells if a team has already played a game
      */
     public static function teamHasPlayed($team) : bool;

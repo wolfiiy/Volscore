@@ -250,6 +250,22 @@ if ($teamHasPlayedIsOK && VolscoreDB::teamHasPlayed(VolscoreDB::getTeam($aTeamTh
 }
 echo "<hr>";
 
+echo "Test renameTeam -> ";
+$savename = VolscoreDB::getTeam(4)->name;
+$res = true;
+if (VolscoreDB::renameTeam(4,"x")) $res = false;
+if (VolscoreDB::renameTeam(4,VolscoreDB::getTeam(3)->name)) $res = false;
+if (!VolscoreDB::renameTeam(4,"VBC Schpruntz")) $res = false;
+if (VolscoreDB::getTeam(4)->name != "VBC Schpruntz") $res = false;
+if (!VolscoreDB::renameTeam(4,$savename)) $res = false;
+
+if ($res) {
+    echo "<span style='background-color:green; padding:3px'>OK</span>,";
+} else {
+    echo "<span style='background-color:red; padding:3px'>ko</span>,";
+}
+echo "<hr>";
+
 echo "Test getBookings -> ";
 
 VolscoreDB::executeInsertQuery("INSERT INTO bookings (player_id,point_id) VALUES(3,10);");
