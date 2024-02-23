@@ -36,8 +36,6 @@ Pour la documentation, ouvrez [ce fichier](doc/html/index.html) à partir de vot
 - Installer MySQL 8.0.32 (ou plus) à partir [du site](https://dev.mysql.com/downloads/installer/). Attention à:
     - Choisir le 'Legacy authentication mode', c'est-à-dire l'authentification par username/mot de passe
     - Se rappeler du username/mot de passe
-- Dans MySQL Workbench, se connecter au serveur local
-- Ouvrir le script `Database>volscore.sql` et l'exécuter
 - Dans le terminal Cmder, aller dans le dossier `PhP` du repo local
 - Lancer un serveur php: `php -S localhost:8000`
-- Dans un navigateur, aller à la page `http:\\localhost:8000`
+- Dans un navigateur, aller à la page `http:\\localhost:8000\?action=unittests`
