@@ -1,0 +1,38 @@
+{
+	"folders": {},
+	"connections": {
+		"mysql8-18de5dcff65-6597af4a2c31d996": {
+			"provider": "mysql",
+			"driver": "mysql8",
+			"name": "volscore",
+			"save-password": true,
+			"configuration": {
+				"host": "localhost",
+				"port": "6033",
+				"database": "volscore",
+				"url": "jdbc:mysql://localhost:6033/volscore",
+				"configurationType": "MANUAL",
+				"home": "/usr/local/Cellar/mariadb/10.6.3",
+				"type": "dev",
+				"closeIdleConnection": true,
+				"auth-model": "native"
+			}
+		}
+	},
+	"connection-types": {
+		"dev": {
+			"name": "Development",
+			"color": "255,255,255",
+			"description": "Regular development database",
+			"auto-commit": true,
+			"confirm-execute": false,
+			"confirm-data-change": false,
+			"smart-commit": false,
+			"smart-commit-recover": false,
+			"auto-close-transactions": true,
+			"close-transactions-period": 1800,
+			"auto-close-connections": true,
+			"close-connections-period": 3600
+		}
+	}
+}
