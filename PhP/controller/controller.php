@@ -136,15 +136,27 @@ function prepareSet($setid)
     require_once 'view/prepareSet.php';
 }
 
-function setPositions ($gameid, $setid, $teamid, $pos1, $pos2, $pos3, $pos4, $pos5, $pos6, $final) 
+function setPositions ($gameid, $setid, $teamid, $pos1, $pos2, $pos3, $pos4, $pos5, $pos6,$pos7, $pos8, $pos9, $pos10, $pos11, $pos12, $final) // MODIF ALEX
 {
+
+
     $positions = VolscoreDB::getPositions($setid,$teamid); // check if we already have them
     if (count($positions) == 0) {
         VolscoreDB::setPositions($setid, $teamid, $pos1, $pos2, $pos3, $pos4, $pos5, $pos6, $final);
     } else {
         VolscoreDB::updatePositions($setid, $teamid, $pos1, $pos2, $pos3, $pos4, $pos5, $pos6, $final);
     }
+
+    if (count($positions) == 0) {
+        VolscoreDB::setPositions($setid, $teamid, $pos7, $pos8, $pos9, $pos10, $pos11, $pos12, $final);
+    } else {
+        VolscoreDB::updatePositions($setid, $teamid, $pos7, $pos8, $pos9, $pos10, $pos11, $pos12, $final);
+    }
+
+
     header('Location: ?action=prepareSet&id='.$setid);
+
+    
 }
 
 function keepScore($setid)

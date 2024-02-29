@@ -8,7 +8,7 @@ try {
     if (PHP_OS == "Darwin") {
         $res = shell_exec("/usr/local/bin/mysql -u root -proot 2>&1 < ../Database/volscore.sql");
     } else {
-        $res = shell_exec("\"C:\\Program Files\\MySQL\\MySQL Server 8.0\\bin\\mysql\"  -u root -proot < ..\\Database\\volscore.sql");
+        $res = shell_exec("\"C:\\Program Files\\MariaDB 11.3\\bin\\mysql\"  -u root -proot < ..\\Database\\volscore.sql");
     }
     if ($res == "") {
         echo "<p>OK, Rechargée</p>";

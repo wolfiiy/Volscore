@@ -7,6 +7,7 @@
     <script src="/node_modules/bootstrap/dist/js/bootstrap.js"></script>
     <link rel="stylesheet" href="/css/styles.css">
     <link rel="stylesheet" href="/css/gamesheet.css">
+    <script src="DragDropTouch.js"></script>
 </head>
 <body>
 <header class="text-center">
