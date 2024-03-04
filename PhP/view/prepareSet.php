@@ -9,7 +9,7 @@ ob_start();
 
     <!-- Modifications Alex-->
     <div id="spawn" class="example-dropzone" ondragover="onDragOver(event);" ondrop="onDrop(event);">
-        <div>
+        
             <table>
                 <?php 
                 $compteur = 0;
@@ -20,7 +20,7 @@ ob_start();
 
                 endforeach; ?>
             </table>
-        </div>
+        
     </div>
 
     <!-- Fin Modifications Alex-->
@@ -89,9 +89,6 @@ ob_start();
 </table>
     <!-- Modifications Alex-->
     <div id="spawn" class="example-dropzone" ondragover="onDragOver(event);" ondrop="onDrop(event);">
-        
-    
-    <div>
         <table>
             <?php 
             foreach ($visitingRoster as $player) : 
@@ -100,7 +97,6 @@ ob_start();
                 <option type="text" value=<?= $player->playerInfo['playerid'] ?> id="draggable-<?php echo $compteur; ?>" class="example-draggable" draggable="true" ondragstart="onDragStart(event);" selected><?= $player->playerInfo['number'] . " "  ?><?= $player->last_name ?></option><?php 
             endforeach; ?>
         </table>
-    </div>
     </div>
     <!-- Fin Modifications Alex-->
 </div>
@@ -144,6 +140,11 @@ require_once 'gabarit.php';
             if(dropzone.id.includes("pos") && draggableElement.id.includes("pos")){
                 console.log("deplace");
                 
+                var un = draggableElement.options[1];
+                var deux = dropzone.options[1];
+
+                dropzone.options[1] = un;
+                draggableElement.options[1] = deux;
                 
             }
             // drop est un select et element non
