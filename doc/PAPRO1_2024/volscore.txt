@@ -1,0 +1,22 @@
+Extension installer pour aider dans mon travail
+
+PHP code intelligence for Visual Studio Code :
+
+PHP Intelephense
+
+Debugueur :
+
+PHP Debug
+
+Docker : 
+
+Makes it easy to create, manage, and debug containerized applications.
+
+C:\Users\pd51hwz\Desktop\github\Volscore\Volscore\Database (main -> origin)
+mysql -u root -proot < volscore.sql
+
+php -S localhost:8000
+
+BUG :
+
+Position les selects avec les meme id sur les 2 colonnes
