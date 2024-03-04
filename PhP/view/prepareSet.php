@@ -137,7 +137,27 @@ require_once 'gabarit.php';
 
         }
         else if(dropzone.value != 0 && dropzone.id != "spawn"){
-
+            
+            // Cas de figure
+            console.log(dropzone.id + " " + draggableElement.id)
+            // drop et element sont des select
+            if(dropzone.id.includes("pos") && draggableElement.id.includes("pos")){
+                console.log("deplace");
+                
+                
+            }
+            // drop est un select et element non
+            if(dropzone.id.includes("draggable") && draggableElement.id.includes("pos")){
+                console.log("deplace");
+            }
+            // contraire
+            if(dropzone.id.includes("pos") && draggableElement.id.includes("draggable")){
+                console.log("deplace");
+            }
+            // Pour finir les deux sont pas des selects
+            if(dropzone.id.includes("draggable") && draggableElement.id.includes("draggable")){
+                console.log("deplace");
+            }
         }
         else if(draggableElement.id.includes("pos")){
            //let select = document.getElementById(draggableElement.id);
