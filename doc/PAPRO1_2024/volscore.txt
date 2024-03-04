@@ -20,3 +20,15 @@ php -S localhost:8000
 BUG :
 
 Position les selects avec les meme id sur les 2 colonnes
+
+
+
+Sprint : Le sprint est l’unité de travail de base d’une équipe Scrum. C’est la principale caractéristique qui marque la différence entre Scrum et les autres modèles de développement agile.
+
+Planification du sprint : Le but du Sprint Planning est de définir ce qui va être fait dans le Sprint et comment cela va être fait. Cette réunion se tient au début de chaque sprint et définit la manière dont il abordera le projet à partir des étapes et des délais du Product Backlog. Chaque sprint est composé de différentes caractéristiques.
+
+Scrum quotidien : L’objectif du Daily Scrum est d’évaluer les progrès et les tendances jusqu’à la fin du Sprint, en synchronisant les activités et en créant un plan pour les 24 heures suivantes. Il s’agit d’une brève réunion qui a lieu chaque jour pendant la période du Sprint. Trois questions sont posées individuellement : Qu’est-ce que j’ai fait hier ? Qu’est-ce que je vais faire aujourd’hui ? De quelle aide ai-je besoin ? Le Scrum Master doit essayer de résoudre les problèmes ou les obstacles qui se présentent.
+
+Revue du sprint : L’objectif de la revue de sprint est de montrer le travail accompli en ce qui concerne le retard de livraison des produits pour les livraisons futures. Le sprint terminé est passé en revue, et il devrait déjà y avoir une avancée claire et tangible du produit à présenter au client.
+
+Rétrospective du sprint : L’équipe passe en revue les objectifs du sprint terminé, note les bons et les mauvais résultats, afin de ne pas répéter les erreurs. Cette étape sert à mettre en œuvre les améliorations du point de vue du processus de développement. L’objectif de la rétrospective du sprint est d’identifier les améliorations possibles du processus et de générer un plan pour les mettre en œuvre lors du prochain sprint.

@@ -128,11 +128,13 @@ require_once 'gabarit.php';
         const dropzone = event.target;
         console.log(event.target.id);
         console.log(draggableElement + "  " + draggableElement.selectedIndex + "  " + dropzone + "  " + dropzone.value)
-
+        console.log(dropzone.value + " " + dropzone.id + " htht");
+        /*
         if(event.target.id.includes("draggable")){
 
         }
-        else if(dropzone.value != 0 && dropzone.id != "spawn"){
+        */
+        if(dropzone.value != 0 && dropzone.id != "spawn"){
             
             // Cas de figure
             console.log(dropzone.id + " " + draggableElement.id)
@@ -150,14 +152,31 @@ require_once 'gabarit.php';
             // drop est un select et element non
             if(dropzone.id.includes("draggable") && draggableElement.id.includes("pos")){
                 console.log("deplace");
+                dropzone.parentNode.appendChild(draggableElement.options[1]);
+
+                draggableElement.appendChild(dropzone);
+                event.dataTransfer.clearData();
             }
             // contraire
             if(dropzone.id.includes("pos") && draggableElement.id.includes("draggable")){
-                console.log("deplace");
+
+                draggableElement.parentNode.appendChild(dropzone.options[1]);
+
+                dropzone.appendChild(draggableElement);
+                event.dataTransfer.clearData();
             }
             // Pour finir les deux sont pas des selects
             if(dropzone.id.includes("draggable") && draggableElement.id.includes("draggable")){
-                console.log("deplace");
+                console.log(dropzone.value + " " + draggableElement.id + " hgrebhrerhrehretht");
+                var un = draggableElement;
+                var deux = dropzone;
+
+                console.log(un.value + " " + deux.value);
+
+                dropzone.value = un.value;
+                dropzone.textContent = un.textContent;
+                draggableElement.value = deux.value;
+                draggableElement.textContent = deux.textContent;
             }
         }
         else if(draggableElement.id.includes("pos")){
