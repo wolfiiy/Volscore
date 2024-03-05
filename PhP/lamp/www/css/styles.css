@@ -1,0 +1,71 @@
+header, footer {
+    background: linear-gradient(0.25turn, #6aa619, #a7f89f, #1eb35c);
+}
+
+td, th {
+    vertical-align: top;
+    padding-left: 20px;
+}
+
+.score {
+    font-size: 150px;
+    font-weight: bolder;
+    text-align: center;
+    height: 230px;
+}
+
+.setscore {
+    text-align: center;
+}
+
+.teamname {
+    font-size: 50px;
+    width: 300px;
+    text-align: center;
+}
+
+.actions {
+    text-align: center;
+}
+
+/* Thanks http://jsfiddle.net/mirohristov/awayF/473/ */
+.checkmark {
+    display:inline-block;
+    width: 22px;
+    height:22px;
+    background: #38d917;
+    border-radius:50%;
+    -ms-transform: rotate(45deg); /* IE 9 */
+    -webkit-transform: rotate(45deg); /* Chrome, Safari, Opera */
+    transform: rotate(45deg);
+}
+
+.checkmark:before{
+    content:"";
+    position: absolute;
+    width:3px;
+    height:9px;
+    background-color:#fff;
+    left:11px;
+    top:6px;
+}
+
+.checkmark:after{
+    content:"";
+    position: absolute;
+    width:3px;
+    height:3px;
+    background-color:#fff;
+    left:8px;
+    top:12px;
+}
+
+.serving {
+    background-color: orange;
+    border-radius: 5px;
+}
+
+.teamPrep {
+    width: 30%;
+    text-align: center;
+}
