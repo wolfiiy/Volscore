@@ -129,11 +129,7 @@ require_once 'gabarit.php';
         console.log(event.target.id);
         console.log(draggableElement + "  " + draggableElement.selectedIndex + "  " + dropzone + "  " + dropzone.value)
         console.log(dropzone.value + " " + dropzone.id + " htht");
-        /*
-        if(event.target.id.includes("draggable")){
 
-        }
-        */
         if(dropzone.value != 0 && dropzone.id != "spawn"){
             
             // Cas de figure
@@ -167,16 +163,18 @@ require_once 'gabarit.php';
             }
             // Pour finir les deux sont pas des selects
             if(dropzone.id.includes("draggable") && draggableElement.id.includes("draggable")){
-                console.log(dropzone.value + " " + draggableElement.id + " hgrebhrerhrehretht");
-                var un = draggableElement;
-                var deux = dropzone;
 
-                console.log(un.value + " " + deux.value);
+                var draggableElementvalue = draggableElement.value;
+                var draggableElementtext = draggableElement.textContent;
 
-                dropzone.value = un.value;
-                dropzone.textContent = un.textContent;
-                draggableElement.value = deux.value;
-                draggableElement.textContent = deux.textContent;
+                var dropzonetext = dropzone.textContent;
+                var dropzonevalue = dropzone.value;
+
+                dropzone.value = draggableElementvalue;
+                dropzone.textContent = draggableElementtext;
+
+                draggableElement.value = dropzonevalue;
+                draggableElement.textContent = dropzonetext;
             }
         }
         else if(draggableElement.id.includes("pos")){
