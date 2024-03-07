@@ -10,17 +10,20 @@ ob_start();
     <!-- Modifications Alex-->
     <div id="spawn" class="example-dropzone" ondragover="onDragOver(event);" ondrop="onDrop(event);">
         
-            <table>
-                <?php 
-                $compteur = 0;
-                foreach ($receivingRoster as $player) : 
-                    $compteur++;?>
+            <?php 
+            $compteur = 0;
+            foreach ($receivingRoster as $player) : 
+                $compteur++;
+                
+                if(in_array($player,$receivingPositions)){
+                    echo "aufne";
                     
-                    <option type="text" value=<?= $player->playerInfo['playerid'] ?> id="draggable-<?php echo $compteur; ?>" class="example-draggable" draggable="true" ondragstart="onDragStart(event);" selected><?= $player->playerInfo['number'] . " " ?><?= $player->last_name ?></option><?php 
-
-                endforeach; ?>
-            </table>
-        
+                }
+                ?>
+                
+                <option type="text" value=<?= $player->playerInfo['playerid'] ?> id="draggable-<?php echo $compteur; ?>" class="example-draggable" draggable="true" ondragstart="onDragStart(event);" selected><?= $player->playerInfo['number'] . " " ?><?= $player->last_name ?></option><?php 
+                
+            endforeach; ?>
     </div>
 
     <!-- Fin Modifications Alex-->
@@ -62,6 +65,7 @@ ob_start();
             <?php if ($visitingPositionsLocked) : ?>
                 <table>
                     <?php foreach ($visitingPositions as $player) : ?>
+                        
                         <tr><td><?= $player->playerInfo['number'] ?></td><td><?= $player->last_name ?></td></tr>
                     <?php 
                  endforeach; ?>
@@ -89,14 +93,17 @@ ob_start();
 </table>
     <!-- Modifications Alex-->
     <div id="spawn" class="example-dropzone" ondragover="onDragOver(event);" ondrop="onDrop(event);">
-        <table>
             <?php 
             foreach ($visitingRoster as $player) : 
-                $compteur++;?>
+                $compteur++;
+                if(in_array($player,$visitingPositions)){
+                    echo "aufne";
+                    
+                }
+                ?>
                 
                 <option type="text" value=<?= $player->playerInfo['playerid'] ?> id="draggable-<?php echo $compteur; ?>" class="example-draggable" draggable="true" ondragstart="onDragStart(event);" selected><?= $player->playerInfo['number'] . " "  ?><?= $player->last_name ?></option><?php 
             endforeach; ?>
-        </table>
     </div>
     <!-- Fin Modifications Alex-->
 </div>
@@ -126,9 +133,6 @@ require_once 'gabarit.php';
         const id = event.dataTransfer.getData('text');
         const draggableElement = document.getElementById(id);
         const dropzone = event.target;
-        console.log(event.target.id);
-        console.log(draggableElement + "  " + draggableElement.selectedIndex + "  " + dropzone + "  " + dropzone.value)
-        console.log(dropzone.value + " " + dropzone.id + " htht");
 
         if(dropzone.value != 0 && dropzone.id != "spawn"){
             
