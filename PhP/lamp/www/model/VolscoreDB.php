@@ -483,7 +483,7 @@ class VolscoreDB implements IVolscoreDb {
     public static function addSet($game) : Set
     {
         $sets = VolscoreDB::getSets($game);
-        if (count($sets) >= 5) return -2;
+        if (count($sets) >= 5) throw new Exception('Ajout de set à un match qui en a déjà 5');
         $newset = new Set();
         $newset->game_id = $game->number;
         $newset->number = count($sets)+1;
