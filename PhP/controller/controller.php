@@ -147,6 +147,7 @@ function setPositions ($gameid, $setid, $teamid, $pos1, $pos2, $pos3, $pos4, $po
         VolscoreDB::updatePositions($setid, $teamid, $pos1, $pos2, $pos3, $pos4, $pos5, $pos6, $final);
     }
 
+    /* Ajout d'un if avec les autres entrées possible */
     if (count($positions) == 0) {
         VolscoreDB::setPositions($setid, $teamid, $pos7, $pos8, $pos9, $pos10, $pos11, $pos12, $final);
     } else {

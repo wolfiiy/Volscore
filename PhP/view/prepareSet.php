@@ -119,16 +119,19 @@ require_once 'gabarit.php';
 <!-- Alex Modif -->
 
 <script>
+    /* Méthode qui est appeller pour  */
     function onDragStart(event) {
 
         event.dataTransfer.setData('text/plain', event.target.id);
 
     }
+    /* Méthode qui est appeller pour  */
     function onDragOver(event) {
 
         event.preventDefault();
 
     }
+    /* Méthode qui est appeller pour  */
     function onDrop(event) {
         const id = event.dataTransfer.getData('text');
         const draggableElement = document.getElementById(id);
@@ -203,6 +206,7 @@ require_once 'gabarit.php';
             event.dataTransfer.clearData();
         }
     }
+    /* Méthode qui les select de 1 à 6 en false pour permettre d'envoyer en $_POST*/
     function Enable(){
 
         document.getElementById('pos1').disabled = false;
@@ -212,6 +216,7 @@ require_once 'gabarit.php';
         document.getElementById('pos5').disabled = false;
         document.getElementById('pos6').disabled = false;
     }
+    /* Méthode qui les select de 7 à 12 en false pour permettre d'envoyer en $_POST*/
     function EnableSecond(){
         document.getElementById('pos7').disabled = false;
         document.getElementById('pos8').disabled = false;
