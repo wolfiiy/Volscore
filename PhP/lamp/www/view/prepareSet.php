@@ -51,7 +51,7 @@ ob_start();
                     <?php for ($pos = 1; $pos <= 6; $pos++) : ?>
                         <div class="form-group">
                             <label for="pos<?= $pos ?>" class="col-2"><?= romanNumber($pos) ?></label>
-                            <select name="position<?= $pos ?>"  id="pos<?= $pos ?>" class="form-control" class="example-dropzone" draggable="true" ondragstart="onDragStart(event);" ondragover="onDragOver(event);" ondrop="onDrop(event);" disabled>
+                            <select name="position<?= $pos ?>" id="pos_<?= $game->receivingTeamId?>_<?= $pos?>" class="form-control" class="example-dropzone" draggable="true" ondragstart="onDragStart(event);" ondragover="onDragOver(event);" ondrop="onDrop(event);" disabled>
                                 <option value=0></option>
                             </select> </div>
                         <br>
@@ -71,14 +71,14 @@ ob_start();
                  endforeach; ?>
                 </table>
             <?php else : ?>
-                <form method="post" action="?action=setPositions" onsubmit="EnableSecond();">
+                <form method="post" action="?action=setPositions" onsubmit="Enable();">
                     <input type="hidden" name="gameid" value=<?= $game->number ?> />
                     <input type="hidden" name="setid" value=<?= $set->id ?> />
                     <input type="hidden" name="teamid" value=<?= $game->visitingTeamId ?> />
-                    <?php for ($pos = 7; $pos <= 12; $pos++) : ?>
+                    <?php for ($pos = 1; $pos <= 6; $pos++) : ?>
                         <div class="form-group">
-                            <label for="pos<?= $pos ?>"><?= $pos - 6?> : </label>
-                            <select name="position<?= $pos?>"  id="pos<?= $pos?>" class="form-control" class="example-dropzone" draggable="true" ondragstart="onDragStart(event);" ondragover="onDragOver(event);" ondrop="onDrop(event);" disabled>
+                            <label for="pos<?= $pos ?>"><?= $pos?> : </label>
+                            <select name="position<?= $pos?>"  id="pos_<?= $game->visitingTeamId?>_<?= $pos?>" class="form-control" class="example-dropzone" draggable="true" ondragstart="onDragStart(event);" ondragover="onDragOver(event);" ondrop="onDrop(event);" disabled>
                                 <option value=0></option>
                             </select>
                         </div>
@@ -209,21 +209,14 @@ require_once 'gabarit.php';
     /* Méthode qui les select de 1 à 6 en false pour permettre d'envoyer en $_POST*/
     function Enable(){
 
-        document.getElementById('pos1').disabled = false;
-        document.getElementById('pos2').disabled = false;
-        document.getElementById('pos3').disabled = false;
-        document.getElementById('pos4').disabled = false;
-        document.getElementById('pos5').disabled = false;
-        document.getElementById('pos6').disabled = false;
-    }
-    /* Méthode qui les select de 7 à 12 en false pour permettre d'envoyer en $_POST*/
-    function EnableSecond(){
-        document.getElementById('pos7').disabled = false;
-        document.getElementById('pos8').disabled = false;
-        document.getElementById('pos9').disabled = false;
-        document.getElementById('pos10').disabled = false;
-        document.getElementById('pos11').disabled = false;
-        document.getElementById('pos12').disabled = false;
+        // Sélectionner tous les éléments <select> de la page
+        var selects = document.querySelectorAll('select');
+
+        // Parcourir chaque élément <select>
+        selects.forEach(function(select) {
+            // Retirer l'attribut 'disabled'
+            select.removeAttribute('disabled');
+        });
     }
 </script>
 
