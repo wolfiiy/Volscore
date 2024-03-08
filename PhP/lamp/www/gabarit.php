@@ -3,11 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <title><?= $title ?></title>
+    <link rel="icon" type="image/x-icon" href="/view/favicon.ico" />
     <link rel="stylesheet" href="/node_modules/bootstrap/dist/css/bootstrap.css">
     <script src="/node_modules/bootstrap/dist/js/bootstrap.js"></script>
     <link rel="stylesheet" href="/css/styles.css">
     <link rel="stylesheet" href="/css/gamesheet.css">
-    <script src="DragDropTouch.js"></script>
 </head>
 <body>
 <header class="text-center">
