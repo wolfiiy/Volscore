@@ -1,6 +1,11 @@
 <div style='font-family:Arial, Helvetica, sans-serif'>
 <?php
 
+// reset db
+$command = file_get_contents('../../../Database/volscore.sql');
+VolscoreDB::executeUpdateQuery($command);
+
+
 // Add some games
 $today = date("Y-m-d");
 $rec = rand(1,6);
