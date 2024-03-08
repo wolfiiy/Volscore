@@ -61,8 +61,12 @@ td, th {
 }
 
 .serving {
-    background-color: orange;
-    border-radius: 5px;
+    margin-right: 20px;
+}
+
+.serving::after {
+    content: url('../view/images/serve.png');
+    margin-left: 30px;
 }
 
 .teamPrep {
