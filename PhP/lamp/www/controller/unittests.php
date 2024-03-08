@@ -1,23 +1,9 @@
 <div style='font-family:Arial, Helvetica, sans-serif'>
 <?php
 
-echo "<h1>DB</h1>";
-
-// Reset database completely
-try {
-    if (PHP_OS == "Darwin") {
-        $res = shell_exec("/usr/local/bin/mysql -u root -proot 2>&1 < ../Database/volscore.sql");
-    } else {
-        $res = shell_exec("\"C:\\Program Files\\MariaDB 11.3\\bin\\mysql\"  -u root -proot < ..\\Database\\volscore.sql");
-    }
-    if ($res == "") {
-        echo "<p>OK, Rechargée</p>";
-    } else {
-        echo "<p>Problème: $res</p>";
-    }
-} catch (Exception $e) {
-    echo "<p>Pas rechargée. Raison: ".$e->getMessage()."</p>";
-}
+// reset db
+$command = file_get_contents('../../../Database/volscore.sql');
+VolscoreDB::executeUpdateQuery($command);
 
 // Add some games
 $today = date("Y-m-d");
