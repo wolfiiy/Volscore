@@ -397,3 +397,8 @@ FodyWeavers.xsd
 
 # Workbench
 *.mwb.bak
+
+Database/.dbeaver/
+
+# Volscore specifics
+.credentials
