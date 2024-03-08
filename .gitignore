@@ -401,4 +401,4 @@ FodyWeavers.xsd
 Database/.dbeaver/
 
 # Volscore specifics
-.credentials
+.credentials.php
