@@ -325,7 +325,34 @@ class VolscoreDB implements IVolscoreDb {
 
     public static function getBenchPlayers($gameid,$setid,$teamid)
     {
-        throw new Exception("Not implemented yet");
+        try
+        {
+            $dbh = self::connexionDB();
+            $query = "SELECT members.id,members.first_name,members.last_name,members.role,members.license,players.id as playerid, players.number,players.validated
+            FROM players INNER JOIN members ON member_id = members.id
+            WHERE game_id = $gameid AND members.team_id = $teamid AND players.id NOT IN (
+                SELECT player_position_1_id FROM positions WHERE positions.set_id = $setid UNION
+                SELECT player_position_2_id FROM positions WHERE positions.set_id = $setid UNION
+                SELECT player_position_3_id FROM positions WHERE positions.set_id = $setid UNION
+                SELECT player_position_4_id FROM positions WHERE positions.set_id = $setid UNION
+                SELECT player_position_5_id FROM positions WHERE positions.set_id = $setid UNION
+                SELECT player_position_6_id FROM positions WHERE positions.set_id = $setid 
+            )";
+            $statement = $dbh->prepare($query); // Prepare query    
+            $statement->execute(); // Executer la query
+            $res = [];
+            while ($row = $statement->fetch()) {
+                $member = new Member($row);
+                // WARNING: Trick: add some contextual player info to the Member object
+                $member->playerInfo = ['playerid' => $row['playerid'], 'number' => $row['number'], 'validated' => $row['validated']];
+                $res[] = $member;
+            }
+            $dbh = null;
+            return $res;
+        } catch (PDOException $e) {
+            print 'Error!:' . $e->getMessage() . '<br/>';
+            return null;
+        }
     }
 
     public static function getRoster($gameid, $teamid) : array

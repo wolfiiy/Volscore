@@ -276,6 +276,43 @@ $dbh = null;
 
 echo "<hr>";
 
+echo "Test getBenchPlayer -> ";
+// check if the number of benched players is always the number of player minus 6
+$res="<span style='background-color:green; padding:3px'>OK</span>,";
+$games = VolscoreDB::getGames();
+foreach ($games as $game) {
+    $roster1size = count(VolscoreDB::getRoster($game->receivingTeamId, $game->number));
+    $roster2size = count(VolscoreDB::getRoster($game->visitingTeamId, $game->number));
+    foreach (VolscoreDB::getSets($game) as $set) {
+        if (count(VolscoreDB::getBenchPlayers($game->number, $set->id,$game->receivingTeamId)) - $roster1size != 6) {
+            $res="<span style='background-color:red; padding:3px'>ko</span>,";
+        }
+        if (count(VolscoreDB::getBenchPlayers($game->number, $set->id,$game->visitingTeamId)) - $roster2size != 6) {
+            $res="<span style='background-color:red; padding:3px'>ko</span>,";
+        }
+    }
+}
+
+$dbh = VolscoreDB::connexionDB();
+$query = "SELECT team_id FROM players INNER JOIN members ON member_id = members.id WHERE players.id = 3";
+$stmt = $dbh->prepare($query);
+$stmt->execute();
+$row = $stmt->fetch();
+$team = VolscoreDB::getTeam($row['team_id']);
+$set = VolscoreDB::getSet(1); // 10th point is in set 1
+
+$res="<span style='background-color:green; padding:3px'>OK</span>,";
+$oneBooking = VolscoreDB::getBookings($team,$set);
+if ( count($oneBooking) != 1) $res="<span style='background-color:red; padding:3px'>ko</span>,";
+$team->id = $team->id % 6 + 1;
+$noBooking = VolscoreDB::getBookings($team,$set);
+if ( count($noBooking) != 0) $res="<span style='background-color:red; padding:3px'>ko</span>,";
+echo $res;
+$dbh = null;
+
+
+echo "<hr>";
+
 
 // show the games
 

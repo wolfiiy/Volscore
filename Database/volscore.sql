@@ -169,12 +169,14 @@ CREATE TABLE `substitutions` (
   `position_id` int(11) NOT NULL COMMENT 'References the "position sheet" of a specific set',
   `player_position_out` int(11) NOT NULL COMMENT 'The position of the player who exits',
   `player_in_id` int(11) NOT NULL COMMENT 'The player who enters',
+  `point_id` int(11) NOT NULL COMMENT 'The after which the substitution occurs',
   `returned` tinyint(4) NOT NULL DEFAULT 0 COMMENT 'Indicates that the starting player has returned (and can no longer leave during this set)',
   PRIMARY KEY (`id`),
   KEY `fk_positions_idx` (`position_id`),
   KEY `fk_player_sub_idx` (`player_in_id`),
   CONSTRAINT `fk_positions` FOREIGN KEY (`position_id`) REFERENCES `positions` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  CONSTRAINT `fk_player_sub` FOREIGN KEY (`player_in_id`) REFERENCES `members` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+  CONSTRAINT `fk_point` FOREIGN KEY (`point_id`) REFERENCES `points` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `fk_player_sub` FOREIGN KEY (`player_in_id`) REFERENCES `players` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
