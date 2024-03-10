@@ -323,60 +323,6 @@ class VolscoreDB implements IVolscoreDb {
         return self::executeInsertQuery($query);
     }
 
-    public static function getBenchPlayers($gameid,$setid,$teamid)
-    {
-        try
-        {
-            $res = VolscoreDB::getRoster($gameid,$teamid); // start with full team
-            $dbh = self::connexionDB();
-            $query = "SELECT * FROM positions WHERE set_id = $setid AND team_id = $teamid";
-            $statement = $dbh->prepare($query); // Prepare query    
-            $statement->execute(); // Executer la query
-            $positions = $statement->fetch();
-            $courtPlayers = []; // The players that are presently on the court
-            for ($pos = 1; $pos <= 6; $pos++) { // find the player at each position
-                $playerid = $positions['starter_'.$pos.'_id']; // assume it's the starter
-                if ($positions['sub_in_point_'.$pos.'_id']) { // starter has been subbed
-                    $playerid = $positions['sub_'.$pos.'_id'];
-                }
-                $courtPlayers[] = self::findPlayer($playerid);
-            }
-            $dbh = null;
-            $res = array_udiff($res, $courtPlayers, function ($member1, $member2) {
-                return $member1->id - $member2->id;
-            });            
-            return $res;
-        } catch (PDOException $e) {
-            print 'Error!:' . $e->getMessage() . '<br/>';
-            return null;
-        }
-    }
-
-    public static function getRoster($gameid, $teamid) : array
-    {
-        try
-        {
-            $dbh = self::connexionDB();
-            $query = "SELECT members.id,members.first_name,members.last_name,members.role,members.license,players.id as playerid, players.number,players.validated ".
-                    "FROM players INNER JOIN members ON member_id = members.id ". 
-                    "WHERE game_id = $gameid AND members.team_id = $teamid";
-            $statement = $dbh->prepare($query); // Prepare query    
-            $statement->execute(); // Executer la query
-            $res = [];
-            while ($row = $statement->fetch()) {
-                $member = new Member($row);
-                // WARNING: Trick: add some contextual player info to the Member object
-                $member->playerInfo = ['playerid' => $row['playerid'], 'number' => $row['number'], 'validated' => $row['validated']];
-                $res[] = $member;
-            }
-            $dbh = null;
-            return $res;
-        } catch (PDOException $e) {
-            print 'Error!:' . $e->getMessage() . '<br/>';
-            return null;
-        }
-    }
-
     public static function validatePlayer($gameid,$memberid)
     {
         $query = "UPDATE players SET validated = 1 WHERE game_id=$gameid AND member_id=$memberid";
@@ -626,7 +572,7 @@ class VolscoreDB implements IVolscoreDb {
         }
 
         // find the player
-        $positions = self::getPositions($set->id,$servingTeamId);
+        $positions = self::getCourtPlayers($set->game_id, $set->id,$servingTeamId);
         return $positions[$position-1];
     }
 
@@ -697,12 +643,12 @@ class VolscoreDB implements IVolscoreDb {
     public static function updatePositions($setid, $teamid, $pos1, $pos2, $pos3, $pos4, $pos5, $pos6, $final=0)
     {
         $query =
-             "UPDATE positions SET player_position_1_id=$pos1, player_position_2_id=$pos2, player_position_3_id=$pos3, player_position_4_id=$pos4, player_position_5_id=$pos5, player_position_6_id=$pos6,final=$final " .
+             "UPDATE positions SET starter_1_id=$pos1, starter_2_id=$pos2, starter_3_id=$pos3, starter_4_id=$pos4, starter_5_id=$pos5, starter_6_id=$pos6,final=$final " .
              "WHERE set_id = $setid AND team_id = $teamid;";
         self::executeUpdateQuery($query);
     }
 
-    public static function getPositions($setid, $teamid, &$isFinal = NULL) : array
+    public static function getStartingPositions($setid, $teamid, &$isFinal = NULL) : array
     {
         try
         {
@@ -722,18 +668,74 @@ class VolscoreDB implements IVolscoreDb {
             }
             // build the list
             for ($pos = 1; $pos <= 6; $pos++) {
-                $query = "SELECT members.id,members.first_name,members.last_name,members.role,members.license,members.team_id,players.id as playerid, players.number ".
-                "FROM players INNER JOIN members ON member_id = members.id INNER JOIN positions ON player_position_".$pos."_id = players.id ". 
-                "WHERE set_id = $setid AND positions.team_id = $teamid";
-                $statement = $dbh->prepare($query); // Prepare query    
-                $statement->execute(); // Executer la query
-                $row = $statement->fetch();
-                $member = new Member($row);
-                // WARNING: Trick: add some contextual player info to the Member object
-                $member->playerInfo = ['playerid' => $row['playerid'], 'number' => $row['number']];
-                $res[] = $member;
+                $res[] = self::findPlayer($positions['starter_'.$pos.'_id']);
             }
             $isFinal = $positions['final'];
+            return $res;
+        } catch (PDOException $e) {
+            print 'Error!:' . $e->getMessage() . '<br/>';
+            return null;
+        }
+    }
+
+    public static function getBenchPlayers($gameid,$setid,$teamid)
+    {
+        try
+        {
+            $res = VolscoreDB::getRoster($gameid,$teamid); // start with full team
+            $res = array_udiff($res, self::getCourtPlayers($gameid,$setid,$teamid), function ($member1, $member2) {
+                return $member1->id - $member2->id;
+            });            
+            return $res;
+        } catch (PDOException $e) {
+            print 'Error!:' . $e->getMessage() . '<br/>';
+            return null;
+        }
+    }
+
+    public static function getCourtPlayers($gameid,$setid,$teamid)
+    {
+        try
+        {
+            $res = [];
+            $dbh = self::connexionDB();
+            $query = "SELECT * FROM positions WHERE set_id = $setid AND team_id = $teamid";
+            $statement = $dbh->prepare($query); // Prepare query    
+            $statement->execute(); // Executer la query
+            $positions = $statement->fetch();
+            for ($pos = 1; $pos <= 6; $pos++) { // find the player at each position
+                $playerid = $positions['starter_'.$pos.'_id']; // assume it's the starter
+                if ($positions['sub_in_point_'.$pos.'_id'] && !$positions['sub_out_point_'.$pos.'_id']) { // starter has been subbed
+                    $playerid = $positions['sub_'.$pos.'_id'];
+                }
+                $res[] = self::findPlayer($playerid);
+            }
+            $dbh = null;
+            return $res;
+        } catch (PDOException $e) {
+            print 'Error!:' . $e->getMessage() . '<br/>';
+            return null;
+        }
+    }
+
+    public static function getRoster($gameid, $teamid) : array
+    {
+        try
+        {
+            $dbh = self::connexionDB();
+            $query = "SELECT members.id,members.first_name,members.last_name,members.role,members.license,players.id as playerid, players.number,players.validated ".
+                    "FROM players INNER JOIN members ON member_id = members.id ". 
+                    "WHERE game_id = $gameid AND members.team_id = $teamid";
+            $statement = $dbh->prepare($query); // Prepare query    
+            $statement->execute(); // Executer la query
+            $res = [];
+            while ($row = $statement->fetch()) {
+                $member = new Member($row);
+                // WARNING: Trick: add some contextual player info to the Member object
+                $member->playerInfo = ['playerid' => $row['playerid'], 'number' => $row['number'], 'validated' => $row['validated']];
+                $res[] = $member;
+            }
+            $dbh = null;
             return $res;
         } catch (PDOException $e) {
             print 'Error!:' . $e->getMessage() . '<br/>';

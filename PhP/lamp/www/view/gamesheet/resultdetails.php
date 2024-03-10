@@ -15,7 +15,7 @@
                         <?= $game->receivingTeamName ?>
                     </div>
                     <div class="setpositions">
-                        <?php foreach (VolscoreDB::getPositions($set->id, $game->receivingTeamId) as $player) : ?>
+                        <?php foreach (VolscoreDB::getStartingPositions($set->id, $game->receivingTeamId) as $player) : ?>
                             <div class="playernumber"><?= $player->playerInfo['number'] ?></div>
                         <?php endforeach; ?>
                     </div>
@@ -40,7 +40,7 @@
                         <?= $game->visitingTeamName ?>
                     </div>
                     <div class="setpositions">
-                        <?php foreach (VolscoreDB::getPositions($set->id, $game->visitingTeamId) as $player) : ?>
+                        <?php foreach (VolscoreDB::getStartingPositions($set->id, $game->visitingTeamId) as $player) : ?>
                             <div class="playernumber"><?= $player->playerInfo['number'] ?></div>
                         <?php endforeach; ?>
                     </div>

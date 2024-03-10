@@ -112,23 +112,23 @@ function prepareSet($setid)
     $receivingRoster = VolscoreDB::getRoster($game->number,$game->receivingTeamId);
     $visitingRoster = VolscoreDB::getRoster($game->number,$game->visitingTeamId);
     $receivingPositionsLocked = 0;
-    $receivingPositions = VolscoreDB::getPositions($set->id, $game->receivingTeamId,$receivingPositionsLocked);
+    $receivingPositions = VolscoreDB::getStartingPositions($set->id, $game->receivingTeamId,$receivingPositionsLocked);
     if (count($receivingPositions) < 6) {
-        $receivingPositions = VolscoreDB::getPositions(0, $game->receivingTeamId, $receivingPositionsLocked); // try to get those of the last set played
+        $receivingPositions = VolscoreDB::getStartingPositions(0, $game->receivingTeamId, $receivingPositionsLocked); // try to get those of the last set played
         if (count($receivingPositions) == 6) { // got them, we have to transpose them to the current game
             reportPositions($receivingPositions,$game->number,$setid,$game->receivingTeamId);
-            $receivingPositions = VolscoreDB::getPositions($set->id, $game->receivingTeamId,$receivingPositionsLocked);
+            $receivingPositions = VolscoreDB::getStartingPositions($set->id, $game->receivingTeamId,$receivingPositionsLocked);
         } else {
             $receivingPositions = [0,0,0,0,0,0]; 
         }
     }
     $visitingPositionsLocked = 0;
-    $visitingPositions = VolscoreDB::getPositions($set->id, $game->visitingTeamId,$visitingPositionsLocked);
+    $visitingPositions = VolscoreDB::getStartingPositions($set->id, $game->visitingTeamId,$visitingPositionsLocked);
     if (count($visitingPositions) < 6) {
-        $visitingPositions = VolscoreDB::getPositions(0, $game->visitingTeamId); // try to get those of the last set played
+        $visitingPositions = VolscoreDB::getStartingPositions(0, $game->visitingTeamId); // try to get those of the last set played
         if (count($visitingPositions) == 6) { // got them, we have to transpose them to the current game
             reportPositions($visitingPositions,$game->number,$setid,$game->visitingTeamId);
-            $visitingPositions = VolscoreDB::getPositions($set->id, $game->visitingTeamId,$visitingPositionsLocked);
+            $visitingPositions = VolscoreDB::getStartingPositions($set->id, $game->visitingTeamId,$visitingPositionsLocked);
         } else {
             $visitingPositions = [0,0,0,0,0,0]; 
         }
@@ -140,7 +140,7 @@ function setPositions ($gameid, $setid, $teamid, $pos1, $pos2, $pos3, $pos4, $po
 {
 // TODO : Trouver un moyen pour que seulement 6 position passent et que le code fonctionne toujours
 
-    $positions = VolscoreDB::getPositions($setid,$teamid); // check if we already have them
+    $positions = VolscoreDB::getStartingPositions($setid,$teamid); // check if we already have them
     if (count($positions) == 0) {
         VolscoreDB::setPositions($setid, $teamid, $pos1, $pos2, $pos3, $pos4, $pos5, $pos6, $final);
     } else {
@@ -157,8 +157,10 @@ function keepScore($setid)
     $game->receivingTimeouts = VolscoreDB::getTimeouts($game->receivingTeamId,$setid);
     $game->visitingTimeouts = VolscoreDB::getTimeouts($game->visitingTeamId,$setid);
     $nextUp = VolscoreDB::nextServer($set);
-    $receivingPositions = VolscoreDB::getPositions($set->id, $game->receivingTeamId);
-    $visitingPositions = VolscoreDB::getPositions($set->id, $game->visitingTeamId);
+    $receivingPositions = VolscoreDB::getCourtPlayers($set->game_id, $set->id, $game->receivingTeamId);
+    $visitingPositions = VolscoreDB::getCourtPlayers($set->game_id, $set->id, $game->visitingTeamId);
+    $receivingBench = VolscoreDB::getBenchPlayers($set->game_id, $set->id, $game->receivingTeamId);
+    $visitingBench = VolscoreDB::getBenchPlayers($set->game_id, $set->id, $game->visitingTeamId);
     require_once 'view/scoring.php';
 }
 

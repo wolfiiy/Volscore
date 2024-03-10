@@ -164,11 +164,6 @@ interface IVolscoreDb {
     public static function setIsOver($set) : bool;
 
     /**
-     * Returns the list of players that are on the bench, i.e: the players that are in the roster but not in the positions sheet
-     */
-    public static function getBenchPlayers($gameid,$setid,$teamid); 
-
-    /**
      * Returns the list of members who have been registered as players for the
      * given team in the given game (liste d'engagement)
      */
@@ -197,7 +192,17 @@ interface IVolscoreDb {
      * Get the players starting positions for a specific team in a specific set
      * If $setid == 0 , the last positions used by that team are returned
      */
-    public static function getPositions($setid, $teamid) : array;
+    public static function getStartingPositions($setid, $teamid) : array;
+
+    /**
+     * Returns the list of players that are on the bench, i.e: the players that are in the roster but not in the positions sheet
+     */
+    public static function getBenchPlayers($gameid,$setid,$teamid); 
+
+    /**
+     * Returns the list of players that are on the court, taking into account the substitutions
+     */
+    public static function getCourtPlayers($gameid,$setid,$teamid); 
 
     /**
      * Takes a member of a team and links him to a specific game, 
