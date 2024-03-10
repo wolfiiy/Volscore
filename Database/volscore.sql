@@ -131,52 +131,69 @@ CREATE TABLE `positions` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `set_id` int(11) NOT NULL,
   `team_id` int(11) NOT NULL,
-  `player_position_1_id` int(11) NOT NULL,
-  `player_position_2_id` int(11) NOT NULL,
-  `player_position_3_id` int(11) NOT NULL,
-  `player_position_4_id` int(11) NOT NULL,
-  `player_position_5_id` int(11) NOT NULL,
-  `player_position_6_id` int(11) NOT NULL,
+  `starter_1_id` int(11) NOT NULL COMMENT 'The player who started the set in position 1',
+  `sub_1_id` int(11) NULL COMMENT 'The player who entered for the one who started during the set',
+  `sub_in_point_1_id` int(11) NULL COMMENT 'The point after which the sub came in',
+  `sub_out_point_1_id` int(11) NULL COMMENT 'The point after which the sub_out_point returned',
+  
+  `starter_2_id` int(11) NOT NULL,
+  `sub_2_id` int(11) NULL,
+  `sub_in_point_2_id` int(11) NULL,
+  `sub_out_point_2_id` int(11) NULL,
+  
+  `starter_3_id` int(11) NOT NULL,
+  `sub_3_id` int(11) NULL,
+  `sub_in_point_3_id` int(11) NULL,
+  `sub_out_point_3_id` int(11) NULL,
+  
+  `starter_4_id` int(11) NOT NULL,
+  `sub_4_id` int(11) NULL,
+  `sub_in_point_4_id` int(11) NULL,
+  `sub_out_point_4_id` int(11) NULL,
+  
+  `starter_5_id` int(11) NOT NULL,
+  `sub_5_id` int(11) NULL,
+  `sub_in_point_5_id` int(11) NULL,
+  `sub_out_point_5_id` int(11) NULL,
+  
+  `starter_6_id` int(11) NOT NULL,
+  `sub_6_id` int(11) NULL,
+  `sub_in_point_6_id` int(11) NULL,
+  `sub_out_point_6_id` int(11) NULL,
   `final`int(1) NOT NULL DEFAULT 0,
   PRIMARY KEY (`id`),
-  KEY `fk_position_sets1_idx` (`set_id`),
-  KEY `fk_position_teams_idx` (`team_id`),
-  KEY `fk_positions_members1_idx` (`player_position_1_id`),
-  KEY `fk_positions_members2_idx` (`player_position_2_id`),
-  KEY `fk_positions_members3_idx` (`player_position_3_id`),
-  KEY `fk_positions_members4_idx` (`player_position_4_id`),
-  KEY `fk_positions_members5_idx` (`player_position_5_id`),
-  KEY `fk_positions_members6_idx` (`player_position_6_id`),
   CONSTRAINT `fk_position_sets1` FOREIGN KEY (`set_id`) REFERENCES `sets` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `fk_position_teams` FOREIGN KEY (`team_id`) REFERENCES `teams` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  CONSTRAINT `fk_positions_players1` FOREIGN KEY (`player_position_1_id`) REFERENCES `players` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  CONSTRAINT `fk_positions_players2` FOREIGN KEY (`player_position_2_id`) REFERENCES `players` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  CONSTRAINT `fk_positions_players3` FOREIGN KEY (`player_position_3_id`) REFERENCES `players` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  CONSTRAINT `fk_positions_players4` FOREIGN KEY (`player_position_4_id`) REFERENCES `players` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  CONSTRAINT `fk_positions_players5` FOREIGN KEY (`player_position_5_id`) REFERENCES `players` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  CONSTRAINT `fk_positions_players6` FOREIGN KEY (`player_position_6_id`) REFERENCES `players` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
 
---
--- Table structure for table `substitutions`
---
+  CONSTRAINT `fk_starter1` FOREIGN KEY (`starter_1_id`) REFERENCES `players` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `fk_sub1` FOREIGN KEY (`sub_1_id`) REFERENCES `players` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `fk_subin1point` FOREIGN KEY (`sub_in_point_1_id`) REFERENCES `points` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `fk_subout1point` FOREIGN KEY (`sub_out_point_1_id`) REFERENCES `points` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
 
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `substitutions` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `position_id` int(11) NOT NULL COMMENT 'References the "position sheet" of a specific set',
-  `player_position_out` int(11) NOT NULL COMMENT 'The position of the player who exits',
-  `player_in_id` int(11) NOT NULL COMMENT 'The player who enters',
-  `point_id` int(11) NOT NULL COMMENT 'The after which the substitution occurs',
-  `returned` tinyint(4) NOT NULL DEFAULT 0 COMMENT 'Indicates that the starting player has returned (and can no longer leave during this set)',
-  PRIMARY KEY (`id`),
-  KEY `fk_positions_idx` (`position_id`),
-  KEY `fk_player_sub_idx` (`player_in_id`),
-  CONSTRAINT `fk_positions` FOREIGN KEY (`position_id`) REFERENCES `positions` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  CONSTRAINT `fk_point` FOREIGN KEY (`point_id`) REFERENCES `points` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  CONSTRAINT `fk_player_sub` FOREIGN KEY (`player_in_id`) REFERENCES `players` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+  CONSTRAINT `fk_starter2` FOREIGN KEY (`starter_2_id`) REFERENCES `players` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `fk_sub2` FOREIGN KEY (`sub_2_id`) REFERENCES `players` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `fk_subin2point` FOREIGN KEY (`sub_in_point_2_id`) REFERENCES `points` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `fk_subout2point` FOREIGN KEY (`sub_out_point_2_id`) REFERENCES `points` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+
+  CONSTRAINT `fk_starter3` FOREIGN KEY (`starter_3_id`) REFERENCES `players` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `fk_sub3` FOREIGN KEY (`sub_3_id`) REFERENCES `players` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `fk_subin3point` FOREIGN KEY (`sub_in_point_3_id`) REFERENCES `points` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `fk_subout3point` FOREIGN KEY (`sub_out_point_3_id`) REFERENCES `points` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+
+  CONSTRAINT `fk_starter4` FOREIGN KEY (`starter_4_id`) REFERENCES `players` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `fk_sub4` FOREIGN KEY (`sub_4_id`) REFERENCES `players` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `fk_subin4point` FOREIGN KEY (`sub_in_point_4_id`) REFERENCES `points` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `fk_subout4point` FOREIGN KEY (`sub_out_point_4_id`) REFERENCES `points` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+
+  CONSTRAINT `fk_starter5` FOREIGN KEY (`starter_5_id`) REFERENCES `players` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `fk_sub5` FOREIGN KEY (`sub_5_id`) REFERENCES `players` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `fk_subin5point` FOREIGN KEY (`sub_in_point_5_id`) REFERENCES `points` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `fk_subout5point` FOREIGN KEY (`sub_out_point_5_id`) REFERENCES `points` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+
+  CONSTRAINT `fk_starter6` FOREIGN KEY (`starter_6_id`) REFERENCES `players` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `fk_sub6` FOREIGN KEY (`sub_6_id`) REFERENCES `players` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `fk_subin6point` FOREIGN KEY (`sub_in_point_6_id`) REFERENCES `points` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `fk_subout6point` FOREIGN KEY (`sub_out_point_6_id`) REFERENCES `points` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
