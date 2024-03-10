@@ -327,27 +327,24 @@ class VolscoreDB implements IVolscoreDb {
     {
         try
         {
+            $res = VolscoreDB::getRoster($gameid,$teamid); // start with full team
             $dbh = self::connexionDB();
-            $query = "SELECT members.id,members.first_name,members.last_name,members.role,members.license,players.id as playerid, players.number,players.validated
-            FROM players INNER JOIN members ON member_id = members.id
-            WHERE game_id = $gameid AND members.team_id = $teamid AND players.id NOT IN (
-                SELECT player_position_1_id FROM positions WHERE positions.set_id = $setid UNION
-                SELECT player_position_2_id FROM positions WHERE positions.set_id = $setid UNION
-                SELECT player_position_3_id FROM positions WHERE positions.set_id = $setid UNION
-                SELECT player_position_4_id FROM positions WHERE positions.set_id = $setid UNION
-                SELECT player_position_5_id FROM positions WHERE positions.set_id = $setid UNION
-                SELECT player_position_6_id FROM positions WHERE positions.set_id = $setid 
-            )";
+            $query = "SELECT * FROM positions WHERE set_id = $setid AND team_id = $teamid";
             $statement = $dbh->prepare($query); // Prepare query    
             $statement->execute(); // Executer la query
-            $res = [];
-            while ($row = $statement->fetch()) {
-                $member = new Member($row);
-                // WARNING: Trick: add some contextual player info to the Member object
-                $member->playerInfo = ['playerid' => $row['playerid'], 'number' => $row['number'], 'validated' => $row['validated']];
-                $res[] = $member;
+            $positions = $statement->fetch();
+            $courtPlayers = []; // The players that are presently on the court
+            for ($pos = 1; $pos <= 6; $pos++) { // find the player at each position
+                $playerid = $positions['starter_'.$pos.'_id']; // assume it's the starter
+                if ($positions['sub_in_point_'.$pos.'_id']) { // starter has been subbed
+                    $playerid = $positions['sub_'.$pos.'_id'];
+                }
+                $courtPlayers[] = self::findPlayer($playerid);
             }
             $dbh = null;
+            $res = array_udiff($res, $courtPlayers, function ($member1, $member2) {
+                return $member1->id - $member2->id;
+            });            
             return $res;
         } catch (PDOException $e) {
             print 'Error!:' . $e->getMessage() . '<br/>';
@@ -671,10 +668,28 @@ class VolscoreDB implements IVolscoreDb {
         }
     }
 
+    private static function findPlayer($playerid) : ?Member
+    {
+        $pdo = self::connexionDB();
+        $query = "SELECT members.id,members.first_name,members.last_name,members.role,members.license,members.team_id,players.id as playerid, players.number ".
+        "FROM players INNER JOIN members ON member_id = members.id ". 
+        "WHERE players.id = $playerid";
+        $stmt = $pdo->prepare($query);
+        $stmt->execute();
+        if ($row = $stmt->fetch()) {
+            $player = new Member($row);
+            // WARNING: Trick: add some contextual player info to the Member object
+            $player->playerInfo = ['playerid' => $row['playerid'], 'number' => $row['number']];
+            return $player;
+        } else {
+            return null;
+        }
+    }
+
     public static function setPositions($setid, $teamid, $pos1, $pos2, $pos3, $pos4, $pos5, $pos6, $final=0)
     {
         $query =
-             "INSERT INTO positions (set_id, team_id, player_position_1_id, player_position_2_id, player_position_3_id, player_position_4_id, player_position_5_id, player_position_6_id, final) " .
+             "INSERT INTO positions (set_id, team_id, starter_1_id, starter_2_id, starter_3_id, starter_4_id, starter_5_id, starter_6_id, final) " .
              "VALUES($setid, $teamid, $pos1, $pos2, $pos3, $pos4, $pos5, $pos6, $final);";
         self::executeInsertQuery($query);
     }

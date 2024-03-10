@@ -166,7 +166,6 @@ interface IVolscoreDb {
     /**
      * Returns the list of players that are on the bench, i.e: the players that are in the roster but not in the positions sheet
      */
-    // TODO Fix issue: the positions that will appear on the final game sheet will be those at the end of the set, not the beginning
     public static function getBenchPlayers($gameid,$setid,$teamid); 
 
     /**
