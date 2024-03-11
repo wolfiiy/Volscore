@@ -13,7 +13,7 @@ ob_start();
         <div class="score"><?= $set->scoreReceiving ?></div>
         <div class="d-flex flex-column align-items-center">
             <?php foreach ($receivingPositions as $player) : ?>
-                <div class="<?= ($player->id == $nextUp->id ? 'serving' : '') ?>"><?= $player->number ?> <?= $player->last_name ?></div>
+                <div class="<?= ($player->id == $nextUp->id ? 'serving' : 'positions') ?>"><?= $player->number ?> <?= $player->last_name ?></div>
             <?php endforeach; ?>
         </div>
         <div class="row actions d-flex flex-column">
