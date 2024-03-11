@@ -8,7 +8,7 @@ ob_start();
 <div class="liste-joueur">
 
     <!-- Modifications Alex-->
-    <div id="spawn" class="example-dropzone" ondragover="onDragOver(event);" ondrop="onDrop(event);">
+    <div id="spawn" data-equipe="<?php echo $game->receivingTeamId;?>" class="example-dropzone" ondragover="onDragOver(event);" ondrop="onDrop(event);">
         
             <?php 
             $compteur = 0;
@@ -21,7 +21,7 @@ ob_start();
                 }
                 ?>
                 
-                <option type="text" value=<?= $player->playerInfo['playerid'] ?> id="draggable-<?php echo $compteur; ?>" class="example-draggable" draggable="true" ondragstart="onDragStart(event);" selected><?= $player->playerInfo['number'] . " " ?><?= $player->last_name ?></option><?php 
+                <option type="text" data-equipe="<?php echo $game->receivingTeamId;?>" value=<?= $player->playerInfo['playerid'] ?> id="draggable-<?php echo $compteur; ?>" class="example-draggable" draggable="true" ondragstart="onDragStart(event);" selected><?= $player->playerInfo['number'] . " " ?><?= $player->last_name ?></option><?php 
                 
             endforeach; ?>
     </div>
@@ -51,7 +51,7 @@ ob_start();
                     <?php for ($pos = 1; $pos <= 6; $pos++) : ?>
                         <div class="form-group">
                             <label for="pos<?= $pos ?>" class="col-2"><?= romanNumber($pos) ?></label>
-                            <select name="position<?= $pos ?>" id="pos_<?= $game->receivingTeamId?>_<?= $pos?>" class="form-control" class="example-dropzone" draggable="true" ondragstart="onDragStart(event);" ondragover="onDragOver(event);" ondrop="onDrop(event);" disabled>
+                            <select name="position<?= $pos ?>" data-equipe="<?php echo $game->receivingTeamId;?>" id="pos_<?= $game->receivingTeamId?>_<?= $pos?>" class="form-control" class="example-dropzone" draggable="true" ondragstart="onDragStart(event);" ondragover="onDragOver(event);" ondrop="onDrop(event);" disabled>
                                 <option value=0></option>
                             </select> </div>
                         <br>
@@ -78,7 +78,7 @@ ob_start();
                     <?php for ($pos = 1; $pos <= 6; $pos++) : ?>
                         <div class="form-group">
                             <label for="pos<?= $pos ?>"><?= $pos?> : </label>
-                            <select name="position<?= $pos?>"  id="pos_<?= $game->visitingTeamId?>_<?= $pos?>" class="form-control" class="example-dropzone" draggable="true" ondragstart="onDragStart(event);" ondragover="onDragOver(event);" ondrop="onDrop(event);" disabled>
+                            <select name="position<?= $pos?>" data-equipe="<?php echo $game->visitingTeamId;?>"  id="pos_<?= $game->visitingTeamId?>_<?= $pos?>" class="form-control" class="example-dropzone" draggable="true" ondragstart="onDragStart(event);" ondragover="onDragOver(event);" ondrop="onDrop(event);" disabled>
                                 <option value=0></option>
                             </select>
                         </div>
@@ -92,7 +92,7 @@ ob_start();
     </tr>
 </table>
     <!-- Modifications Alex-->
-    <div id="spawn" class="example-dropzone" ondragover="onDragOver(event);" ondrop="onDrop(event);">
+    <div id="spawn" data-equipe="<?php echo $game->visitingTeamId;?>" class="example-dropzone" ondragover="onDragOver(event);" ondrop="onDrop(event);">
             <?php 
             foreach ($visitingRoster as $player) : 
                 $compteur++;
@@ -102,7 +102,7 @@ ob_start();
                 }
                 ?>
                 
-                <option type="text" value=<?= $player->playerInfo['playerid'] ?> id="draggable-<?php echo $compteur; ?>" class="example-draggable" draggable="true" ondragstart="onDragStart(event);" selected><?= $player->playerInfo['number'] . " "  ?><?= $player->last_name ?></option><?php 
+                <option type="text" data-equipe="<?php echo $game->visitingTeamId;?>" value=<?= $player->playerInfo['playerid'] ?> id="draggable-<?php echo $compteur; ?>" class="example-draggable" draggable="true" ondragstart="onDragStart(event);" selected><?= $player->playerInfo['number'] . " "  ?><?= $player->last_name ?></option><?php 
             endforeach; ?>
     </div>
     <!-- Fin Modifications Alex-->
@@ -136,6 +136,8 @@ require_once 'gabarit.php';
         const id = event.dataTransfer.getData('text');
         const draggableElement = document.getElementById(id);
         const dropzone = event.target;
+        
+        if(draggableElement.dataset.equipe == dropzone.dataset.equipe){
 
         if(dropzone.value != 0 && dropzone.id != "spawn"){
             
@@ -183,29 +185,31 @@ require_once 'gabarit.php';
                 draggableElement.value = dropzonevalue;
                 draggableElement.textContent = dropzonetext;
             }
-        }
-        else if(draggableElement.id.includes("pos")){
-           //let select = document.getElementById(draggableElement.id);
+            }
+            else if(draggableElement.id.includes("pos")){
+            //let select = document.getElementById(draggableElement.id);
 
-            let newOption = document.createElement('option');
-            
-            console.log(draggableElement.options[1]);
-            newOption.value = draggableElement.value;
-            newOption.id = draggableElement.options[1].id;
-            newOption.className = "example-draggable";
-            newOption.setAttribute('draggable', "true");
-            newOption.setAttribute('ondragstart', "onDragStart(event);");
-            newOption.selected = true;
-            newOption.textContent = draggableElement.textContent;
-            dropzone.appendChild(newOption);
+                let newOption = document.createElement('option');
+                
+                console.log(draggableElement.options[1]);
+                newOption.value = draggableElement.value;
+                newOption.id = draggableElement.options[1].id;
+                newOption.className = "example-draggable";
+                newOption.setAttribute('draggable', "true");
+                newOption.setAttribute('ondragstart', "onDragStart(event);");
+                newOption.selected = true;
+                newOption.textContent = draggableElement.textContent;
+                dropzone.appendChild(newOption);
 
-            draggableElement.options.length = 1;
-        }
-        else{
-            dropzone.appendChild(draggableElement);
-            event.dataTransfer.clearData();
+                draggableElement.options.length = 1;
+            }
+            else{
+                dropzone.appendChild(draggableElement);
+                event.dataTransfer.clearData();
+            }
         }
     }
+
     /* Méthode qui les select de 1 à 6 en false pour permettre d'envoyer en $_POST*/
     function Enable(){
 
