@@ -28,69 +28,69 @@ ob_start();
 
     <!-- Fin Modifications Alex-->
 
-<table>
-    <tr><th class="teamPrep">Positions <?= $game->receivingTeamName ?></th><th class="teamPrep">Positions <?= $game->visitingTeamName ?></th></tr>
-    <tr>
-        <td class="teamPrep">
-            
-            <?php 
-            if ($receivingPositionsLocked) : ?>
-                <table>
-                    <?php foreach ($receivingPositions as $player) : ?>
-                        <tr><td><?= $player->playerInfo['number'] ?></td><td><?= $player->last_name ?></td></tr>
-                    <?php
-                    
-                    endforeach; ?>
-                </table>
-            <?php else : ?>
-                <form method="post" action="?action=setPositions" onsubmit="Enable();">
+    <table class="selecttable">
+        <tr><th class="teamPrep">Positions <?= $game->receivingTeamName ?></th><th class="teamPrep">Positions <?= $game->visitingTeamName ?></th></tr>
+        <tr>
+            <td class="teamPrep">
                 
-                    <input type="hidden" name="gameid" value=<?= $game->number ?> />
-                    <input type="hidden" name="setid" value=<?= $set->id ?> />
-                    <input type="hidden" name="teamid" value=<?= $game->receivingTeamId ?> />
-                    <?php for ($pos = 1; $pos <= 6; $pos++) : ?>
-                        <div class="form-group">
-                            <label for="pos<?= $pos ?>" class="col-2"><?= romanNumber($pos) ?></label>
-                            <select name="position<?= $pos ?>" data-equipe="<?php echo $game->receivingTeamId;?>" id="pos_<?= $game->receivingTeamId?>_<?= $pos?>" class="form-control" class="example-dropzone" draggable="true" ondragstart="onDragStart(event);" ondragover="onDragOver(event);" ondrop="onDrop(event);" disabled>
-                                <option value=0></option>
-                            </select> </div>
-                        <br>
-                    <?php endfor; ?>
-                    <input type="submit" class="btn btn-primary btn-sm" value="Enregistrer"/>
-                    <input type=checkbox name="final" id="final"> Finales
-                </form>
-            <?php endif; ?>
-        </td>
-        <td class="teamPrep">
-            <?php if ($visitingPositionsLocked) : ?>
-                <table>
-                    <?php foreach ($visitingPositions as $player) : ?>
+                <?php 
+                if ($receivingPositionsLocked) : ?>
+                    <table>
+                        <?php foreach ($receivingPositions as $player) : ?>
+                            <tr><td><?= $player->playerInfo['number'] ?></td><td><?= $player->last_name ?></td></tr>
+                        <?php
                         
-                        <tr><td><?= $player->playerInfo['number'] ?></td><td><?= $player->last_name ?></td></tr>
-                    <?php 
-                 endforeach; ?>
-                </table>
-            <?php else : ?>
-                <form method="post" action="?action=setPositions" onsubmit="Enable();">
-                    <input type="hidden" name="gameid" value=<?= $game->number ?> />
-                    <input type="hidden" name="setid" value=<?= $set->id ?> />
-                    <input type="hidden" name="teamid" value=<?= $game->visitingTeamId ?> />
-                    <?php for ($pos = 1; $pos <= 6; $pos++) : ?>
-                        <div class="form-group">
-                            <label for="pos<?= $pos ?>"><?= $pos?> : </label>
-                            <select name="position<?= $pos?>" data-equipe="<?php echo $game->visitingTeamId;?>"  id="pos_<?= $game->visitingTeamId?>_<?= $pos?>" class="form-control" class="example-dropzone" draggable="true" ondragstart="onDragStart(event);" ondragover="onDragOver(event);" ondrop="onDrop(event);" disabled>
-                                <option value=0></option>
-                            </select>
-                        </div>
-                        <br>
-                    <?php endfor; ?>
-                    <input type="submit" class="btn btn-primary btn-sm" value="Enregistrer"/>
-                    <input type=checkbox name="final" id="final"> Finales
-                </form>
-            <?php endif; ?>
-        </td>
-    </tr>
-</table>
+                        endforeach; ?>
+                    </table>
+                <?php else : ?>
+                    <form method="post" action="?action=setPositions" onsubmit="Enable();">
+                    
+                        <input type="hidden" name="gameid" value=<?= $game->number ?> />
+                        <input type="hidden" name="setid" value=<?= $set->id ?> />
+                        <input type="hidden" name="teamid" value=<?= $game->receivingTeamId ?> />
+                        <?php for ($pos = 1; $pos <= 6; $pos++) : ?>
+                            <div class="form-group">
+                                <label for="pos<?= $pos ?>" class="col-2"><?= romanNumber($pos) ?></label>
+                                <select name="position<?= $pos ?>" data-equipe="<?php echo $game->receivingTeamId;?>" id="pos_<?= $game->receivingTeamId?>_<?= $pos?>" class="form-control" class="example-dropzone" draggable="true" ondragstart="onDragStart(event);" ondragover="onDragOver(event);" ondrop="onDrop(event);" disabled>
+                                    <option value=0></option>
+                                </select> </div>
+                            <br>
+                        <?php endfor; ?>
+                        <input type="submit" class="btn btn-primary btn-sm" value="Enregistrer"/>
+                        <input type=checkbox name="final" id="final"> Finales
+                    </form>
+                <?php endif; ?>
+            </td>
+            <td class="teamPrep">
+                <?php if ($visitingPositionsLocked) : ?>
+                    <table>
+                        <?php foreach ($visitingPositions as $player) : ?>
+                            
+                            <tr><td><?= $player->playerInfo['number'] ?></td><td><?= $player->last_name ?></td></tr>
+                        <?php 
+                    endforeach; ?>
+                    </table>
+                <?php else : ?>
+                    <form method="post" action="?action=setPositions" onsubmit="Enable();">
+                        <input type="hidden" name="gameid" value=<?= $game->number ?> />
+                        <input type="hidden" name="setid" value=<?= $set->id ?> />
+                        <input type="hidden" name="teamid" value=<?= $game->visitingTeamId ?> />
+                        <?php for ($pos = 1; $pos <= 6; $pos++) : ?>
+                            <div class="form-group">
+                                <label for="pos<?= $pos ?>"><?= $pos?> : </label>
+                                <select name="position<?= $pos?>" data-equipe="<?php echo $game->visitingTeamId;?>"  id="pos_<?= $game->visitingTeamId?>_<?= $pos?>" class="form-control" class="example-dropzone" draggable="true" ondragstart="onDragStart(event);" ondragover="onDragOver(event);" ondrop="onDrop(event);" disabled>
+                                    <option value=0></option>
+                                </select>
+                            </div>
+                            <br>
+                        <?php endfor; ?>
+                        <input type="submit" class="btn btn-primary btn-sm" value="Enregistrer"/>
+                        <input type=checkbox name="final" id="final"> Finales
+                    </form>
+                <?php endif; ?>
+            </td>
+        </tr>
+    </table>
     <!-- Modifications Alex-->
     <div id="spawn" data-equipe="<?php echo $game->visitingTeamId;?>" class="example-dropzone" ondragover="onDragOver(event);" ondrop="onDrop(event);">
             <?php 

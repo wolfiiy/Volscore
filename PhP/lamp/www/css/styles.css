@@ -28,6 +28,10 @@ td, th {
     text-align: center;
 }
 
+.container{
+    margin: 0 auto;
+}
+
 /* Thanks http://jsfiddle.net/mirohristov/awayF/473/ */
 .checkmark {
     display:inline-block;
