@@ -6,6 +6,12 @@ ob_start();
 
 <div class="row text-center"><h1>Set <?= $set->number ?></h1></div>
 <div class="d-flex flex-row justify-content-around">
+    <div class="liste-joueur">
+
+
+
+    </div>
+
     <div class="d-flex flex-column order-<?= (($game->toss+$set->number) % 2 == 0) ? 1 : 2 ?>">
         <div class="teamname"><?= $game->receivingTeamName ?></div>
         <div class="setscore"><?= $game->scoreReceiving ?> sets</div>
@@ -31,6 +37,12 @@ ob_start();
                         Temps Mort
                     </a>
                 <?php endif; ?>
+                <button id="changement1" class="btn btn-tertiary m-2" AfficherBouton="AfficherBouton(true);">
+                    Changement
+                </button>
+                <button id="changer1" class="btn btn-success m-2" hidden>
+                    Valider
+                </button>
             </div>
         </div>
     </div>
@@ -59,10 +71,56 @@ ob_start();
                         Temps Mort
                     </a>
                 <?php endif; ?>
+                <button id="changement2" class="btn btn-tertiary m-2" AfficherBouton="AfficherBouton(true);">
+                    Changement
+                </button>
+                <button id="changer2" class="btn btn-success m-2" hidden>
+                    Valider
+                </button>
             </div>
         </div>
     </div>
 </div>
+<script>
+    var affichage1 = true;
+
+    const button1 = document.getElementById("changement1");
+
+    button1.addEventListener("click", (event) => {
+
+    AfficherBouton(affichage1,"changer1");
+
+    if(affichage1){affichage1 = false;}
+    else{affichage1 = true;}
+
+    });
+
+    var affichage2 = true;
+
+    const button2 = document.getElementById("changement2");
+    
+    button2.addEventListener("click", (event) => {
+
+    AfficherBouton(affichage2,"changer2");
+
+    if(affichage2){affichage2 = false;}
+    else{affichage2 = true;}
+
+    });
+
+    function AfficherBouton(value,text){
+        console.log(value);
+        if(value){
+            const button = document.getElementById(text);
+            button.hidden = false
+
+        }else{
+            const button = document.getElementById(text);
+            button.hidden = true
+        }
+    }
+
+</script>
 
 <?php
 $content = ob_get_clean();
