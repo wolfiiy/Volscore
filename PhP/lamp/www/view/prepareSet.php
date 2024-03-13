@@ -9,7 +9,6 @@ ob_start();
 
     <!-- Modifications Alex-->
     <div id="spawn" data-equipe="<?php echo $game->receivingTeamId;?>" class="example-dropzone" ondragover="onDragOver(event);" ondrop="onDrop(event);">
-    <?php echo $receivingPositions;?>
             <?php 
             $compteur = 0;
             
@@ -17,10 +16,9 @@ ob_start();
                 $compteur++;
                 
                 // Extract player IDs from $receivingPositions if it contains player objects
-                $positionPlayerIds = array_map(function($p) { return $p->playerInfo['playerid']; }, $receivingPositions);
-                
+                $positionPlayerIds2 = array_map(function($p) { return $p->playerInfo['playerid']; }, $receivingPositions);
                 // Now check if the player's ID is in the extracted IDs
-                if (!in_array($player->playerInfo['playerid'], $positionPlayerIds)) {
+                if (!in_array($player->playerInfo['playerid'], $positionPlayerIds2)) {
                     ?> <option type="text" data-equipe="<?php echo $game->receivingTeamId; ?>" value="<?= $player->playerInfo['playerid']; ?>" id="draggable-<?php echo $compteur; ?>" class="example-draggable" draggable="true" ondragstart="onDragStart(event);" selected><?= $player->playerInfo['number'] . " " ?><?= $player->last_name ?></option><?php 
                 }
             endforeach; ?>
@@ -94,7 +92,7 @@ ob_start();
     <!-- Modifications Alex-->
     <div id="spawn" data-equipe="<?php echo $game->visitingTeamId;?>" class="example-dropzone" ondragover="onDragOver(event);" ondrop="onDrop(event);">
             <?php 
-            foreach ($receivingRoster as $player) : 
+            foreach ($visitingRoster as $player) : 
                 $compteur++;
                 
                 // Extract player IDs from $receivingPositions if it contains player objects
