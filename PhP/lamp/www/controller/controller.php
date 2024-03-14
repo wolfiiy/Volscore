@@ -150,6 +150,18 @@ function setPositions ($gameid, $setid, $teamid, $pos1, $pos2, $pos3, $pos4, $po
     header('Location: ?action=prepareSet&id='.$setid);
 }
 
+function updatePositionScoring ($gameid, $setid, $teamid, $pos1, $pos2, $pos3, $pos4, $pos5, $pos6, $final) // MODIF ALEX
+{
+// TODO : Trouver un moyen pour que seulement 6 position passent et que le code fonctionne toujours
+
+    //VolscoreDB::setPositions($setid, $teamid, $pos1, $pos2, $pos3, $pos4, $pos5, $pos6, $final);
+    
+    VolscoreDB::updatePositions($setid, $teamid, $pos1, $pos2, $pos3, $pos4, $pos5, $pos6, $final);
+    
+
+   keepScore($setid);
+}
+
 function keepScore($setid)
 {
     $set = VolscoreDB::getSet($setid);

@@ -642,9 +642,13 @@ class VolscoreDB implements IVolscoreDb {
 
     public static function updatePositions($setid, $teamid, $pos1, $pos2, $pos3, $pos4, $pos5, $pos6, $final=0)
     {
+        echo "a";
         $query =
              "UPDATE positions SET starter_1_id=$pos1, starter_2_id=$pos2, starter_3_id=$pos3, starter_4_id=$pos4, starter_5_id=$pos5, starter_6_id=$pos6,final=$final " .
              "WHERE set_id = $setid AND team_id = $teamid;";
+        
+             echo $query;
+
         self::executeUpdateQuery($query);
     }
 
