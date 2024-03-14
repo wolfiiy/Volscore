@@ -14,12 +14,15 @@ ob_start();
             
             foreach ($receivingRoster as $player) : 
                 $compteur++;
-                
-                // Extract player IDs from $receivingPositions if it contains player objects
-                $positionPlayerIds2 = array_map(function($p) { return $p->playerInfo['playerid']; }, $receivingPositions);
-                // Now check if the player's ID is in the extracted IDs
-                if (!in_array($player->playerInfo['playerid'], $positionPlayerIds2)) {
-                    ?> <option type="text" data-equipe="<?php echo $game->receivingTeamId; ?>" value="<?= $player->playerInfo['playerid']; ?>" id="draggable-<?php echo $compteur; ?>" class="example-draggable" draggable="true" ondragstart="onDragStart(event);" selected><?= $player->playerInfo['number'] . " " ?><?= $player->last_name ?></option><?php 
+                if($receivingPositionsLocked){
+                    // Extract player IDs from $receivingPositions if it contains player objects
+                    $positionPlayerIds2 = array_map(function($p) { return $p->playerInfo['playerid']; }, $receivingPositions);
+                    // Now check if the player's ID is in the extracted IDs
+                    if (!in_array($player->playerInfo['playerid'], $positionPlayerIds2)) {
+                        ?> <option type="text" data-equipe="<?php echo $game->receivingTeamId; ?>" value="<?= $player->playerInfo['playerid']; ?>" id="draggable-<?php echo $compteur; ?>" class="example-draggable" draggable="true" ondragstart="onDragStart(event);" selected><?= $player->playerInfo['number'] . " " ?><?= $player->last_name ?></option><?php 
+                    }
+                }
+                else{?> <option type="text" data-equipe="<?php echo $game->receivingTeamId; ?>" value="<?= $player->playerInfo['playerid']; ?>" id="draggable-<?php echo $compteur; ?>" class="example-draggable" draggable="true" ondragstart="onDragStart(event);" selected><?= $player->playerInfo['number'] . " " ?><?= $player->last_name ?></option><?php
                 }
             endforeach; ?>
     </div>
@@ -95,11 +98,17 @@ ob_start();
             foreach ($visitingRoster as $player) : 
                 $compteur++;
                 
-                // Extract player IDs from $receivingPositions if it contains player objects
-                $positionPlayerIds = array_map(function($p) { return $p->playerInfo['playerid']; }, $visitingPositions);
-                
-                // Now check if the player's ID is in the extracted IDs
-                if (!in_array($player->playerInfo['playerid'], $positionPlayerIds)) {
+                if($visitingPositionsLocked){
+
+                    // Extract player IDs from $receivingPositions if it contains player objects
+                    $positionPlayerIds = array_map(function($p) { return $p->playerInfo['playerid']; }, $visitingPositions);
+                    
+                    // Now check if the player's ID is in the extracted IDs
+                    if (!in_array($player->playerInfo['playerid'], $positionPlayerIds)) {
+                        ?> <option type="text" data-equipe="<?php echo $game->visitingTeamId; ?>" value="<?= $player->playerInfo['playerid']; ?>" id="draggable-<?php echo $compteur; ?>" class="example-draggable" draggable="true" ondragstart="onDragStart(event);" selected><?= $player->playerInfo['number'] . " " ?><?= $player->last_name ?></option><?php 
+                    }
+                }
+                else{ 
                     ?> <option type="text" data-equipe="<?php echo $game->visitingTeamId; ?>" value="<?= $player->playerInfo['playerid']; ?>" id="draggable-<?php echo $compteur; ?>" class="example-draggable" draggable="true" ondragstart="onDragStart(event);" selected><?= $player->playerInfo['number'] . " " ?><?= $player->last_name ?></option><?php 
                 }
             endforeach; ?>

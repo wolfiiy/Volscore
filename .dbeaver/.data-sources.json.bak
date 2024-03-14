@@ -1,6 +1,21 @@
 {
 	"folders": {},
 	"connections": {
+		"mariaDB-18dd59ed6ed-4b3252f78cf56ed0": {
+			"provider": "mysql",
+			"driver": "mariaDB",
+			"name": "localhost",
+			"save-password": true,
+			"configuration": {
+				"host": "localhost",
+				"port": "3306",
+				"url": "jdbc:mariadb://localhost:3306/",
+				"configurationType": "MANUAL",
+				"home": "C:\\Program Files\\MariaDB 11.3",
+				"type": "dev",
+				"auth-model": "native"
+			}
+		},
 		"mariaDB-18e3ce7524f-6d442adf34babda4": {
 			"provider": "mysql",
 			"driver": "mariaDB",
@@ -9,8 +24,7 @@
 			"configuration": {
 				"host": "localhost",
 				"port": "3306",
-				"database": "volscore",
-				"url": "jdbc:mariadb://localhost:3306/volscore",
+				"url": "jdbc:mariadb://localhost:3306/",
 				"configurationType": "MANUAL",
 				"home": "C:\\Program Files\\MariaDB 11.3",
 				"type": "dev",
