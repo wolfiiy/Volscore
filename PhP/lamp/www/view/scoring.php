@@ -8,11 +8,11 @@ ob_start();
 <div class="d-flex flex-row justify-content-around">
 
 
-    <div id="listejoueur1" class="liste-joueur" hidden>
+    <div id="listejoueur1" class="liste" hidden>
 
     <?php 
         
-        $compteur = 6;
+        $compteur = 0;
         foreach($receivingBench as $player){
             $compteur++;
             ?>
@@ -116,10 +116,10 @@ ob_start();
             </div>
         
     </div>
-    <div id="listejoueur2" class="liste-joueur" hidden>
+    <div id="listejoueur2" class="liste" hidden>
 
     <?php 
-        $compteur = 6;
+        
         foreach($visitingBench as $player){
             $compteur++;
             ?>
@@ -229,6 +229,8 @@ function onDrop(event) {
 const id = event.dataTransfer.getData('text');
 const draggableElement = document.getElementById(id);
 const dropzone = event.target;
+
+console.log(draggableElement.dataset.equipe + " " + dropzone.dataset.equipe)
 
 if(draggableElement.dataset.equipe == dropzone.dataset.equipe){
 

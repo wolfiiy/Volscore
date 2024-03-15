@@ -206,11 +206,11 @@
     width: fit-content;
     border: solid black 2px;
  }
- /*
- .liste-joueur{
+ 
+ .liste{
     display: flex;
     flex-direction: column;
- }*/
+ }
 
  .add{
     background-color: #e9ecef;
