@@ -11,26 +11,41 @@ ob_start();
     <div id="listejoueur1" class="liste-joueur" hidden>
 
     <?php 
+        
+        $compteur = 6;
         foreach($receivingBench as $player){
+            $compteur++;
             ?>
-                <div draggable="true" class="player-drag"><?= $player->number ?> <?= $player->last_name ?></div>
+                <option type="text" data-equipe="1" value="<?= $player->playerInfo['playerid']; ?>" id="draggable-<?php echo $compteur; ?>" class="example-draggable" draggable="true" ondragstart="onDragStart(event);" selected><?= $player->playerInfo['number'] . " " ?><?= $player->last_name ?></option>
             <?php
 
-        }   
+        }    
     ?>
 
     </div>
 
     <div class="d-flex flex-column order-<?= (($game->toss+$set->number) % 2 == 0) ? 1 : 2 ?>">
+    <form method="post" action="?action=updatePositions" onsubmit="Enable();">
+        <input type="hidden" name="setid" value="<?= $set->id ?>" />
+        <input type="hidden" name="gameid" value="<?= $game->number ?>" />
+        <input type="hidden" name="teamid" value="<?= $game->receivingTeamId ?>" />
         <div class="teamname"><?= $game->receivingTeamName ?></div>
         <div class="setscore"><?= $game->scoreReceiving ?> sets</div>
         <div class="setscore"><?= count($game->receivingTimeouts) ?> timeouts</div>
         <div class="score"><?= $set->scoreReceiving ?></div>
         <div class="d-flex flex-column align-items-center">
-            <?php foreach ($receivingPositions as $player) : ?>
-                <div class="<?= ($player->id == $nextUp->id ? 'serving' : 'positions') ?>"><?= $player->number ?> <?= $player->last_name ?></div>
+            <?php 
+                $pos = 0;
+                foreach ($receivingPositions as $player) : 
+                $pos++;?>
+                <select name="position<?= $pos?>" data-equipe="1"  id="pos_<?= $game->receivingTeamId?>_<?= $pos?>" class="form-control" class="example-dropzone" draggable="true" ondragstart="onDragStart(event);" ondragover="onDragOver(event);" ondrop="onDrop(event);" disabled>
+                    <option value=0></option>
+                    <option class="example-draggable" type="text" data-equipe="1" value="<?= $player->playerInfo['playerid']; ?>" id="draggable-<?php echo $pos; ?>" draggable="true" ondragstart="onDragStart(event);" selected><?= $player->playerInfo['number'] . " " ?><?= $player->last_name ?> <?php if($player->id == $nextUp->id){ echo "🥎";?><?php } ?></option>
+                </select>
             <?php endforeach; ?>
         </div>
+        <input value="Valider" type="submit" id="changer1" class="btn btn-success m-2" hidden></input>
+        </form>
         <div class="row actions d-flex flex-column">
             <form method="post" action="?action=scorePoint">
                 <input type="hidden" name="setid" value="<?= $set->id ?>" />
@@ -48,9 +63,6 @@ ob_start();
                 <?php endif; ?>
                 <button id="changement1" class="btn btn-tertiary m-2" AfficherBouton="AfficherBouton(true);">
                     Changement
-                </button>
-                <button id="changer1" class="btn btn-success m-2" hidden>
-                    Valider
                 </button>
             </div>
         </div>
@@ -73,10 +85,9 @@ ob_start();
                 foreach ($visitingPositions as $player) : 
                 $pos++;?>
                     
-                    
-                <select name="position<?= $pos?>" data-equipe="<?php echo $game->visitingTeamId;?>"  id="pos_<?= $game->visitingTeamId?>_<?= $pos?>" class="form-control" class="example-dropzone" draggable="true" ondragstart="onDragStart(event);" ondragover="onDragOver(event);" ondrop="onDrop(event);" disabled>
+                <select name="position<?= $pos?>" data-equipe="2"  id="pos_<?= $game->visitingTeamId?>_<?= $pos?>" class="form-control" class="example-dropzone" draggable="true" ondragstart="onDragStart(event);" ondragover="onDragOver(event);" ondrop="onDrop(event);" disabled>
                     <option value=0></option>
-                    <option type="text" data-equipe="<?php echo $game->visitingTeamId; ?>" value="<?= $player->playerInfo['playerid']; ?>" id="draggable-<?php echo $pos; ?>" class="example-draggable" draggable="true" ondragstart="onDragStart(event);" selected><?= $player->playerInfo['number'] . " " ?><?= $player->last_name ?></option>
+                    <option class="example-draggable" type="text" data-equipe="2" value="<?= $player->playerInfo['playerid']; ?>" id="draggable-<?php echo $pos; ?>" draggable="true" ondragstart="onDragStart(event);" selected><?= $player->playerInfo['number'] . " " ?><?= $player->last_name ?> <?php if($player->id == $nextUp->id){ echo "🥎";?><?php } ?></option>
                 </select>
                 <?php endforeach; ?>
             </div>
@@ -112,7 +123,7 @@ ob_start();
         foreach($visitingBench as $player){
             $compteur++;
             ?>
-                <option type="text" data-equipe="<?php echo $game->visitingTeamId; ?>" value="<?= $player->playerInfo['playerid']; ?>" id="draggable-<?php echo $compteur; ?>" class="example-draggable" draggable="true" ondragstart="onDragStart(event);" selected><?= $player->playerInfo['number'] . " " ?><?= $player->last_name ?></option>
+                <option type="text" data-equipe="2" value="<?= $player->playerInfo['playerid']; ?>" id="draggable-<?php echo $compteur; ?>" class="example-draggable" draggable="true" ondragstart="onDragStart(event);" selected><?= $player->playerInfo['number'] . " " ?><?= $player->last_name ?></option>
             <?php
 
         }   
@@ -127,7 +138,7 @@ ob_start();
 
     button1.addEventListener("click", (event) => {
 
-    AfficherBouton(affichage1,"changer1","listejoueur1");
+    AfficherBouton(affichage1,1);
 
     if(affichage1){affichage1 = false;}
     else{affichage1 = true;}
@@ -140,27 +151,65 @@ ob_start();
     
     button2.addEventListener("click", (event) => {
 
-    AfficherBouton(affichage2,"changer2","listejoueur2");
+    AfficherBouton(affichage2,2);
 
     if(affichage2){affichage2 = false;}
     else{affichage2 = true;}
 
     });
 
-    function AfficherBouton(value,text,liste){
+    function AfficherBouton(value,team){
         console.log(value);
         if(value){
-            const button = document.getElementById(text);
+            const button = document.getElementById("changer" + team);
             button.hidden = false
-            const div = document.getElementById(liste);
+            const div = document.getElementById("listejoueur" + team);
             div.hidden = false
 
+            // Sélectionner tous les éléments ayant un data-set="1"
+            var elements = document.querySelectorAll('[data-equipe="' + team + '"]');
+            console.log(elements);
+            // Boucler sur les éléments sélectionnés
+            elements.forEach(function(element) {
+            // Vérifier si l'élément est une balise <option>
+            if (element.tagName === 'OPTION' || element.tagName === 'SELECT') {
+                // Modifier la classe de l'élément
+                // Remplacer toutes les classes existantes par 'nouvelle-classe'
+                //element.className = 'add';
+                
+                // Ou, pour ajouter une classe sans enlever les existantes
+                element.classList.add('add');
+                
+                // Si vous souhaitez supprimer une classe spécifique
+                // element.classList.remove('classe-a-supprimer');
+            }
+            });
 
         }else{
-            const button = document.getElementById(text);
+            const button = document.getElementById("changer" + team);
             button.hidden = true
-            const div = document.getElementById(liste);
+            const div = document.getElementById("listejoueur" + team);
             div.hidden = true
+            location.reload();
+
+            // Sélectionner tous les éléments ayant un data-set="1"
+            var elements = document.querySelectorAll('[data-equipe="' + team + '"]');
+
+            // Boucler sur les éléments sélectionnés
+            elements.forEach(function(element) {
+            // Vérifier si l'élément est une balise <option>
+            if (element.tagName === 'OPTION' || element.tagName === 'SELECT') {
+                // Modifier la classe de l'élément
+                // Remplacer toutes les classes existantes par 'nouvelle-classe'
+                //element.className = 'add';
+                
+                // Ou, pour ajouter une classe sans enlever les existantes
+                // element.classList.add('nouvelle-classe');
+                
+                // Si vous souhaitez supprimer une classe spécifique
+                element.classList.remove('add');
+            }
+            });
         }
     }
 /* Méthode qui est appeller pour  */
