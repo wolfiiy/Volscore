@@ -1,19 +1,19 @@
 {
 	"folders": {},
 	"connections": {
-		"mariaDB-18e3ce7524f-6d442adf34babda4": {
+		"mariaDB-18e50db0d7c-314f676957535f9f": {
 			"provider": "mysql",
 			"driver": "mariaDB",
-			"name": "localhost 2",
+			"name": "localhost",
 			"save-password": true,
 			"configuration": {
 				"host": "localhost",
 				"port": "3306",
-				"database": "volscore",
-				"url": "jdbc:mariadb://localhost:3306/volscore",
+				"url": "jdbc:mariadb://localhost:3306/",
 				"configurationType": "MANUAL",
-				"home": "C:\\Program Files\\MariaDB 11.3",
+				"home": "mysql_client",
 				"type": "dev",
+				"closeIdleConnection": true,
 				"auth-model": "native"
 			}
 		}
@@ -29,7 +29,9 @@
 			"smart-commit": false,
 			"smart-commit-recover": false,
 			"auto-close-transactions": true,
-			"close-transactions-period": 1800
+			"close-transactions-period": 1800,
+			"auto-close-connections": true,
+			"close-connections-period": 14400
 		}
 	}
 }

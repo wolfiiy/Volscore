@@ -5,7 +5,7 @@ class VolscoreDB implements IVolscoreDb {
 
     public static function connexionDB()
     {
-        require '.credentials.php';
+        require 'credentials.php';
         $PDO = new PDO("mysql:host=$hostname; port=$portnumber; dbname=$database;", $username, $password);
         $PDO->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         $PDO->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
