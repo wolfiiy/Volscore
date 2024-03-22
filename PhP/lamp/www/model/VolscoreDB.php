@@ -483,6 +483,24 @@ class VolscoreDB implements IVolscoreDb {
         return (new Point($record));
     }
 
+    public static function getPosition($setid,$teamid) : ?Position {
+        $pdo = self::connexionDB();
+        // Assurez-vous que votre requête SQL utilise le bon nom de table et inclut le critère pour `team_id` si nécessaire.
+        $stmt = $pdo->prepare("SELECT * FROM positions WHERE set_id = :set_id AND team_id = :team_id LIMIT 1");
+        $stmt->bindValue(':set_id', $setid);
+        $stmt->bindValue(':team_id', $teamid); // Ajout de cette ligne pour filtrer par team_id aussi
+        $stmt->execute();
+    
+        $record = $stmt->fetch(PDO::FETCH_ASSOC); // Utilisation de FETCH_ASSOC pour obtenir un tableau associatif.
+    
+        // Retourne null si aucun enregistrement n'est trouvé.
+        if (!$record) return null;
+    
+        // Assurez-vous que la classe `Point` peut accepter un tableau associatif dans son constructeur.
+        return (new Position($record));
+    }
+    
+
     private static function getLastPointOfTeam ($set, $teamid) : ?Point
     {
         $pdo = self::connexionDB();
@@ -642,9 +660,19 @@ class VolscoreDB implements IVolscoreDb {
 
     public static function updatePositions($setid, $teamid, $pos1, $pos2, $pos3, $pos4, $pos5, $pos6, $final=0)
     {
-        echo "a";
         $query =
              "UPDATE positions SET starter_1_id=$pos1, starter_2_id=$pos2, starter_3_id=$pos3, starter_4_id=$pos4, starter_5_id=$pos5, starter_6_id=$pos6,final=$final " .
+             "WHERE set_id = $setid AND team_id = $teamid;";
+        
+             echo $query;
+
+        self::executeUpdateQuery($query);
+    }
+
+    public static function setSub($setid, $teamid, $sub1, $subpoint1, $sub2,$subpoint2, $sub3, $subpoint3, $sub4, $subpoint4, $sub5,$subpoint5, $sub6, $subpoint6)
+    {
+        $query =
+             "UPDATE positions SET sub_1_id=$sub1, sub_in_point_1=$subpoint1, sub_2_id=$sub2, sub_in_point_2=$subpoint2, sub_3_id=$sub3, sub_in_point_3=$subpoint3, sub_4_id=$sub4, sub_in_point_4=$subpoint4, sub_5_id=$sub5, sub_in_point_5=$subpoint5, sub_6_id=$sub6, sub_in_point_6=$subpoint6 " .
              "WHERE set_id = $setid AND team_id = $teamid;";
         
              echo $query;

@@ -7,7 +7,6 @@ ob_start();
 <div class="row text-center"><h1>Set <?= $set->number ?></h1></div>
 <div class="d-flex flex-row justify-content-around">
 
-
     <div id="listejoueur1" class="liste" hidden>
 
     <?php 

@@ -210,10 +210,27 @@
  .liste{
     display: flex;
     flex-direction: column;
+    width: 20%;
  }
 
  .add{
     background-color: #e9ecef;
  }
+
+ .row{
+    /*display: flex;*/
+    /*flex-direction: row;*/
+ }
+
+ .width{
+    width:80%;
+    margin: 0 auto;
+ }
+
+ .flex {
+    display: flex;
+    justify-content: space-between; /* Cela aligne les enfants aux extrémités opposées */
+    flex-direction: row;
+}
 
   /*ALEX*/

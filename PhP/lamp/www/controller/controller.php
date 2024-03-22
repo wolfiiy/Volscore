@@ -136,6 +136,11 @@ function prepareSet($setid)
     require_once 'view/prepareSet.php';
 }
 
+function changePosition()
+{
+    header('Location: ?action=prepareSet&id='.$setid);
+}
+
 function setPositions ($gameid, $setid, $teamid, $pos1, $pos2, $pos3, $pos4, $pos5, $pos6, $final) // MODIF ALEX
 {
 // TODO : Trouver un moyen pour que seulement 6 position passent et que le code fonctionne toujours
@@ -154,9 +159,32 @@ function updatePositionScoring ($gameid, $setid, $teamid, $pos1, $pos2, $pos3, $
 {
 // TODO : Trouver un moyen pour que seulement 6 position passent et que le code fonctionne toujours
 
+    $positions = VolscoreDB::getPosition($setid,$teamid);
+
+    if($positions->player_position_1_id != $pos1){
+
+    }
+    if($positions->player_position_2_id != $pos2){
+        
+    }
+    if($positions->player_position_3_id != $pos3){
+        
+    }
+    if($positions->player_position_4_id != $pos4){
+        
+    }
+    if($positions->player_position_5_id != $pos5){
+        
+    }
+    if($positions->player_position_6_id != $pos6){
+        
+    }
+
     //VolscoreDB::setPositions($setid, $teamid, $pos1, $pos2, $pos3, $pos4, $pos5, $pos6, $final);
     
     VolscoreDB::updatePositions($setid, $teamid, $pos1, $pos2, $pos3, $pos4, $pos5, $pos6, $final);
+
+
     
 
    keepScore($setid);

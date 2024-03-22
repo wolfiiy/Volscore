@@ -4,6 +4,7 @@ require_once 'Model.php';
 require_once 'Team.php';
 require_once 'Game.php';
 require_once 'Member.php';
+require_once 'Positions.php';
 require_once 'Set.php';
 require_once 'Point.php';
 require_once 'TimeInThe.php';
@@ -236,6 +237,9 @@ interface IVolscoreDb {
      * - scoreVisiting 
      */
     public static function getBookings($team,$set) : array;
+
+    /*TEST*/
+    public static function getPosition($setid,$teamid) : ?Position;
 
 #endregion
 }

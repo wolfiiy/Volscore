@@ -129,6 +129,8 @@ require_once 'gabarit.php';
 <!-- Alex Modif -->
 
 <script>
+    // TODO : Trouver un moyen pour raccourcir le code du drag and drop
+
     /* Méthode qui est appeller pour  */
     function onDragStart(event) {
 

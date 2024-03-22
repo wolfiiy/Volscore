@@ -34,7 +34,7 @@ td, th {
 
 /* Thanks http://jsfiddle.net/mirohristov/awayF/473/ */
 .checkmark {
-    display:inline-block;
+    /*display:inline-block;*/
     width: 22px;
     height:22px;
     background: #38d917;
