@@ -57,8 +57,9 @@ ob_start();
                                 </select> </div>
                             <br>
                         <?php endfor; ?>
-                        <input type="submit" class="btn btn-primary btn-sm" value="Enregistrer"/>
-                        <input type=checkbox name="final" id="final"> Finales
+                        <input id="input<?php echo $game->receivingTeamId;?>1" type="submit" class="btn btn-primary btn-sm" value="Enregistrer" hidden/>
+                        <input id="input<?php echo $game->receivingTeamId;?>2" type=checkbox name="final" id="final" hidden>
+                        <label id="input<?php echo $game->receivingTeamId;?>3" for="final" hidden>Finales</label>
                     </form>
                 <?php endif; ?>
             </td>
@@ -85,8 +86,9 @@ ob_start();
                             </div>
                             <br>
                         <?php endfor; ?>
-                        <input type="submit" class="btn btn-primary btn-sm" value="Enregistrer"/>
-                        <input type=checkbox name="final" id="final"> Finales
+                        <input id="input<?php echo $game->visitingTeamId;?>1" type="submit" class="btn btn-primary btn-sm" value="Enregistrer" hidden/>
+                        <input id="input<?php echo $game->visitingTeamId;?>2" type=checkbox name="final" id="final" hidden>
+                        <label id="input<?php echo $game->visitingTeamId;?>3" for="final" hidden>Finales</label>
                     </form>
                 <?php endif; ?>
             </td>
@@ -202,6 +204,7 @@ require_once 'gabarit.php';
                 console.log(draggableElement.options[1]);
                 newOption.value = draggableElement.value;
                 newOption.id = draggableElement.options[1].id;
+                newOption.dataset.equipe = draggableElement.dataset.equipe;
                 newOption.className = "example-draggable";
                 newOption.setAttribute('draggable', "true");
                 newOption.setAttribute('ondragstart', "onDragStart(event);");
@@ -215,8 +218,31 @@ require_once 'gabarit.php';
                 dropzone.appendChild(draggableElement);
                 event.dataTransfer.clearData();
             }
+            verifierSelectionsEtAfficherBouton(dropzone.dataset.equipe)
         }
     }
+
+    function verifierSelectionsEtAfficherBouton(equipeId) {
+        console.log(1);
+        const selections = document.querySelectorAll(`select[data-equipe="${equipeId}"] option:checked:not([value="0"])`).length;
+        const boutonEnregistrer = document.querySelector(`#input${equipeId}-submit`);
+        console.log(selections);
+        if (selections === 6) {
+            Hide(equipeId, false);
+        } else {
+            Hide(equipeId, true);
+        }
+    }
+
+    function Hide(team,bool){
+        console.log("input21" + " " + 'input' + team + '1');
+        document.getElementById('input' + team + '1').hidden = bool;
+        document.getElementById('input' + team + '2').hidden = bool;
+        document.getElementById('input' + team + '3').hidden = bool;
+        
+    }
+
+
 
     /* Méthode qui les select de 1 à 6 en false pour permettre d'envoyer en $_POST*/
     function Enable(){
@@ -230,6 +256,9 @@ require_once 'gabarit.php';
             select.removeAttribute('disabled');
         });
     }
+
+   
+
 </script>
 
 <!-- Fin Alex Modif -->
