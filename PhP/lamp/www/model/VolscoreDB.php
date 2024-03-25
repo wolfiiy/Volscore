@@ -23,6 +23,7 @@ class VolscoreDB implements IVolscoreDb {
             $dbh = null;
             return $res;
         } catch (PDOException $e) {
+            echo $e;
             return null;
         }
     }
@@ -483,22 +484,43 @@ class VolscoreDB implements IVolscoreDb {
         return (new Point($record));
     }
 
-    public static function getPosition($setid,$teamid) : ?Position {
-        $pdo = self::connexionDB();
-        // Assurez-vous que votre requête SQL utilise le bon nom de table et inclut le critère pour `team_id` si nécessaire.
-        $stmt = $pdo->prepare("SELECT * FROM positions WHERE set_id = :set_id AND team_id = :team_id LIMIT 1");
-        $stmt->bindValue(':set_id', $setid);
-        $stmt->bindValue(':team_id', $teamid); // Ajout de cette ligne pour filtrer par team_id aussi
-        $stmt->execute();
+    public static function getPosition($setid, $teamid): ?Position {
+        try {
+            $dbh = self::connexionDB();
+            $query = "SELECT * FROM positions WHERE set_id = :setid AND team_id = :teamid LIMIT 1;";
+            $statement = $dbh->prepare($query);
     
-        $record = $stmt->fetch(PDO::FETCH_ASSOC); // Utilisation de FETCH_ASSOC pour obtenir un tableau associatif.
+            // Utilisez le binding de paramètres pour éviter les injections SQL
+            $statement->bindParam(':setid', $setid, PDO::PARAM_INT);
+            $statement->bindParam(':teamid', $teamid, PDO::PARAM_INT);
     
-        // Retourne null si aucun enregistrement n'est trouvé.
-        if (!$record) return null;
+            $statement->execute();
+            $positionData = $statement->fetch(PDO::FETCH_ASSOC);
     
-        // Assurez-vous que la classe `Point` peut accepter un tableau associatif dans son constructeur.
-        return (new Position($record));
+            if ($positionData) {
+                // Créez une instance de Position et initialisez les propriétés
+                $position = new Position();
+                $position->id = $positionData['id'];
+                $position->set_id = $positionData['set_id'];
+                $position->team_id = $positionData['team_id'];
+                $position->player_position_1_id = $positionData['starter_1_id'];
+                $position->player_position_2_id = $positionData['starter_2_id'];
+                $position->player_position_3_id = $positionData['starter_3_id'];
+                $position->player_position_4_id = $positionData['starter_4_id'];
+                $position->player_position_5_id = $positionData['starter_5_id'];
+                $position->player_position_6_id = $positionData['starter_6_id'];
+                $position->final = $positionData['final'];
+    
+                return $position;
+            } else {
+                return null; // Aucune position trouvée
+            }
+        } catch (PDOException $e) {
+            print 'Error!:' . $e->getMessage() . '<br/>';
+            return null;
+        }
     }
+    
     
 
     private static function getLastPointOfTeam ($set, $teamid) : ?Point
@@ -664,7 +686,7 @@ class VolscoreDB implements IVolscoreDb {
              "UPDATE positions SET starter_1_id=$pos1, starter_2_id=$pos2, starter_3_id=$pos3, starter_4_id=$pos4, starter_5_id=$pos5, starter_6_id=$pos6,final=$final " .
              "WHERE set_id = $setid AND team_id = $teamid;";
         
-             echo $query;
+             //echo $query;
 
         self::executeUpdateQuery($query);
     }
@@ -675,24 +697,66 @@ class VolscoreDB implements IVolscoreDb {
              "UPDATE positions SET sub_1_id=$sub1, sub_in_point_1=$subpoint1, sub_2_id=$sub2, sub_in_point_2=$subpoint2, sub_3_id=$sub3, sub_in_point_3=$subpoint3, sub_4_id=$sub4, sub_in_point_4=$subpoint4, sub_5_id=$sub5, sub_in_point_5=$subpoint5, sub_6_id=$sub6, sub_in_point_6=$subpoint6 " .
              "WHERE set_id = $setid AND team_id = $teamid;";
         
-             echo $query;
+             //echo $query;
 
         self::executeUpdateQuery($query);
     }
+
+    public static function getSubTeam($setid, $teamid)
+    {
+        try {
+            $dbh = self::connexionDB(); // Assurez-vous que cette méthode retourne une instance de PDO
+            
+            $query = "SELECT sub_1_id, sub_in_point_1_id, sub_2_id, sub_in_point_2_id, sub_3_id, sub_in_point_3_id, " .
+                    "sub_4_id, sub_in_point_4_id, sub_5_id, sub_in_point_5_id, sub_6_id, sub_in_point_6_id " .
+                    "FROM positions WHERE set_id = :setid AND team_id = :teamid;";
+
+            $statement = $dbh->prepare($query);
+            
+            // Bind des paramètres
+            $statement->bindParam(':setid', $setid, PDO::PARAM_INT);
+            $statement->bindParam(':teamid', $teamid, PDO::PARAM_INT);
+            
+            $statement->execute(); // Exécute la requête
+            
+            $result = $statement->fetch(PDO::FETCH_ASSOC); // Récupère le résultat
+            
+            return $result; // Retourne le résultat
+        } catch (PDOException $e) {
+            // Gestion des erreurs
+            echo $e;
+            return null; // Ou gérer l'erreur comme souhaité
+        }
+    }
+
 
     public static function setSub($setid, $teamid, $sub, $subPoint, $subPosition)
     {
         // Déterminer les noms des colonnes à mettre à jour en fonction de $subPosition
         $subIdColumn = "sub_" . $subPosition . "_id";
-        $subPointColumn = "sub_in_point_" . $subPosition;
+        $subPointColumn = "sub_in_point_" . $subPosition . "_id";
         
         $query =
             "UPDATE positions SET $subIdColumn = $sub, $subPointColumn = $subPoint " .
             "WHERE set_id = $setid AND team_id = $teamid;";
         
-        echo $query;
+        //echo $query;
 
-        self::executeUpdateQuery($query);
+        self::executeInsertQuery($query);
+    }
+
+    public static function setSubOutPoint($setid, $teamid, $subPoint, $subPosition)
+    {
+        // Déterminer les noms des colonnes à mettre à jour en fonction de $subPosition
+        $subPointColumn = "sub_out_point_" . $subPosition . "_id";
+        
+        $query =
+            "UPDATE positions SET $subPointColumn = $subPoint " .
+            "WHERE set_id = $setid AND team_id = $teamid;";
+        
+        //echo $query;
+
+        self::executeInsertQuery($query);
     }
 
     

@@ -149,8 +149,10 @@ require_once 'gabarit.php';
         const id = event.dataTransfer.getData('text');
         const draggableElement = document.getElementById(id);
         const dropzone = event.target;
+
+        console.log(1);
         
-        if(draggableElement.dataset.equipe == dropzone.dataset.equipe){return}
+        if(draggableElement.dataset.equipe != dropzone.dataset.equipe){return}
 
         if(dropzone.value != 0 && dropzone.id != "spawn"){
             

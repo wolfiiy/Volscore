@@ -155,55 +155,32 @@ function setPositions ($gameid, $setid, $teamid, $pos1, $pos2, $pos3, $pos4, $po
     header('Location: ?action=prepareSet&id='.$setid);
 }
 
-function updatePositionScoring ($gameid, $setid, $teamid, $pos1, $pos2, $pos3, $pos4, $pos5, $pos6, $final) // MODIF ALEX
+function updatePositionScoring($gameid, $setid, $teamid, $pos1, $pos2, $pos3, $pos4, $pos5, $pos6, $final)
 {
-// TODO : Trouver un moyen pour que seulement 6 position passent et que le code fonctionne toujours
+    $positions = VolscoreDB::getPosition($setid, $teamid);
+    $subs = VolscoreDB::getSubTeam($setid, $teamid);
+    $subPoint = 1;
 
-    $positions = VolscoreDB::getPosition($setid,$teamid);
+    // Un tableau des positions fournies en paramètre
+    $newPositions = [$pos1, $pos2, $pos3, $pos4, $pos5, $pos6];
 
-    if($positions->player_position_1_id != $pos1){
-        // Ajouter le SUB et SUBPOINT
-        
-    }
-    else{
-        // Verifier si $pos1 est != sub
-    }
-    if($positions->player_position_2_id != $pos2){
-        
-    }
-    else{
-        // Verifier si $pos2 est != sub
-    }
-    if($positions->player_position_3_id != $pos3){
-        
-    }
-    else{
-        // Verifier si $pos3 est != sub
-    }
-    if($positions->player_position_4_id != $pos4){
-        
-    }
-    else{
-        // Verifier si $pos4 est != sub
-    }
-    if($positions->player_position_5_id != $pos5){
-        
-    }
-    else{
-        // Verifier si $pos5 est != sub
-    }
-    if($positions->player_position_6_id != $pos6){
-        
-    }
-    else{
-        // Verifier si $pos6 est != sub
+    for ($i = 1; $i <= 6; $i++) {
+        $posKey = "player_position_{$i}_id";
+        $subKey = "sub_{$i}_id";
+
+        if ($positions->$posKey != $newPositions[$i - 1] && $subs[$subKey] == null) {
+            // Ajouter le SUB et SUBPOINT si la position du joueur a changé et aucun substitut n'est actuellement enregistré
+            VolscoreDB::setSub($setid, $teamid, $newPositions[$i - 1], $subPoint, $i);
+        } elseif ($positions->$posKey == $newPositions[$i - 1] && $subs[$subKey] != null) {
+            // Définir SubOutPoint si la position du joueur est la même mais un substitut est enregistré
+            VolscoreDB::setSubOutPoint($setid, $teamid, $subPoint, $i);
+        }
     }
 
-    //VolscoreDB::setPositions($setid, $teamid, $pos1, $pos2, $pos3, $pos4, $pos5, $pos6, $final);
-    
+    // Mettre à jour les positions finales
     VolscoreDB::updatePositions($setid, $teamid, $pos1, $pos2, $pos3, $pos4, $pos5, $pos6, $final);
 
-   keepScore($setid);
+    keepScore($setid);
 }
 
 function keepScore($setid)
