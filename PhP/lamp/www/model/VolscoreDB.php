@@ -669,7 +669,7 @@ class VolscoreDB implements IVolscoreDb {
         self::executeUpdateQuery($query);
     }
 
-    public static function setSub($setid, $teamid, $sub1, $subpoint1, $sub2,$subpoint2, $sub3, $subpoint3, $sub4, $subpoint4, $sub5,$subpoint5, $sub6, $subpoint6)
+    public static function setSubTeam($setid, $teamid, $sub1, $subpoint1, $sub2,$subpoint2, $sub3, $subpoint3, $sub4, $subpoint4, $sub5,$subpoint5, $sub6, $subpoint6)
     {
         $query =
              "UPDATE positions SET sub_1_id=$sub1, sub_in_point_1=$subpoint1, sub_2_id=$sub2, sub_in_point_2=$subpoint2, sub_3_id=$sub3, sub_in_point_3=$subpoint3, sub_4_id=$sub4, sub_in_point_4=$subpoint4, sub_5_id=$sub5, sub_in_point_5=$subpoint5, sub_6_id=$sub6, sub_in_point_6=$subpoint6 " .
@@ -679,6 +679,23 @@ class VolscoreDB implements IVolscoreDb {
 
         self::executeUpdateQuery($query);
     }
+
+    public static function setSub($setid, $teamid, $sub, $subPoint, $subPosition)
+    {
+        // Déterminer les noms des colonnes à mettre à jour en fonction de $subPosition
+        $subIdColumn = "sub_" . $subPosition . "_id";
+        $subPointColumn = "sub_in_point_" . $subPosition;
+        
+        $query =
+            "UPDATE positions SET $subIdColumn = $sub, $subPointColumn = $subPoint " .
+            "WHERE set_id = $setid AND team_id = $teamid;";
+        
+        echo $query;
+
+        self::executeUpdateQuery($query);
+    }
+
+    
 
     public static function getStartingPositions($setid, $teamid, &$isFinal = NULL) : array
     {

@@ -162,30 +162,46 @@ function updatePositionScoring ($gameid, $setid, $teamid, $pos1, $pos2, $pos3, $
     $positions = VolscoreDB::getPosition($setid,$teamid);
 
     if($positions->player_position_1_id != $pos1){
-
+        // Ajouter le SUB et SUBPOINT
+        
+    }
+    else{
+        // Verifier si $pos1 est != sub
     }
     if($positions->player_position_2_id != $pos2){
         
     }
+    else{
+        // Verifier si $pos2 est != sub
+    }
     if($positions->player_position_3_id != $pos3){
         
+    }
+    else{
+        // Verifier si $pos3 est != sub
     }
     if($positions->player_position_4_id != $pos4){
         
     }
+    else{
+        // Verifier si $pos4 est != sub
+    }
     if($positions->player_position_5_id != $pos5){
         
     }
+    else{
+        // Verifier si $pos5 est != sub
+    }
     if($positions->player_position_6_id != $pos6){
         
+    }
+    else{
+        // Verifier si $pos6 est != sub
     }
 
     //VolscoreDB::setPositions($setid, $teamid, $pos1, $pos2, $pos3, $pos4, $pos5, $pos6, $final);
     
     VolscoreDB::updatePositions($setid, $teamid, $pos1, $pos2, $pos3, $pos4, $pos5, $pos6, $final);
-
-
-    
 
    keepScore($setid);
 }

@@ -145,11 +145,12 @@ require_once 'gabarit.php';
     }
     /* Méthode qui est appeller pour  */
     function onDrop(event) {
+
         const id = event.dataTransfer.getData('text');
         const draggableElement = document.getElementById(id);
         const dropzone = event.target;
         
-        if(draggableElement.dataset.equipe == dropzone.dataset.equipe){
+        if(draggableElement.dataset.equipe == dropzone.dataset.equipe){return}
 
         if(dropzone.value != 0 && dropzone.id != "spawn"){
             
@@ -221,14 +222,12 @@ require_once 'gabarit.php';
                 event.dataTransfer.clearData();
             }
             verifierSelectionsEtAfficherBouton(dropzone.dataset.equipe)
-        }
+            
     }
 
     function verifierSelectionsEtAfficherBouton(equipeId) {
-        console.log(1);
         const selections = document.querySelectorAll(`select[data-equipe="${equipeId}"] option:checked:not([value="0"])`).length;
         const boutonEnregistrer = document.querySelector(`#input${equipeId}-submit`);
-        console.log(selections);
         if (selections === 6) {
             Hide(equipeId, false);
         } else {
@@ -237,7 +236,6 @@ require_once 'gabarit.php';
     }
 
     function Hide(team,bool){
-        console.log("input21" + " " + 'input' + team + '1');
         document.getElementById('input' + team + '1').hidden = bool;
         document.getElementById('input' + team + '2').hidden = bool;
         document.getElementById('input' + team + '3').hidden = bool;
@@ -257,6 +255,7 @@ require_once 'gabarit.php';
             // Retirer l'attribut 'disabled'
             select.removeAttribute('disabled');
         });
+        
     }
 
    
