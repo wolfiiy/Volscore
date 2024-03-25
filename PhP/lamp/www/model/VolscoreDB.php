@@ -705,7 +705,7 @@ class VolscoreDB implements IVolscoreDb {
     public static function getSubTeam($setid, $teamid)
     {
         try {
-            $dbh = self::connexionDB(); // Assurez-vous que cette méthode retourne une instance de PDO
+            $dbh = self::connexionDB();
             
             $query = "SELECT sub_1_id, sub_in_point_1_id, sub_2_id, sub_in_point_2_id, sub_3_id, sub_in_point_3_id, " .
                     "sub_4_id, sub_in_point_4_id, sub_5_id, sub_in_point_5_id, sub_6_id, sub_in_point_6_id " .
