@@ -14,8 +14,32 @@ ob_start();
         $compteur = 0;
         foreach($receivingBench as $player){
             $compteur++;
+            $class = "example-draggable"; // Classe de base pour tous les joueurs sur le banc
+
+            // Déterminer l'état de la position pour ce joueur
+            for ($i = 1; $i <= 6; $i++) {
+                $starterId = "player_position_{$i}_id";
+                $subId = "player_sub_{$i}_id";
+                $subInPointId = "sub_in_point_{$i}_id";
+                $subOutPointId = "sub_out_point_{$i}_id";
+                //echo $position->$starterId . " ". $player->playerInfo['playerid'] . " || ". $position->$subId ." ". $player->playerInfo['playerid'];
+                // Vérifier si ce joueur était un titulaire ou un remplaçant
+                if ($receivingStarterPositions->$starterId == $player->playerInfo['playerid'] || $receivingStarterPositions->$subId == $player->playerInfo['playerid']) {
+                    if (!empty($position->$subInPointId) && empty($position->$subOutPointId)) {
+                        // Le joueur était un remplaçant qui est entré mais n'a pas encore été sorti
+                        $class .= " green";
+                    } elseif (!empty($receivingStarterPositions->$subOutPointId)) {
+                        // Le joueur était un remplaçant qui a été sorti
+                        $class .= " orange";
+                    } else {
+                        // Le joueur était un titulaire et n'a pas été remplacé
+                        $class .= " yellow";
+                    }
+                    break; // Sortir de la boucle une fois l'état du joueur trouvé
+                }
+            }
             ?>
-                <option type="text" data-type="option" data-equipe="1" value="<?= $player->playerInfo['playerid']; ?>" id="draggable-<?php echo $compteur; ?>" class="example-draggable" draggable="true" ondragstart="onDragStart(event);" selected><?= $player->playerInfo['number'] . " " ?><?= $player->last_name ?></option>
+            <option class="<?= $class ?>" type="text" data-type="option" data-equipe="1" value="<?= $player->playerInfo['playerid']; ?>" id="draggable-<?php echo $compteur; ?>" draggable="true" ondragstart="onDragStart(event);" selected><?= $player->playerInfo['number'] . " " ?><?= $player->last_name ?></option>
             <?php
 
         }    
@@ -36,8 +60,28 @@ ob_start();
             <?php 
                 $pos = 0;
                 foreach ($receivingPositions as $player) : 
-                $pos++;?>
-                <select name="position<?= $pos?>" data-type="select" data-equipe="1"  id="pos_<?= $game->receivingTeamId?>_<?= $pos?>" class="form-control" class="example-dropzone" draggable="true" ondragstart="onDragStart(event);" ondragover="onDragOver(event);" ondrop="onDrop(event);" disabled>
+                $pos++;$class = "example-dropzone form-control";
+
+                // Déterminer l'état du joueur basé sur sa position
+                $statePropName = "player_state_{$pos}_id";
+                $playerState = $receivingStarterPositions->$statePropName;
+
+                switch ($playerState) {
+                    case 'starter':
+                        //$class .= " yellow"; // Classe pour les joueurs titulaires
+                        break;
+                    case 'sub_in':
+                        $class .= " green"; // Classe pour les joueurs remplaçants actuellement en jeu
+                        break;
+                    case 'sub_out':
+                        $class .= " orange"; // Classe pour les joueurs remplaçants qui ont été sortis
+                        break;
+                    default:
+                        // Pas de classe supplémentaire pour l'état inconnu ou par défaut
+                        break;
+                }
+                ?>
+                <select class="<?=$class?>" name="position<?= $pos?>" data-type="select" data-equipe="1"  id="pos_<?= $game->receivingTeamId?>_<?= $pos?>" draggable="true" ondragstart="onDragStart(event);" ondragover="onDragOver(event);" ondrop="onDrop(event);" disabled>
                     <option class="example-draggable" type="text" data-equipe="1" value="<?= $player->playerInfo['playerid']; ?>" id="draggable-<?php echo $pos; ?>" draggable="true" ondragstart="onDragStart(event);" selected><?= $player->playerInfo['number'] . " " ?><?= $player->last_name ?> <?php if($player->id == $nextUp->id){ echo "🥎";?><?php } ?></option>
                 </select>
             <?php endforeach; ?>
@@ -136,7 +180,7 @@ ob_start();
     <div id="listejoueur2" class="liste" hidden>
 
     <?php 
-foreach($visitingBench as $player){
+    foreach($visitingBench as $player){
     $compteur++;
     $class = "example-draggable"; // Classe de base pour tous les joueurs sur le banc
 
@@ -148,11 +192,11 @@ foreach($visitingBench as $player){
         $subOutPointId = "sub_out_point_{$i}_id";
         //echo $position->$starterId . " ". $player->playerInfo['playerid'] . " || ". $position->$subId ." ". $player->playerInfo['playerid'];
         // Vérifier si ce joueur était un titulaire ou un remplaçant
-        if ($position->$starterId == $player->playerInfo['playerid'] || $position->$subId == $player->playerInfo['playerid']) {
+        if ($visitingStarterPositions->$starterId == $player->playerInfo['playerid'] || $visitingStarterPositions->$subId == $player->playerInfo['playerid']) {
             if (!empty($position->$subInPointId) && empty($position->$subOutPointId)) {
                 // Le joueur était un remplaçant qui est entré mais n'a pas encore été sorti
                 $class .= " green";
-            } elseif (!empty($position->$subOutPointId)) {
+            } elseif (!empty($visitingStarterPositions->$subOutPointId)) {
                 // Le joueur était un remplaçant qui a été sorti
                 $class .= " orange";
             } else {
@@ -163,10 +207,10 @@ foreach($visitingBench as $player){
         }
     }
     ?>
-    <option type="text" data-type="option" data-equipe="2" value="<?= $player->playerInfo['playerid']; ?>" id="draggable-<?= $compteur + 1; ?>" class="<?= $class ?>" draggable="true" ondragstart="onDragStart(event);" selected><?= $player->playerInfo['number'] . " " ?><?= $player->last_name ?></option>
+    <option class="<?= $class ?>" type="text" data-type="option" data-equipe="2" value="<?= $player->playerInfo['playerid']; ?>" id="draggable-<?= $compteur + 1; ?>" draggable="true" ondragstart="onDragStart(event);" selected><?= $player->playerInfo['number'] . " " ?><?= $player->last_name ?></option>
     <?php
-}   
-?>
+    }   
+    ?>
 
 
     </div>

@@ -253,10 +253,11 @@ function keepScore($setid)
     $receivingBench = VolscoreDB::getBenchPlayers($set->game_id, $set->id, $game->receivingTeamId);
     $visitingBench = VolscoreDB::getBenchPlayers($set->game_id, $set->id, $game->visitingTeamId);
 
+    $receivingStarterPositions = VolscoreDB::getPosition($set->id, $game->receivingTeamId);
     $visitingStarterPositions = VolscoreDB::getPosition($set->id, $game->visitingTeamId);
 
-    $position = playerState($visitingStarterPositions);
-    
+    $receivingStarterPositions = playerState($receivingStarterPositions);
+    $visitingStarterPositions = playerState($visitingStarterPositions);
 
     require_once 'view/scoring.php';
 }
