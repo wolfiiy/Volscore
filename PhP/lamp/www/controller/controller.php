@@ -220,6 +220,19 @@ function keepScore($setid)
     $visitingPositions = VolscoreDB::getCourtPlayers($set->game_id, $set->id, $game->visitingTeamId);
     $receivingBench = VolscoreDB::getBenchPlayers($set->game_id, $set->id, $game->receivingTeamId);
     $visitingBench = VolscoreDB::getBenchPlayers($set->game_id, $set->id, $game->visitingTeamId);
+
+    // Créez un tableau avec tous les player_position_x_id de l'objet $position
+    $starterPositions = [
+        $visitingStarterPositions->player_position_1_id,
+        $visitingStarterPositions->player_position_2_id,
+        $visitingStarterPositions->player_position_3_id,
+        $visitingStarterPositions->player_position_4_id,
+        $visitingStarterPositions->player_position_5_id,
+        $visitingStarterPositions->player_position_6_id,
+    ];
+
+    echo $starterPositions[0];
+
     require_once 'view/scoring.php';
 }
 

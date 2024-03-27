@@ -82,8 +82,8 @@ ob_start();
                 $pos = 0;
                 foreach ($visitingPositions as $player) : 
                 $pos++;?>
-                    
-                <select name="position<?= $pos?>" data-type="select" data-equipe="2"  id="pos_<?= $game->visitingTeamId?>_<?= $pos?>" class="form-control" class="example-dropzone" draggable="true" ondragstart="onDragStart(event);" ondragover="onDragOver(event);" ondrop="onDrop(event);" disabled>
+
+                <select name="position<?= $pos?>" data-type="select" data-equipe="2"  id="pos_<?= $game->visitingTeamId?>_<?= $pos?>" class="form-control<?php if(in_array($player->playerInfo['playerid'], $starterPositions)){ echo ' yellow';} ?>" class="example-dropzone" draggable="true" ondragstart="onDragStart(event);" ondragover="onDragOver(event);" ondrop="onDrop(event);" disabled>
                     <option class="example-draggable" type="text" data-equipe="2" value="<?= $player->playerInfo['playerid']; ?>" id="draggable-<?php echo $pos; ?>" draggable="true" ondragstart="onDragStart(event);" selected><?= $player->playerInfo['number'] . " " ?><?= $player->last_name ?> <?php if($player->id == $nextUp->id){ echo "🥎";?><?php } ?></option>
                 </select>
                 <?php endforeach; ?>
@@ -128,9 +128,6 @@ ob_start();
 
     </div>
 </div>
-<script>
-    
-</script>
 
 <?php
 $content = ob_get_clean();

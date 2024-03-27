@@ -519,9 +519,7 @@ class VolscoreDB implements IVolscoreDb {
             print 'Error!:' . $e->getMessage() . '<br/>';
             return null;
         }
-    }
-    
-    
+    }    
 
     private static function getLastPointOfTeam ($set, $teamid) : ?Point
     {
