@@ -176,6 +176,7 @@ function updatePositionScoring($gameid, $setid, $teamid, $pos1, $pos2, $pos3, $p
             // Définir SubOutPoint si la position du joueur est la même mais un substitut est enregistré
             VolscoreDB::setSubOutPoint($setid, $teamid, $subPoint, $i);
         }
+        
     }
 
     // Mettre à jour les positions finales
@@ -209,6 +210,37 @@ function playerEligible($playerId, $subs, $positions) {
     return true;
 }
 
+function playerState($position) {
+
+    for ($i = 1; $i <= 6; $i++) {
+
+        $starterProp = "player_position_{$i}_id";
+        $subProp = "player_sub_{$i}_id";
+        $subInPointProp = "sub_in_point_{$i}_id";
+        $subOutPointProp = "sub_out_point_{$i}_id";
+        $stateProp = "player_state_{$i}_id";
+
+        $position->$stateProp = 'unknown';
+
+        if (!empty($position->$subProp)) {
+
+            if (!empty($position->$subInPointProp) && empty($position->$subOutPointProp)) {
+                $position->$stateProp = 'sub_in'; 
+            } elseif (!empty($position->$subOutPointProp)) {
+                $position->$stateProp = 'sub_out'; 
+            } else {
+                $position->$stateProp = 'sub'; 
+            }
+        } else if (!empty($position->$starterProp)) {
+
+            $position->$stateProp = 'starter'; 
+        }
+    }
+
+    return $position;
+}
+
+
 function keepScore($setid)
 {
     $set = VolscoreDB::getSet($setid);
@@ -221,17 +253,10 @@ function keepScore($setid)
     $receivingBench = VolscoreDB::getBenchPlayers($set->game_id, $set->id, $game->receivingTeamId);
     $visitingBench = VolscoreDB::getBenchPlayers($set->game_id, $set->id, $game->visitingTeamId);
 
-    // Créez un tableau avec tous les player_position_x_id de l'objet $position
-    $starterPositions = [
-        $visitingStarterPositions->player_position_1_id,
-        $visitingStarterPositions->player_position_2_id,
-        $visitingStarterPositions->player_position_3_id,
-        $visitingStarterPositions->player_position_4_id,
-        $visitingStarterPositions->player_position_5_id,
-        $visitingStarterPositions->player_position_6_id,
-    ];
+    $visitingStarterPositions = VolscoreDB::getPosition($set->id, $game->visitingTeamId);
 
-    echo $starterPositions[0];
+    $position = playerState($visitingStarterPositions);
+    
 
     require_once 'view/scoring.php';
 }

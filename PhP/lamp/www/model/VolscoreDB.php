@@ -509,6 +509,24 @@ class VolscoreDB implements IVolscoreDb {
                 $position->player_position_4_id = $positionData['starter_4_id'];
                 $position->player_position_5_id = $positionData['starter_5_id'];
                 $position->player_position_6_id = $positionData['starter_6_id'];
+                $position->player_sub_1_id = $positionData['sub_1_id'];
+                $position->player_sub_2_id = $positionData['sub_2_id'];
+                $position->player_sub_3_id = $positionData['sub_3_id'];
+                $position->player_sub_4_id = $positionData['sub_4_id'];
+                $position->player_sub_5_id = $positionData['sub_5_id'];
+                $position->player_sub_6_id = $positionData['sub_6_id'];
+                $position->sub_in_point_1_id = $positionData['sub_in_point_1_id'];
+                $position->sub_out_point_1_id = $positionData['sub_out_point_1_id'];
+                $position->sub_in_point_2_id = $positionData['sub_in_point_2_id'];
+                $position->sub_out_point_2_id = $positionData['sub_out_point_2_id'];
+                $position->sub_in_point_3_id = $positionData['sub_in_point_3_id'];
+                $position->sub_out_point_3_id = $positionData['sub_out_point_3_id'];
+                $position->sub_in_point_4_id = $positionData['sub_in_point_4_id'];
+                $position->sub_out_point_4_id = $positionData['sub_out_point_4_id'];
+                $position->sub_in_point_5_id = $positionData['sub_in_point_5_id'];
+                $position->sub_out_point_5_id = $positionData['sub_out_point_5_id'];
+                $position->sub_in_point_6_id = $positionData['sub_in_point_6_id'];
+                $position->sub_out_point_6_id = $positionData['sub_out_point_6_id'];
                 $position->final = $positionData['final'];
     
                 return $position;

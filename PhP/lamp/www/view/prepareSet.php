@@ -52,7 +52,7 @@ ob_start();
                         <?php for ($pos = 1; $pos <= 6; $pos++) : ?>
                             <div class="form-group">
                                 <label for="pos<?= $pos ?>" class="col-2"><?= romanNumber($pos) ?></label>
-                                <select name="position<?= $pos ?>" data-type="select" data-equipe="<?php echo $game->receivingTeamId;?>" id="pos_<?= $game->receivingTeamId?>_<?= $pos?>" class="form-control" class="example-dropzone" draggable="true" ondragstart="onDragStart(event);" ondragover="onDragOver(event);" ondrop="onDrop(event);" disabled>
+                                <select name="position<?= $pos ?>" data-type="select" data-equipe="<?php echo $game->receivingTeamId;?>" id="pos_<?= $game->receivingTeamId?>_<?= $pos?>" class="form-control example-dropzone" draggable="true" ondragstart="onDragStart(event);" ondragover="onDragOver(event);" ondrop="onDrop(event);" disabled>
                                     <!--<option value=0></option>-->
                                 </select> </div>
                             <br>

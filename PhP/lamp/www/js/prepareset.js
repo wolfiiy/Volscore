@@ -129,6 +129,6 @@
         selects.forEach(function(select) {
             // Retirer l'attribut 'disabled'
             select.removeAttribute('disabled');
-        });
+    });
         
-    }
+}
