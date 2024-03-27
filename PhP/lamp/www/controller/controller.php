@@ -167,7 +167,6 @@ function updatePositionScoring($gameid, $setid, $teamid, $pos1, $pos2, $pos3, $p
     for ($i = 1; $i <= 6; $i++) {
         $posKey = "player_position_{$i}_id";
         $subKey = "sub_{$i}_id";
-        //echo $newPositions[$i] . " " ;
         if ($positions->$posKey != $newPositions[$i - 1] && $subs[$subKey] == null) {
             // Ajouter le SUB et SUBPOINT si la position du joueur a changé et aucun substitut n'est actuellement enregistré
             if(playerEligible($newPositions[$i - 1] , $subs, $positions)){
@@ -187,19 +186,18 @@ function updatePositionScoring($gameid, $setid, $teamid, $pos1, $pos2, $pos3, $p
 
 function playerEligible($playerId, $subs, $positions) {
     // Vérifie si le joueur est déjà un substitut dans une autre position
-    echo $playerId . " ";
+
     for ($i = 1; $i <= 6; $i++) {
         
         $posKey = "player_position_{$i}_id";
         $subKey = "sub_{$i}_id";
-        echo $positions->$posKey . " ";
+
         if (isset($subs[$subKey]) && $subs[$subKey] == $playerId) {
             // Le joueur est déjà un substitut dans une autre position
             return false;
         }
 
         if($positions->$posKey == $playerId){
-            echo "yoyo";
             return false;
         }
         
