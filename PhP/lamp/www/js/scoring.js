@@ -2,9 +2,16 @@
  * JS pour la page scoring
  **********************/    
 
-    var changnum1 = 0;
-
-    var changnum2 = 0;
+    if(changementMax(1)){
+        const button = document.getElementById("changement1");
+        button.disabled = true;
+        button.textContent = "6 changements effectués";
+    }
+    if(changementMax(2)){
+        const button = document.getElementById("changement2");
+        button.disabled = true;
+        button.textContent = "6 changements effectués";
+    }
 
     var affichage1 = true;
 
@@ -191,3 +198,31 @@
             select.removeAttribute('disabled');
         });
     }
+
+    function changementMax(equipe) {
+        var elements = document.querySelectorAll('[data-equipe="' + equipe + '"][data-type="select"][data-changement]:not([data-changement=""])');
+    
+        var totalChangements = 0;
+        
+        console.log(elements);
+
+        elements.forEach(function(element) {
+            // Vérifier si l'élément contient la classe 'green'
+            if (element.classList.contains('green')) {
+                totalChangements += 1;
+            }
+            // Vérifier si l'élément contient la classe 'orange'
+            if (element.classList.contains('orange')) {
+                totalChangements += 2;
+            }
+        });
+
+        console.log(totalChangements);
+    
+        // Vérifier si le nombre de changements atteint 6 ou plus
+        if(totalChangements >= 6){
+            return true;
+        }
+        return false;
+    }
+    
