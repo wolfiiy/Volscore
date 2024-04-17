@@ -31,15 +31,17 @@ ob_start();
                     } elseif (!empty($receivingStarterPositions ->$subOutPointId)) {
                         // Le joueur était un remplaçant qui a été sorti
                         $class .= " orange";
+                        $changementID = $receivingStarterPositions->$starterId;
                     } else {
                         // Le joueur était un titulaire et n'a pas été remplacé
                         $class .= " yellow";
+                        $changementID = $player->playerInfo['playerid'];
                     }
                     break; // Sortir de la boucle une fois l'état du joueur trouvé
                 }
             }
             ?>
-            <option class="<?= $class ?>" type="text" data-type="option" data-equipe="1" value="<?= $player->playerInfo['playerid']; ?>" id="draggable-<?php echo $compteur; ?>" draggable="true" ondragstart="onDragStart(event);" ondragover="onDragOver(event);" ondrop="onDrop(event);" selected><?= $player->playerInfo['number'] . " " ?><?= $player->last_name ?></option>
+            <option class="<?= $class ?>" type="text" data-changement="<?= $changementID ?>" data-type="option" data-equipe="1" value="<?= $player->playerInfo['playerid']; ?>" id="draggable-<?php echo $compteur; ?>" draggable="true" ondragstart="onDragStart(event);" ondragover="onDragOver(event);" ondrop="onDrop(event);" selected><?= $player->playerInfo['number'] . " " ?><?= $player->last_name ?></option>
             <?php
 
         }    
@@ -65,7 +67,9 @@ ob_start();
 
                 // Déterminer l'état du joueur basé sur sa position
                 $statePropName = "player_state_{$pos}_id";
+                $starterIdName = "player_position_{$pos}_id";
                 $playerState = $receivingStarterPositions->$statePropName;
+                $starterId = $receivingStarterPositions->$starterIdName;
 
                 switch ($playerState) {
                     case 'starter':
@@ -73,19 +77,22 @@ ob_start();
                         break;
                     case 'sub_in':
                         $class .= " green"; // Classe pour les joueurs remplaçants actuellement en jeu
+                        $changementID = $starterId;
                         break;
                     case 'sub_out':
                         $class .= " orange"; // Classe pour les joueurs remplaçants qui ont été sortis
+                        $changementID = $starterId;
                         break;
                     default:
                         // Pas de classe supplémentaire pour l'état inconnu ou par défaut
                         break;
                 }
                 ?>
-                <select class="<?=$class?>" name="position<?= $pos?>" data-type="select" data-equipe="1"  id="pos_<?= $game->receivingTeamId?>_<?= $pos?>" draggable="true" ondragstart="onDragStart(event);" ondragover="onDragOver(event);" ondrop="onDrop(event);" disabled>
+                <select class="<?=$class?>" name="position<?= $pos?>" data-changement="<?= $changementID ?>" data-type="select" data-equipe="1"  id="pos_<?= $game->receivingTeamId?>_<?= $pos?>" draggable="true" ondragstart="onDragStart(event);" ondragover="onDragOver(event);" ondrop="onDrop(event);" disabled>
                     <option class="example-draggable" type="text" data-equipe="1" value="<?= $player->playerInfo['playerid']; ?>" id="draggable-<?php echo $pos; ?>" draggable="true" ondragstart="onDragStart(event);" selected><?= $player->playerInfo['number'] . " " ?><?= $player->last_name ?> <?php if($player->id == $nextUp->id){ echo "🥎";?><?php } ?></option>
                 </select>
-            <?php endforeach; ?>
+                <?php $changementID = "";
+                endforeach; ?>
         </div>
         <input value="Valider" type="submit" id="changer1" class="btn btn-success m-2" hidden></input>
         </form>
