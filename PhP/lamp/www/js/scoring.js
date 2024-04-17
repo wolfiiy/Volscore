@@ -2,6 +2,10 @@
  * JS pour la page scoring
  **********************/    
 
+    var changnum1 = 0;
+
+    var changnum2 = 0;
+
     var affichage1 = true;
 
     const button1 = document.getElementById("changement1");
@@ -96,7 +100,7 @@
         event.preventDefault();
 
     }
-
+    // TODO Optimiser le OnDrop
     /* Méthode qui est appeller pour  */
     function onDrop(event) {
 
@@ -108,59 +112,49 @@
         // Si l'élément n'est pas de la meme equipe enleve
         if(draggableElement.dataset.equipe != dropzone.dataset.equipe){return}
 
-        if(dropzone.value != 0 && dropzone.id != "spawn"){
+        if(dropzone.dataset.type == "dropzone"){
+            var element = document.querySelector('[data-changement="' + draggableElement.dataset.changement + '"][data-type="option"]');
+            element.parentNode.appendChild(draggableElement.options[0]);
+            draggableElement.appendChild(element);
+            event.dataTransfer.clearData();
+        }
 
+        if(dropzone.value != 0 && dropzone.id != "spawn"){
             // Cas de figure
             console.log(dropzone.id + " " + draggableElement.id)
             // drop et element sont des select
             if(dropzone.dataset.type == "select" && draggableElement.dataset.type == "select"){
-                console.log("deplace3");
-                
                 var un = draggableElement.options[0];
                 var deux = dropzone.options[0];
-
                 dropzone.options[0] = un;
                 draggableElement.options[0] = deux;
-                
             }
             // drop est un select et element non
             if(dropzone.dataset.type == "option" && draggableElement.dataset.type == "select"){
-                console.log("deplace2");
                 dropzone.parentNode.appendChild(draggableElement.options[0]);
-
                 draggableElement.appendChild(dropzone);
                 event.dataTransfer.clearData();
             }
             // contraire
             if(dropzone.dataset.type == "select" && draggableElement.dataset.type == "option"){
-                console.log("A2");
                 draggableElement.parentNode.appendChild(dropzone.options[0]);
-
                 dropzone.appendChild(draggableElement);
                 event.dataTransfer.clearData();
             }
             // Pour finir les deux sont pas des selects
             if(dropzone.dataset.type == "option" && draggableElement.dataset.type == "option"){
-                console.log("A1");
                 var draggableElementvalue = draggableElement.value;
                 var draggableElementtext = draggableElement.textContent;
-
                 var dropzonetext = dropzone.textContent;
                 var dropzonevalue = dropzone.value;
-
                 dropzone.value = draggableElementvalue;
                 dropzone.textContent = draggableElementtext;
-
                 draggableElement.value = dropzonevalue;
                 draggableElement.textContent = dropzonetext;
             }
         }
         else if(draggableElement.dataset.type == "select"){
-        //let select = document.getElementById(draggableElement.id);
-            console.log("A");
             let newOption = document.createElement('option');
-            
-            //console.log(draggableElement.options[1]);
             newOption.value = draggableElement.value;
             newOption.id = draggableElement.options[0].id;
             newOption.className = "example-draggable";
@@ -171,14 +165,18 @@
             newOption.dataset.equipe = draggableElement.dataset.equipe;
             newOption.dataset.type = "option";
             dropzone.appendChild(newOption);
-
             draggableElement.options.length = 0;
         }
         else{
             dropzone.appendChild(draggableElement);
             event.dataTransfer.clearData();
         }
-
+        //const changeColor = "lightblue";
+        // Appliquer la couleur de fond pour signaler le changement
+        //dropzone.style.backgroundColor = changeColor;
+        //draggableElement.style.backgroundColor = changeColor;
+        // Clear the drag data after updating datasets
+        event.dataTransfer.clearData();
     }
 
     /* Méthode qui les select de 1 à 6 en false pour permettre d'envoyer en $_POST*/
