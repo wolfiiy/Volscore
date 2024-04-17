@@ -1,8 +1,6 @@
 /***********************
  * JS pour la page scoring
- **********************/
-    
-        
+ **********************/    
 
     var affichage1 = true;
 
@@ -180,6 +178,7 @@
             dropzone.appendChild(draggableElement);
             event.dataTransfer.clearData();
         }
+
     }
 
     /* Méthode qui les select de 1 à 6 en false pour permettre d'envoyer en $_POST*/
