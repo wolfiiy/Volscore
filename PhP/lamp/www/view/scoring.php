@@ -7,7 +7,7 @@ ob_start();
 <div class="row text-center"><h1>Set <?= $set->number ?></h1></div>
 <div class="d-flex flex-row justify-content-around">
 
-    <div id="listejoueur1" class="liste" hidden>
+    <div id="listejoueur1" class="liste flex-column order-<?= (($game->toss+$set->number) % 2 == 0) ? 1 : 4 ?>" hidden>
 
     <?php 
         
@@ -178,7 +178,7 @@ ob_start();
             </div>
         
     </div>
-    <div id="listejoueur2" class="liste" hidden>
+    <div id="listejoueur2" class="liste flex-column order-<?= (($game->toss+$set->number) % 2 == 0) ? 4 : 1 ?>" hidden>
 
     <?php 
     foreach($visitingBench as $player){
