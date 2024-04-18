@@ -15,8 +15,7 @@ ob_start();
         foreach($receivingBench as $player){
             $compteur++;
             $class = "example-draggable"; // Classe de base pour tous les joueurs sur le banc
-
-            // Déterminer l'état de la position pour ce joueur
+            $changementID = "";            // Déterminer l'état de la position pour ce joueur
             for ($i = 1; $i <= 6; $i++) {
                 $starterId = "player_position_{$i}_id";
                 $subId = "player_sub_{$i}_id";
@@ -198,7 +197,7 @@ ob_start();
     foreach($visitingBench as $player){
     $compteur++;
     $class = "example-draggable"; // Classe de base pour tous les joueurs sur le banc
-
+    $changementID = "";
     // Déterminer l'état de la position pour ce joueur
     for ($i = 1; $i <= 6; $i++) {
         $starterId = "player_position_{$i}_id";

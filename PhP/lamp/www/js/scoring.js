@@ -12,6 +12,7 @@
         button.disabled = true;
         button.textContent = "6 changements effectués";
     }
+    
 
     var affichage1 = true;
 
@@ -25,6 +26,7 @@
     else{affichage1 = true;}
 
     });
+
 
     var affichage2 = true;
 
@@ -118,13 +120,20 @@
 
         // Si l'élément n'est pas de la meme equipe enleve
         if(draggableElement.dataset.equipe != dropzone.dataset.equipe){return}
-
+        //console.log(draggableElement.dataset.changement);
+ 
         if(dropzone.dataset.type == "dropzone"){
             var element = document.querySelector('[data-changement="' + draggableElement.dataset.changement + '"][data-type="option"]');
             element.parentNode.appendChild(draggableElement.options[0]);
             draggableElement.appendChild(element);
             event.dataTransfer.clearData();
         }
+
+        // Si les attributs existent, vérifie si ils sont différents
+        if (draggableElement.dataset.changement != dropzone.dataset.changement) {
+            return; // Annule le drop si les attributs sont différents
+        }
+        
 
         if(dropzone.value != 0 && dropzone.id != "spawn"){
             // Cas de figure
