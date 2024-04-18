@@ -247,4 +247,20 @@
     background-color: lightsalmon;
 }
 
+
+.item {
+
+    flex: 0 0 42%;
+    text-align: center;
+    margin: 4%;
+}
+.volleystyle {
+    max-width: 30rem;
+    margin:0 auto;
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+}
+
   /*ALEX*/
