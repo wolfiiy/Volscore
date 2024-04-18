@@ -122,7 +122,7 @@
         if(draggableElement.dataset.equipe != dropzone.dataset.equipe){return}
         //console.log(draggableElement.dataset.changement);
  
-        if(dropzone.dataset.type == "dropzone"){
+        if(dropzone.dataset.type == "dropzone" && draggableElement.dataset.changement != ""){
             var element = document.querySelector('[data-changement="' + draggableElement.dataset.changement + '"][data-type="option"]');
             element.parentNode.appendChild(draggableElement.options[0]);
             draggableElement.appendChild(element);
