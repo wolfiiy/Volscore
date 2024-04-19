@@ -95,7 +95,7 @@ ob_start();
                 <?php $changementID = "";
                 endforeach; ?>
         </div>
-        <input value="Valider" type="submit" id="changer1" class="btn btn-success m-2" hidden></input>
+        <input value="Valider" type="submit" id="changer1" class="btn btn-validate m-2" hidden></input>
         </form>
         <div class="row actions d-flex flex-column">
             <form method="post" action="?action=scorePoint">
@@ -169,7 +169,7 @@ ob_start();
             <?php $changementID = "";
             endforeach; ?>
             </div>
-            <input value="Valider" type="submit" id="changer2" class="btn btn-success m-2" hidden></input>
+            <input value="Valider" type="submit" id="changer2" class="btn btn-validate m-2" hidden></input>
         </form>
             <div class="row actions d-flex flex-column">
                 <form method="post" action="?action=scorePoint">
