@@ -247,9 +247,16 @@ function keepScore($setid)
     $game = VolscoreDB::getGame($set->game_id);
     $game->receivingTimeouts = VolscoreDB::getTimeouts($game->receivingTeamId,$setid);
     $game->visitingTimeouts = VolscoreDB::getTimeouts($game->visitingTeamId,$setid);
+
+    $points = VolscoreDB::getPoints($set);
     $nextUp = VolscoreDB::nextServer($set);
-    $receivingPositions = VolscoreDB::getCourtPlayers($set->game_id, $set->id, $game->receivingTeamId);
-    $visitingPositions = VolscoreDB::getCourtPlayers($set->game_id, $set->id, $game->visitingTeamId);
+
+    $rPositions = VolscoreDB::getCourtPlayers($set->game_id, $set->id, $game->receivingTeamId);
+    $vPositions = VolscoreDB::getCourtPlayers($set->game_id, $set->id, $game->visitingTeamId);
+
+    $receivingPositions = rotatePlayers($rPositions, $points,($game->toss+$set->number) % 2 == 0);
+    $visitingPositions = rotatePlayers($vPositions, $points, ($game->toss+$set->number) % 2 == 1);
+
     $receivingBench = VolscoreDB::getBenchPlayers($set->game_id, $set->id, $game->receivingTeamId);
     $visitingBench = VolscoreDB::getBenchPlayers($set->game_id, $set->id, $game->visitingTeamId);
 
@@ -259,7 +266,30 @@ function keepScore($setid)
     $receivingStarterPositions = playerState($receivingStarterPositions);
     $visitingStarterPositions = playerState($visitingStarterPositions);
 
+    
+
     require_once 'view/scoring.php';
+}
+
+function rotatePlayers($players,$points, $supplement){
+
+    $lastTeamId = null;
+    if($supplement){$changes = 0;}else{$changes = -1;}
+    
+
+    foreach ($points as $point) {
+        if ($lastTeamId !== null && $lastTeamId !== $point->team_id) {
+            $changes++;
+        }
+        $lastTeamId = $point->team_id;
+    }
+
+    for ($i = 0; $i < $changes / 2; $i++) {
+        $player = array_shift($players);
+        $players[] = $player;
+    }
+
+    return $players;
 }
 
 function timeout($teamid,$setid)

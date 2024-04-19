@@ -473,6 +473,22 @@ class VolscoreDB implements IVolscoreDb {
         return (new Point($record));
     }
 
+    public static function getPoints($set) : array
+    {
+        $pdo = self::connexionDB();
+        $stmt = $pdo->prepare("SELECT * FROM points WHERE set_id = :set_id ORDER BY id ASC");
+        $stmt->bindValue(':set_id', $set->id);
+        $stmt->execute();
+        $points = [];
+
+        while ($record = $stmt->fetch(PDO::FETCH_ASSOC)) {
+            $points[] = new Point($record);
+        }
+
+        return $points;
+    }
+
+
     private static function getPointBeforeLast ($set)
     {
         $pdo = self::connexionDB();

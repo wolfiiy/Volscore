@@ -60,7 +60,7 @@ ob_start();
         <div class="d-flex volleystyle align-items-center">
             <?php 
                 $pos = 0;
-                $numbers = [5, 6, 4, 2, 1, 3];
+                if(($game->toss+$set->number) % 2 == 0){$numbers = [5, 6, 4, 2, 1, 3];}else{$numbers = [2, 6, 4, 5, 1, 3];}
                 foreach ($receivingPositions as $player) : 
                 $pos++;
                 $class = "item example-dropzone form-control";
@@ -133,7 +133,7 @@ ob_start();
             <?php 
             $pos = 0;
             $changnum = 0;
-            $numbers = [2, 1, 3, 5, 6, 4];
+            if(($game->toss+$set->number) % 2 == 1){$numbers = [5, 6, 4, 2, 1, 3];}else{$numbers = [2, 1, 3, 5, 6, 4];}
             foreach ($visitingPositions as $player) : 
                 $pos++;
                 $class = "item example-dropzone form-control";
