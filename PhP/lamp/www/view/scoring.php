@@ -48,7 +48,7 @@ ob_start();
 
     </div>
 
-    <div class="d-flex flex-column order-<?= (($game->toss+$set->number) % 2 == 0) ? 1 : 2 ?>">
+    <div class="d-flex flex-column order-<?= (($game->toss+$set->number) % 2 == 0) ? 2 : 3 ?>">
     <form method="post" action="?action=updatePositions" onsubmit="Enable();">
         <input type="hidden" name="setid" value="<?= $set->id ?>" />
         <input type="hidden" name="gameid" value="<?= $game->number ?>" />
@@ -121,7 +121,7 @@ ob_start();
 
     
 
-    <div class="d-flex flex-column order-<?= (($game->toss+$set->number) % 2 == 0) ? 2 : 1 ?>">
+    <div class="d-flex flex-column order-<?= (($game->toss+$set->number) % 2 == 0) ? 3 : 2 ?>">
         <form method="post" action="?action=updatePositions" onsubmit="Enable();">
             <input type="hidden" name="setid" value="<?= $set->id ?>" />
             <input type="hidden" name="gameid" value="<?= $game->number ?>" />

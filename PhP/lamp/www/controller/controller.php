@@ -255,9 +255,9 @@ function keepScore($setid)
     $receivingPositions = VolscoreDB::getCourtPlayers($set->game_id, $set->id, $game->receivingTeamId);
     $visitingPositions = VolscoreDB::getCourtPlayers($set->game_id, $set->id, $game->visitingTeamId);
 
-    $receivingOrder = rotateOrder($points,($game->toss+$set->number) % 2 == 0,1);
-    $visitingOrder = rotateOrder($points, ($game->toss+$set->number) % 2 == 1,2);
-
+    $receivingOrder = rotateOrder($points,$game,$set,1);
+    $visitingOrder = rotateOrder($points,$game,$set ,2);
+    //echo $game->toss ." " .$set->number;
     $receivingBench = VolscoreDB::getBenchPlayers($set->game_id, $set->id, $game->receivingTeamId);
     $visitingBench = VolscoreDB::getBenchPlayers($set->game_id, $set->id, $game->visitingTeamId);
 
@@ -272,17 +272,12 @@ function keepScore($setid)
     require_once 'view/scoring.php';
 }
 
-function rotateOrder($points, $supplement,$teamid){
+function rotateOrder($points, $game, $set,$teamid){
 
-    
+    if($teamid == 1){if(($game->toss+$set->number) % 2 == 0){$numbers = [5, 6, 4, 2, 1, 3]; $changes = 0;}else{$numbers = [2, 1, 3, 5, 6, 4]; $changes = 0;}}
+    if($teamid == 2){if(($game->toss+$set->number) % 2 == 1){$numbers = [5, 6, 4, 2, 1, 3]; $changes = -1;}else{$numbers = [2, 1, 3, 5, 6, 4]; $changes = -1;}}
+
     $lastTeamId = null;
-    if($supplement){
-        if($teamid == 1){$numbers = [5, 6, 4, 2, 1, 3];}else{$numbers = [2, 1, 3, 5, 6, 4];}
-        $changes = 0;
-    }else{
-        if($teamid == 2){$numbers = [2, 1, 3, 5, 6, 4];}else{$numbers = [5, 6, 4, 2, 1, 3];}
-        $changes = -1;
-    }
 
     foreach ($points as $point) {
         if ($lastTeamId !== null && $lastTeamId !== $point->team_id) {
