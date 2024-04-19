@@ -170,6 +170,7 @@ function updatePositionScoring($gameid, $setid, $teamid, $pos1, $pos2, $pos3, $p
         if ($positions->$posKey != $newPositions[$i - 1] && $subs[$subKey] == null) {
             // Ajouter le SUB et SUBPOINT si la position du joueur a changé et aucun substitut n'est actuellement enregistré
             if(playerEligible($newPositions[$i - 1] , $subs, $positions)){
+                //echo $newPositions[$i - 1];
                 VolscoreDB::setSub($setid, $teamid, $newPositions[$i - 1], $subPoint, $i);
             }
         } elseif ($positions->$posKey == $newPositions[$i - 1] && $subs[$subKey] != null) {
@@ -251,11 +252,11 @@ function keepScore($setid)
     $points = VolscoreDB::getPoints($set);
     $nextUp = VolscoreDB::nextServer($set);
 
-    $rPositions = VolscoreDB::getCourtPlayers($set->game_id, $set->id, $game->receivingTeamId);
-    $vPositions = VolscoreDB::getCourtPlayers($set->game_id, $set->id, $game->visitingTeamId);
+    $receivingPositions = VolscoreDB::getCourtPlayers($set->game_id, $set->id, $game->receivingTeamId);
+    $visitingPositions = VolscoreDB::getCourtPlayers($set->game_id, $set->id, $game->visitingTeamId);
 
-    $receivingPositions = rotatePlayers($rPositions, $points,($game->toss+$set->number) % 2 == 0);
-    $visitingPositions = rotatePlayers($vPositions, $points, ($game->toss+$set->number) % 2 == 1);
+    $receivingOrder = rotateOrder($points,($game->toss+$set->number) % 2 == 0,1);
+    $visitingOrder = rotateOrder($points, ($game->toss+$set->number) % 2 == 1,2);
 
     $receivingBench = VolscoreDB::getBenchPlayers($set->game_id, $set->id, $game->receivingTeamId);
     $visitingBench = VolscoreDB::getBenchPlayers($set->game_id, $set->id, $game->visitingTeamId);
@@ -271,11 +272,17 @@ function keepScore($setid)
     require_once 'view/scoring.php';
 }
 
-function rotatePlayers($players,$points, $supplement){
+function rotateOrder($points, $supplement,$teamid){
 
-    $lastTeamId = null;
-    if($supplement){$changes = 0;}else{$changes = -1;}
     
+    $lastTeamId = null;
+    if($supplement){
+        if($teamid == 1){$numbers = [5, 6, 4, 2, 1, 3];}else{$numbers = [2, 1, 3, 5, 6, 4];}
+        $changes = 0;
+    }else{
+        if($teamid == 2){$numbers = [2, 1, 3, 5, 6, 4];}else{$numbers = [5, 6, 4, 2, 1, 3];}
+        $changes = -1;
+    }
 
     foreach ($points as $point) {
         if ($lastTeamId !== null && $lastTeamId !== $point->team_id) {
@@ -285,11 +292,11 @@ function rotatePlayers($players,$points, $supplement){
     }
 
     for ($i = 0; $i < $changes / 2; $i++) {
-        $player = array_shift($players);
-        $players[] = $player;
+        $number = array_pop($numbers); // Remove the last player from the array
+        array_unshift($numbers, $number); // Prepend the removed player to the front
     }
 
-    return $players;
+    return $numbers;
 }
 
 function timeout($teamid,$setid)
