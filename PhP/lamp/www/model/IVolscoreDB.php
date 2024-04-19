@@ -241,5 +241,7 @@ interface IVolscoreDb {
     /*TEST*/
     public static function getPosition($setid,$teamid) : ?Position;
 
+    public static function getPoints($set) : array;
+
 #endregion
 }

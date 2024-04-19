@@ -170,6 +170,7 @@ function updatePositionScoring($gameid, $setid, $teamid, $pos1, $pos2, $pos3, $p
         if ($positions->$posKey != $newPositions[$i - 1] && $subs[$subKey] == null) {
             // Ajouter le SUB et SUBPOINT si la position du joueur a changé et aucun substitut n'est actuellement enregistré
             if(playerEligible($newPositions[$i - 1] , $subs, $positions)){
+                //echo $newPositions[$i - 1];
                 VolscoreDB::setSub($setid, $teamid, $newPositions[$i - 1], $subPoint, $i);
             }
         } elseif ($positions->$posKey == $newPositions[$i - 1] && $subs[$subKey] != null) {
@@ -247,9 +248,16 @@ function keepScore($setid)
     $game = VolscoreDB::getGame($set->game_id);
     $game->receivingTimeouts = VolscoreDB::getTimeouts($game->receivingTeamId,$setid);
     $game->visitingTimeouts = VolscoreDB::getTimeouts($game->visitingTeamId,$setid);
+
+    $points = VolscoreDB::getPoints($set);
     $nextUp = VolscoreDB::nextServer($set);
+
     $receivingPositions = VolscoreDB::getCourtPlayers($set->game_id, $set->id, $game->receivingTeamId);
     $visitingPositions = VolscoreDB::getCourtPlayers($set->game_id, $set->id, $game->visitingTeamId);
+
+    $receivingOrder = rotateOrder($points,$game,$set,1);
+    $visitingOrder = rotateOrder($points,$game,$set ,2);
+    //echo $game->toss ." " .$set->number;
     $receivingBench = VolscoreDB::getBenchPlayers($set->game_id, $set->id, $game->receivingTeamId);
     $visitingBench = VolscoreDB::getBenchPlayers($set->game_id, $set->id, $game->visitingTeamId);
 
@@ -259,7 +267,31 @@ function keepScore($setid)
     $receivingStarterPositions = playerState($receivingStarterPositions);
     $visitingStarterPositions = playerState($visitingStarterPositions);
 
+    
+
     require_once 'view/scoring.php';
+}
+
+function rotateOrder($points, $game, $set,$teamid){
+
+    if($teamid == 1){if(($game->toss+$set->number) % 2 == 0){$numbers = [5, 6, 4, 2, 1, 3]; $changes = 0;}else{$numbers = [2, 1, 3, 5, 6, 4]; $changes = 0;}}
+    if($teamid == 2){if(($game->toss+$set->number) % 2 == 1){$numbers = [5, 6, 4, 2, 1, 3]; $changes = -1;}else{$numbers = [2, 1, 3, 5, 6, 4]; $changes = -1;}}
+
+    $lastTeamId = null;
+
+    foreach ($points as $point) {
+        if ($lastTeamId !== null && $lastTeamId !== $point->team_id) {
+            $changes++;
+        }
+        $lastTeamId = $point->team_id;
+    }
+
+    for ($i = 0; $i < $changes / 2; $i++) {
+        $number = array_pop($numbers); // Remove the last player from the array
+        array_unshift($numbers, $number); // Prepend the removed player to the front
+    }
+
+    return $numbers;
 }
 
 function timeout($teamid,$setid)

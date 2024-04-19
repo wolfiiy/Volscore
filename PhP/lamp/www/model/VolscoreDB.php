@@ -473,6 +473,22 @@ class VolscoreDB implements IVolscoreDb {
         return (new Point($record));
     }
 
+    public static function getPoints($set) : array
+    {
+        $pdo = self::connexionDB();
+        $stmt = $pdo->prepare("SELECT * FROM points WHERE set_id = :set_id ORDER BY id ASC");
+        $stmt->bindValue(':set_id', $set->id);
+        $stmt->execute();
+        $points = [];
+
+        while ($record = $stmt->fetch(PDO::FETCH_ASSOC)) {
+            $points[] = new Point($record);
+        }
+
+        return $points;
+    }
+
+
     private static function getPointBeforeLast ($set)
     {
         $pdo = self::connexionDB();
@@ -603,6 +619,7 @@ class VolscoreDB implements IVolscoreDb {
         $stmt->bindValue(':setid',$setid);
         $stmt->bindValue(':teamid',$teamid);
         $stmt->execute();
+        $dbh = null;
         return $stmt->fetchall();
     }
 
@@ -736,7 +753,7 @@ class VolscoreDB implements IVolscoreDb {
             $statement->execute(); // Exécute la requête
             
             $result = $statement->fetch(PDO::FETCH_ASSOC); // Récupère le résultat
-            
+            $dbh = null;
             return $result; // Retourne le résultat
         } catch (PDOException $e) {
             // Gestion des erreurs
@@ -800,6 +817,7 @@ class VolscoreDB implements IVolscoreDb {
                 $res[] = self::findPlayer($positions['starter_'.$pos.'_id']);
             }
             $isFinal = $positions['final'];
+            $dbh = null;
             return $res;
         } catch (PDOException $e) {
             print 'Error!:' . $e->getMessage() . '<br/>';
@@ -898,6 +916,7 @@ class VolscoreDB implements IVolscoreDb {
         $stmt->bindValue(':setid',$set->id);
         $stmt->bindValue(':teamid',$team->id);
         $stmt->execute();
+        $dbh = null;
         return $stmt->fetchall();
     }
 

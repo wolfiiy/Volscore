@@ -48,7 +48,7 @@ ob_start();
 
     </div>
 
-    <div class="d-flex flex-column order-<?= (($game->toss+$set->number) % 2 == 0) ? 1 : 2 ?>">
+    <div class="d-flex flex-column order-<?= (($game->toss+$set->number) % 2 == 0) ? 2 : 3 ?>">
     <form method="post" action="?action=updatePositions" onsubmit="Enable();">
         <input type="hidden" name="setid" value="<?= $set->id ?>" />
         <input type="hidden" name="gameid" value="<?= $game->number ?>" />
@@ -57,13 +57,13 @@ ob_start();
         <div class="setscore"><?= $game->scoreReceiving ?> sets</div>
         <div class="setscore"><?= count($game->receivingTimeouts) ?> timeouts</div>
         <div class="score"><?= $set->scoreReceiving ?></div>
-        <div class="d-flex flex-column align-items-center">
+        <div class="d-flex volleystyle align-items-center">
             <?php 
                 $pos = 0;
                 foreach ($receivingPositions as $player) : 
                 $pos++;
-                $class = "example-dropzone form-control";
-
+                $class = "item example-dropzone form-control";
+                $order = $receivingOrder[$pos - 1];
                 // Déterminer l'état du joueur basé sur sa position
                 $statePropName = "player_state_{$pos}_id";
                 $starterIdName = "player_position_{$pos}_id";
@@ -86,14 +86,16 @@ ob_start();
                         // Pas de classe supplémentaire pour l'état inconnu ou par défaut
                         break;
                 }
+                
                 ?>
-                <select class="<?=$class?>" name="position<?= $pos?>" data-changement="<?= $changementID ?>" data-type="select" data-equipe="1"  id="pos_<?= $game->receivingTeamId?>_<?= $pos?>" draggable="true" ondragstart="onDragStart(event);" ondragover="onDragOver(event);" ondrop="onDrop(event);" disabled>
+
+                <select class="<?=$class?>" name="position<?= $pos?>" style="order: <?= $order ?>" data-changement="<?= $changementID ?>" data-type="select" data-equipe="1"  id="pos_<?= $game->receivingTeamId?>_<?= $pos?>" draggable="true" ondragstart="onDragStart(event);" ondragover="onDragOver(event);" ondrop="onDrop(event);" disabled>
                     <option class="example-draggable" type="text" data-equipe="1" value="<?= $player->playerInfo['playerid']; ?>" id="draggable-<?php echo $pos; ?>" draggable="true" ondragstart="onDragStart(event);" selected><?= $player->playerInfo['number'] . " " ?><?= $player->last_name ?> <?php if($player->id == $nextUp->id){ echo "🥎";?><?php } ?></option>
                 </select>
                 <?php $changementID = "";
                 endforeach; ?>
         </div>
-        <input value="Valider" type="submit" id="changer1" class="btn btn-success m-2" hidden></input>
+        <input value="Valider" type="submit" id="changer1" class="btn btn-validate m-2" hidden></input>
         </form>
         <div class="row actions d-flex flex-column">
             <form method="post" action="?action=scorePoint">
@@ -119,7 +121,7 @@ ob_start();
 
     
 
-    <div class="d-flex flex-column order-<?= (($game->toss+$set->number) % 2 == 0) ? 2 : 1 ?>">
+    <div class="d-flex flex-column order-<?= (($game->toss+$set->number) % 2 == 0) ? 3 : 2 ?>">
         <form method="post" action="?action=updatePositions" onsubmit="Enable();">
             <input type="hidden" name="setid" value="<?= $set->id ?>" />
             <input type="hidden" name="gameid" value="<?= $game->number ?>" />
@@ -128,14 +130,15 @@ ob_start();
             <div class="setscore"><?= $game->scoreVisiting ?></div>
             <div class="setscore"><?= count($game->visitingTimeouts) ?> timeouts</div>
             <div class="score"><?= $set->scoreVisiting ?></div>
-            <div class="d-flex flex-column align-items-center">
+            <div class="volleystyle align-items-center">
             <?php 
             $pos = 0;
             $changnum = 0;
+            
             foreach ($visitingPositions as $player) : 
                 $pos++;
-                $class = "example-dropzone form-control";
-
+                $class = "item example-dropzone form-control";
+                $order = $visitingOrder[$pos - 1];
                 // Déterminer l'état du joueur basé sur sa position
                 $statePropName = "player_state_{$pos}_id";
                 $starterIdName = "player_position_{$pos}_id";
@@ -159,14 +162,14 @@ ob_start();
                         break;
                 }
                 ?>
-                <select class="<?=$class?>" data-changement="<?= $changementID ?>" name="position<?= $pos?>" data-type="select" data-equipe="2" id="pos_<?= $game->visitingTeamId?>_<?= $pos?>" draggable="true" ondragstart="onDragStart(event);" ondragover="onDragOver(event);" ondrop="onDrop(event);" disabled>
+                <select class="<?=$class?>" data-changement="<?= $changementID ?>" style="order: <?= $order ?>" name="position<?= $pos?>" data-type="select" data-equipe="2" id="pos_<?= $game->visitingTeamId?>_<?= $pos?>" draggable="true" ondragstart="onDragStart(event);" ondragover="onDragOver(event);" ondrop="onDrop(event);" disabled>
                     <option class="example-draggable" type="text" data-equipe="2" value="<?= $player->playerInfo['playerid']; ?>" id="draggable-<?php echo $pos; ?>" draggable="true" ondragstart="onDragStart(event);" selected><?= $player->playerInfo['number'] . " " ?><?= $player->last_name ?> <?php if($player->id == $nextUp->id){ echo "🥎";} ?></option>
                 </select>
                 
             <?php $changementID = "";
             endforeach; ?>
             </div>
-            <input value="Valider" type="submit" id="changer2" class="btn btn-success m-2" hidden></input>
+            <input value="Valider" type="submit" id="changer2" class="btn btn-validate m-2" hidden></input>
         </form>
             <div class="row actions d-flex flex-column">
                 <form method="post" action="?action=scorePoint">
