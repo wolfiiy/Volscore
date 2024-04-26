@@ -317,10 +317,26 @@ class VolscoreDB implements IVolscoreDb {
         }
     }
 
+    // Ajout d'une méthode pour vérifier si un ID d'équipe existe
+    private static function teamExists($teamId) {
+        $dbh = self::connexionDB();
+        $stmt = $dbh->prepare("SELECT COUNT(*) FROM teams WHERE id = ?");
+        $stmt->execute([$teamId]);
+        $exists = $stmt->fetchColumn() > 0;
+        $dbh = null;
+        return $exists;
+    }
+
+    // Modification de la méthode createGame
     public static function createGame($game) : ?int
     {
-        $query = "INSERT INTO games (type,level,category,league,location,venue,moment,receiving_id,visiting_id) ". 
-        "VALUES('{$game->type}','{$game->level}','{$game->category}','{$game->league}','{$game->location}','{$game->venue}','{$game->moment}',{$game->receivingTeamId},{$game->visitingTeamId});";
+        if (!self::teamExists($game->receivingTeamId) || !self::teamExists($game->visitingTeamId)) {
+            return null;
+        }
+
+        $query = "INSERT INTO games (type, level, category, league, location, venue, moment, receiving_id, visiting_id) ".
+                 "VALUES('{$game->type}', '{$game->level}', '{$game->category}', '{$game->league}', '{$game->location}', '{$game->venue}', '{$game->moment}', {$game->receivingTeamId}, {$game->visitingTeamId});";
+                 
         return self::executeInsertQuery($query);
     }
 
@@ -500,8 +516,28 @@ class VolscoreDB implements IVolscoreDb {
         return (new Point($record));
     }
 
+    private static function setExists($setId) {
+        $dbh = self::connexionDB();
+        $stmt = $dbh->prepare("SELECT COUNT(*) FROM sets WHERE id = ?");
+        $stmt->execute([$setId]);
+        $exists = $stmt->fetchColumn() > 0;
+        $dbh = null;
+        return $exists;
+    }
+
     public static function getPosition($setid, $teamid): ?Position {
         try {
+            if (!self::teamExists($teamid)) {
+                echo "Erreur : L'équipe spécifiée n'existe pas.";
+                return null;
+            }
+        
+            if (!self::setExists($setid)) {
+                echo "Erreur : Le set spécifié n'existe pas.";
+                return null;
+            }
+
+
             $dbh = self::connexionDB();
             $query = "SELECT * FROM positions WHERE set_id = :setid AND team_id = :teamid LIMIT 1;";
             $statement = $dbh->prepare($query);
@@ -547,10 +583,12 @@ class VolscoreDB implements IVolscoreDb {
     
                 return $position;
             } else {
+                $dbh = null;
                 return null; // Aucune position trouvée
             }
         } catch (PDOException $e) {
             print 'Error!:' . $e->getMessage() . '<br/>';
+            $dbh = null;
             return null;
         }
     }    
