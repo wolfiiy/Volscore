@@ -243,5 +243,7 @@ interface IVolscoreDb {
 
     public static function getPoints($set) : array;
 
+    public static function nextTeamServing($set) : int;
+
 #endregion
 }

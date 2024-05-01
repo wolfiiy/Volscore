@@ -251,12 +251,13 @@ function keepScore($setid)
 
     $points = VolscoreDB::getPoints($set);
     $nextUp = VolscoreDB::nextServer($set);
+    $nextTeamServing = VolscoreDB::nextTeamServing($set);
 
     $receivingPositions = VolscoreDB::getCourtPlayers($set->game_id, $set->id, $game->receivingTeamId);
     $visitingPositions = VolscoreDB::getCourtPlayers($set->game_id, $set->id, $game->visitingTeamId);
 
-    $receivingOrder = rotateOrder($points,$game,$set,1);
-    $visitingOrder = rotateOrder($points,$game,$set ,2);
+    $receivingOrder = rotateOrder($points,$game,$set,1,$nextTeamServing,$game->receivingTeamId);
+    $visitingOrder = rotateOrder($points,$game,$set ,2,$nextTeamServing,$game->visitingTeamId);
     //echo $game->toss ." " .$set->number;
     $receivingBench = VolscoreDB::getBenchPlayers($set->game_id, $set->id, $game->receivingTeamId);
     $visitingBench = VolscoreDB::getBenchPlayers($set->game_id, $set->id, $game->visitingTeamId);
@@ -272,13 +273,21 @@ function keepScore($setid)
     require_once 'view/scoring.php';
 }
 
-function rotateOrder($points, $game, $set,$teamid){
+function rotateOrder($points, $game, $set,$teamid,$serving,$team_id){
 
     if($teamid == 1){if(($game->toss+$set->number) % 2 == 0){$numbers = [5, 6, 4, 2, 1, 3]; $changes = 0;}else{$numbers = [2, 1, 3, 5, 6, 4]; $changes = 0;}}
     if($teamid == 2){if(($game->toss+$set->number) % 2 == 1){$numbers = [5, 6, 4, 2, 1, 3]; $changes = -1;}else{$numbers = [2, 1, 3, 5, 6, 4]; $changes = -1;}}
 
     $lastTeamId = null;
 
+    if($points[0]->team_id != $team_id && $changes == -1 || $points[0]->team_id == $team_id && $changes == 0){
+        $changes--;
+    }
+
+    if($points[0]->team_id != $team_id && $changes == -2){
+        $changes += 2;
+    }
+    
     foreach ($points as $point) {
         if ($lastTeamId !== null && $lastTeamId !== $point->team_id) {
             $changes++;
@@ -286,10 +295,14 @@ function rotateOrder($points, $game, $set,$teamid){
         $lastTeamId = $point->team_id;
     }
 
-    for ($i = 0; $i < $changes / 2; $i++) {
-        $number = array_pop($numbers); // Remove the last player from the array
-        array_unshift($numbers, $number); // Prepend the removed player to the front
+    //$changes += 2;
+
+    $effectiveChanges = max(0, $changes / 2);
+    for ($i = 0; $i < $effectiveChanges; $i++) {
+        $number = array_pop($numbers);
+        array_unshift($numbers, $number);
     }
+    echo " number : " .$number . " changes : " . $changes . " ";
 
     return $numbers;
 }

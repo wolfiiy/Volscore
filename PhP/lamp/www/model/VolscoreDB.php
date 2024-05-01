@@ -687,6 +687,24 @@ class VolscoreDB implements IVolscoreDb {
         return $positions[$position-1];
     }
 
+    public static function nextTeamServing($set) : int
+    {
+        $game = self::getGame($set->game_id);
+        // get last point of the set
+        $lastPoint = self::getLastPoint($set);
+
+        // use info
+        if (!$lastPoint) {
+            $servingTeamId = $game->receivingTeamId; // by default for now (ignore toss)
+            $position = 1;
+        } else {            
+            $servingTeamId = $lastPoint->team_id; 
+            $position = $lastPoint->position_of_server; 
+        }
+
+        return $servingTeamId;
+    }
+
     public static function numberOfSets($game) : int
     {
         return count(self::getSets($game));
