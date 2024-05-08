@@ -328,6 +328,11 @@ function showMailSend()
     require_once 'view/mailSend.php';
 }
 
+function showResetPassword()
+{
+    require_once 'view/resetPassword.php';
+}
+
 
 function registerBooking($playerid,$setid,$severity)
 {

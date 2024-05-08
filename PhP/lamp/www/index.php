@@ -66,6 +66,8 @@ switch ($action)
         showLogin();
     case 'mailsend':
         showMailSend();
+    case 'resetpassword':
+        showResetPassword();
     default:
         require_once 'view/home.php';
 }
