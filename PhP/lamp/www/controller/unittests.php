@@ -293,6 +293,8 @@ foreach ($games as $game) {
     }
 }
 
+
+
 $dbh = VolscoreDB::connexionDB();
 $query = "SELECT team_id FROM players INNER JOIN members ON member_id = members.id WHERE players.id = 3";
 $stmt = $dbh->prepare($query);
