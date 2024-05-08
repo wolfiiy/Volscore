@@ -318,6 +318,11 @@ function showBookings($teamid, $setid)
     require_once 'view/selectBooking.php';
 }
 
+function showLogin()
+{
+    require_once 'view/login.php';
+}
+
 function registerBooking($playerid,$setid,$severity)
 {
     VolscoreDB::giveBooking($playerid,$setid,$severity);

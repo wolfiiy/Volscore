@@ -62,6 +62,8 @@ switch ($action)
     case 'unittests':
         executeUnitTests();
         break;
+    case 'login':
+        showLogin();
     default:
         require_once 'view/home.php';
 }
