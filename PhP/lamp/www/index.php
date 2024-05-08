@@ -64,6 +64,8 @@ switch ($action)
         break;
     case 'login':
         showLogin();
+    case 'mailsend':
+        showMailSend();
     default:
         require_once 'view/home.php';
 }

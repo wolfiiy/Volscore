@@ -323,6 +323,12 @@ function showLogin()
     require_once 'view/login.php';
 }
 
+function showMailSend()
+{
+    require_once 'view/mailSend.php';
+}
+
+
 function registerBooking($playerid,$setid,$severity)
 {
     VolscoreDB::giveBooking($playerid,$setid,$severity);
