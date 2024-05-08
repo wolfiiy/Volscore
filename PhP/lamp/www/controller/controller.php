@@ -333,6 +333,11 @@ function showResetPassword()
     require_once 'view/resetPassword.php';
 }
 
+function showMailValidate()
+{
+    require_once 'view/mailValidate.php';
+}
+
 
 function registerBooking($playerid,$setid,$severity)
 {

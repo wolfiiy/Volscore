@@ -68,6 +68,8 @@ switch ($action)
         showMailSend();
     case 'resetpassword':
         showResetPassword();
+    case 'mailvalidate':
+        showMailValidate();
     default:
         require_once 'view/home.php';
 }
