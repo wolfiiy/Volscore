@@ -5,10 +5,6 @@ ob_start();
 ?>
 <h2>Connexion</h2>
 
-<?php if ($error): ?>
-<p class="error"><?php echo $error; ?></p>
-<?php endif; ?>
-
 <form method="post" action="index.php">
     <label for="username_email">Nom d'utilisateur/Email:</label><br>
     <input type="text" id="username_email" name="username_email" required><br>

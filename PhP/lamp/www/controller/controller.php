@@ -1,5 +1,7 @@
 <?php
 
+session_start();
+
 /**
  * Display list of teams
  */
@@ -27,6 +29,14 @@ function showGames()
 
     // Go ahead and show it
     require_once 'view/games.php';
+}
+
+function showHome()
+{
+    if (!isset($_SESSION['user_id'])) {
+        require_once 'view/login.php';
+    }
+    require_once 'view/home.php';
 }
 
 function showGame($gameid)
