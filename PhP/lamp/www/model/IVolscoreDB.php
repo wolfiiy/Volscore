@@ -245,5 +245,7 @@ interface IVolscoreDb {
 
     public static function nextTeamServing($set) : int;
 
+    public static function getUser($username);
+
 #endregion
 }

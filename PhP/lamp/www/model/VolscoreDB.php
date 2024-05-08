@@ -976,6 +976,24 @@ class VolscoreDB implements IVolscoreDb {
         return $stmt->fetchall();
     }
 
+    public static function getUser($username){
+
+        try
+        {
+            $dbh = self::connexionDB();
+            $query = "SELECT * FROM users WHERE username = $username";
+            $statement = $dbh->prepare($query); // Prepare query
+            $statement->execute(); // Executer la query
+            $queryResult = $statement->fetch(); // Affiche les résultats
+            $dbh = null;
+            return $queryResult;
+        } catch (PDOException $e) {
+            //print 'Error!:' . $e->getMessage() . '<br/>';
+            return null;
+        }
+    }
+    
+
 }
 
 
