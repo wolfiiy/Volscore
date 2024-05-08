@@ -63,6 +63,29 @@ while ($row = $statement->fetch()) {
     array_push($pastgames, $newgame);
 }
 
+$dbh = VolscoreDB::connexionDB(); // Assurez-vous que cette méthode retourne bien un objet PDO
+$username = "admin";
+$password = "1234"; // Vous devriez obtenir ces valeurs via $_POST ou une autre méthode sécurisée
+$phone = "1234567890";
+$email = "user@example.com";
+$role_id = 1; // ID du rôle attribué à l'utilisateur
+
+// Hashage du mot de passe
+$hashed_password = password_hash($password, PASSWORD_DEFAULT);
+
+// Utilisation d'une requête préparée
+$query = "INSERT INTO users (username, password, phone, email, role_id) VALUES (:username, :password, :phone, :email, :role_id)";
+$statement = $dbh->prepare($query); // Préparation de la requête
+$statement->execute([
+    ':username' => $username,
+    ':password' => $hashed_password,
+    ':phone' => $phone,
+    ':email' => $email,
+    ':role_id' => $role_id
+]); // Exécution de la requête avec des paramètres liés
+
+$dbh = null;
+
 // Add players to games (liste d'engagement)
 foreach (VolscoreDB::getGames() as $game) {
     foreach (VolscoreDB::getMembers($game->receivingTeamId) as $member) {
