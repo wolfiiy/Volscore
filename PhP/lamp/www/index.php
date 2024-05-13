@@ -69,7 +69,7 @@ switch ($action)
     case 'resetpassword':
         showResetPassword();
     case 'mailvalidate':
-        showMailValidate();
+        showMailValidate($_POST['email']);
     default:
         showHome();
 }

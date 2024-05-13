@@ -1041,7 +1041,7 @@ class VolscoreDB implements IVolscoreDb {
     {
         $pdo = self::connexionDB();
 
-        $query = $pdo->prepare("UPDATE user SET token = :token WHERE id = :id");
+        $query = $pdo->prepare("UPDATE users SET token = :token WHERE id = :id");
 
         $query->bindParam(':id', $id, PDO::PARAM_INT);
         $query->bindParam(':token', $token, PDO::PARAM_STR);
@@ -1054,13 +1054,6 @@ class VolscoreDB implements IVolscoreDb {
             return false;
         }
     }
-
-
-
-
-
-    
-
 }
 
 
