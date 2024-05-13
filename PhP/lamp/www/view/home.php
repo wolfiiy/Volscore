@@ -13,6 +13,17 @@ ob_start();
             <h1>Matches</h1>
         </a>
     </div>
+    <?php 
+    if($user_role == "admin"){
+    ?>
+    <div class="col-6">
+        <a href="?action=accounts">
+            <h1>Comptes</h1>
+        </a>
+    </div>
+    <?php 
+    }
+    ?>
 </div>
 <?php
 $content = ob_get_clean();

@@ -74,6 +74,8 @@ switch ($action)
         updatePassword($_SESSION['try_user_id'],$_POST['new_password'],$_POST['confirm_password']);
     case 'clear':
         Clear();
+    case 'accounts':
+        showAccounts();
     default:
         showHome();
 }

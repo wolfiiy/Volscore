@@ -48,11 +48,24 @@ function showGames()
     require_once 'view/games.php';
 }
 
+function showAccounts(){
+    if (!isset($_SESSION['user_id'])) {
+        showLogin();
+    }
+    $users = VolscoreDB::getAllUsers();
+    
+    require_once 'view/accounts.php';
+}
+
 function showHome()
 {
     if (!isset($_SESSION['user_id'])) {
         require_once 'view/login.php';
     }
+
+    $user = VolscoreDB::getUser($_SESSION['user_id']);
+    $user_role = VolscoreDB::getUserRoleById($_SESSION['user_id']);
+
     require_once 'view/home.php';
 }
 
