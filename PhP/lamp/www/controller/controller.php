@@ -1,10 +1,26 @@
 <?php
 
+session_start();
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\SMTP;
+use PHPMailer\PHPMailer\Exception;
+
+// TODO Trouver un moyen de verifier si un user dans la session diffèrement qu'aux debut de chaque function
+/* 
+*    if (isset($_SESSION['user_id'])) {
+*        showHome();
+*    }
+*
+*/
+
 /**
  * Display list of teams
  */
 function showTeams()
 {
+    if (!isset($_SESSION['user_id'])) {
+        showLogin();
+    }
     // Get data
     $teams = VolscoreDb::getTeams();
 
@@ -20,6 +36,9 @@ function showTeams()
 
 function showGames()
 {
+    if (!isset($_SESSION['user_id'])) {
+        showLogin();
+    }
     // Get data
     $games = VolscoreDb::getGames();
 
@@ -29,8 +48,19 @@ function showGames()
     require_once 'view/games.php';
 }
 
+function showHome()
+{
+    if (!isset($_SESSION['user_id'])) {
+        require_once 'view/login.php';
+    }
+    require_once 'view/home.php';
+}
+
 function showGame($gameid)
 {
+    if (!isset($_SESSION['user_id'])) {
+        showLogin();
+    }
     if ($gameid == null) {
         $message = "On essaye des trucs ???";
         require_once 'view/error.php';
@@ -51,6 +81,9 @@ function showGame($gameid)
 }
 
 function markGame($gameid) {
+    if (!isset($_SESSION['user_id'])) {
+        showLogin();
+    }
     if ($gameid == null) {
         $message = "On essaye des trucs ???";
         require_once 'view/error.php';
@@ -88,6 +121,9 @@ function markGame($gameid) {
 
 function registerToss($gameid,$winner)
 {
+    if (!isset($_SESSION['user_id'])) {
+        showLogin();
+    }
     $game = VolscoreDB::getGame($gameid);
     $game->toss = $winner;
     VolscoreDB::saveGame($game);
@@ -97,6 +133,9 @@ function registerToss($gameid,$winner)
 // Copies the positions passed to the specified set of the specified game
 function reportPositions ($positions,$gameid,$setid,$teamid)
 {
+    if (isset($_SESSION['user_id'])) {
+        showHome();
+    }
     $report = [];
     foreach ($positions as $playerInPreviousSet) {
         $playerToday = VolscoreDB::getPlayer($playerInPreviousSet->id,$gameid);
@@ -107,6 +146,9 @@ function reportPositions ($positions,$gameid,$setid,$teamid)
 
 function prepareSet($setid)
 {
+    if (!isset($_SESSION['user_id'])) {
+        showLogin();
+    }
     $set = VolscoreDB::getSet($setid);
     $game = VolscoreDB::getGame($set->game_id);
     $receivingRoster = VolscoreDB::getRoster($game->number,$game->receivingTeamId);
@@ -138,12 +180,19 @@ function prepareSet($setid)
 
 function changePosition()
 {
+    if (!isset($_SESSION['user_id'])) {
+        showLogin();
+    }
     header('Location: ?action=prepareSet&id='.$setid);
 }
 
 function setPositions ($gameid, $setid, $teamid, $pos1, $pos2, $pos3, $pos4, $pos5, $pos6, $final) // MODIF ALEX
 {
-// TODO : Trouver un moyen pour que seulement 6 position passent et que le code fonctionne toujours
+    if (!isset($_SESSION['user_id'])) {
+        showLogin();
+    }
+
+    // TODO : Trouver un moyen pour que seulement 6 position passent et que le code fonctionne toujours
 
     $positions = VolscoreDB::getStartingPositions($setid,$teamid); // check if we already have them
     if (count($positions) == 0) {
@@ -157,6 +206,9 @@ function setPositions ($gameid, $setid, $teamid, $pos1, $pos2, $pos3, $pos4, $po
 
 function updatePositionScoring($gameid, $setid, $teamid, $pos1, $pos2, $pos3, $pos4, $pos5, $pos6, $final)
 {
+    if (!isset($_SESSION['user_id'])) {
+        showLogin();
+    }
     $positions = VolscoreDB::getPosition($setid, $teamid);
     $subs = VolscoreDB::getSubTeam($setid, $teamid);
     $subPoint = 1;
@@ -188,7 +240,9 @@ function updatePositionScoring($gameid, $setid, $teamid, $pos1, $pos2, $pos3, $p
 
 function playerEligible($playerId, $subs, $positions) {
     // Vérifie si le joueur est déjà un substitut dans une autre position
-
+    if (!isset($_SESSION['user_id'])) {
+        showLogin();
+    }
     for ($i = 1; $i <= 6; $i++) {
         
         $posKey = "player_position_{$i}_id";
@@ -244,6 +298,9 @@ function playerState($position) {
 
 function keepScore($setid)
 {
+    if (!isset($_SESSION['user_id'])) {
+        showLogin();
+    }
     $set = VolscoreDB::getSet($setid);
     $game = VolscoreDB::getGame($set->game_id);
     $game->receivingTimeouts = VolscoreDB::getTimeouts($game->receivingTeamId,$setid);
@@ -306,20 +363,172 @@ function rotateOrder($points, $game, $set,$teamid,$team_id){
 
 function timeout($teamid,$setid)
 {
+    if (!isset($_SESSION['user_id'])) {
+        showLogin();
+    }
     VolscoreDB::addTimeout($teamid,$setid);
     header('Location: ?action=keepScore&setid='.$setid);
 }
 
 function showBookings($teamid, $setid)
 {
+    if (!isset($_SESSION['user_id'])) {
+        showLogin();
+    }
     $set = VolscoreDB::getSet($setid);
     $roster = VolscoreDB::getRoster($set->game_id,$teamid);
     $team = VolscoreDB::getTeam($teamid);
     require_once 'view/selectBooking.php';
 }
 
+function showLogin($username = null,$password = null)
+{   
+    if (isset($_SESSION['user_id'])) {
+        showHome();
+    }
+    $error = "";
+    
+    $user = VolscoreDB::getUserByUsername($username);
+
+    if($password != null && $username != null){
+        $error = 'Mot de passe incorrect.';
+    }
+
+    // Vérification du mot de passe (à adapter si vous utilisez un hachage)
+    if (password_verify($password, $user['password'])) {
+        // Connexion réussie, stockage de l'ID utilisateur dans un cookie
+        // Définition d'un cookie pour stocker l'ID de l'utilisateur
+        if ($user['validate'] == true) {
+            $_SESSION['user_id'] = $user['id'];
+            $_SESSION['username'] = $username;
+            showHome();
+            exit;
+        } else {
+            $error = 'Compte non validé.';
+            require_once 'view/login.php'; // Affichez la page de connexion avec l'erreur
+        }
+    } else {
+        require_once 'view/login.php';
+    }    
+}
+
+function showMailSend()
+{
+    require_once 'view/mailSend.php';
+}
+
+function showResetPassword($token)
+{
+    $user = VolscoreDB::getUserByToken($token);
+    // TODO Changer la manière
+    $_SESSION['try_user_id'] = $user['id'];
+    if($user == null){
+        showHome();
+    }
+    
+    require_once 'view/resetPassword.php';
+}
+
+function updatePassword($user_id, $password, $password_confirm){
+    
+    if($password != $password_confirm){
+        $user = VolscoreDB::getUser($user_id);
+        echo "<script type='text/javascript'>alert('Les mots de passe ne sont pas identiques');</script>";
+        showResetPassword($user['token']);
+    }
+
+    VolscoreDB::updateUserPassword($user_id,$password);
+    
+    showHome();
+}
+
+function showMailValidate($email)
+{   
+    require_once __DIR__ . '/../vendor/PHPMailer/src/Exception.php';
+    require_once __DIR__ . '/../vendor/PHPMailer/src/PHPMailer.php';
+    require_once __DIR__ . '/../vendor/PHPMailer/src/SMTP.php';
+
+    
+    $mail = new PHPMailer(true);
+
+    $error = "";
+    
+    try {
+
+        $userId = VolscoreDB::getUserByMail($email);
+
+        // Générez un token unique
+        $token = bin2hex(random_bytes(16));
+        $expiresAt = new DateTime('now');
+        $expiresAt->add(new DateInterval('PT01H')); // Le token expire dans 1 heure
+        $expiresAt = $expiresAt->format('Y-m-d H:i:s');
+
+        VolscoreDB::insertToken($userId, $token);
+
+        // Paramètres du serveur
+        //$mail->SMTPDebug = 0; // Désactiver le mode debug
+        // TODO le mot de passe d'application a stocker autre part que dans le code en brut et changer le mail
+        $mail->isSMTP();
+        $mail->Host       = 'smtp.gmail.com';
+        $mail->SMTPAuth   = true;
+        $mail->Username   = 'socloseink@gmail.com'; // Utilisez un mécanisme sécurisé pour gérer les identifiants
+        $mail->Password   = 'gknf yonq zuzp yckp';   // Assurez-vous que ce mot de passe est correct et sécurisé
+        $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
+        $mail->Port       = 587;
+
+        // Destinataires
+        $mail->setFrom('socloseink@gmail.com', 'VolScore');
+        $mail->addAddress($email, 'User');
+        
+        // Contenu
+        $mail->isHTML(true);
+        $mail->Subject = 'Valider votre compte';
+        // TODO Faire un lien qui n'est pas ecris en brut
+        $resetLink = "http://localhost:8000/?action=resetpassword&&token=$token";
+        $mail->Body = <<<EOT
+        <html>
+        <head>
+            <style>
+                body { font-family: Arial, sans-serif; }
+                .button {
+                    background-color: #007bff; /* Bootstrap primary */
+                    border: none;
+                    color: white;
+                    padding: 15px 32px;
+                    text-align: center;
+                    text-decoration: none;
+                    display: inline-block;
+                    font-size: 16px;
+                    margin: 4px 2px;
+                    cursor: pointer;
+                    border-radius: 5px; /* Arrondissement des angles */
+                }
+            </style>
+        </head>
+        <body>
+            <h1>Réinitialisation de votre mot de passe VolScore</h1>
+            <p>Vous avez demandé à réinitialiser votre mot de passe. Pour choisir un nouveau mot de passe, veuillez cliquer sur le bouton ci-dessous :</p>
+            <a href="$resetLink" class="button">Réinitialiser mon mot de passe</a>
+            <p>Si vous n'avez pas demandé à réinitialiser votre mot de passe, veuillez ignorer ce message ou sécuriser votre compte.</p>
+        </body>
+        </html>
+        EOT;
+
+        $mail->send();
+        $error = "Un mail de confirmation a été envoyé à votre adresse. Veuillez vérifier votre boîte de réception.";
+    } catch (Exception $e) {
+        $error = "Le message n'a pas pu être envoyé. Erreur de Mailer : {$mail->ErrorInfo}";
+    }
+
+    require_once 'view/mailValidate.php';
+}
+
+
 function registerBooking($playerid,$setid,$severity)
 {
+    if (!isset($_SESSION['user_id'])) {
+        showLogin();
+    }
     VolscoreDB::giveBooking($playerid,$setid,$severity);
     header('Location: ?action=keepScore&setid='.$setid);
 }
@@ -329,6 +538,9 @@ function registerBooking($playerid,$setid,$severity)
  */
 function continueGame($gameid)
 {
+    if (!isset($_SESSION['user_id'])) {
+        showLogin();
+    }
     $game = VolscoreDB::getGame($gameid);
     if (VolscoreDB::gameIsOver($game)) {
         require_once 'view/gameOver.php';
@@ -340,6 +552,9 @@ function continueGame($gameid)
 
 function resumeScoring($gameid)
 {
+    if (!isset($_SESSION['user_id'])) {
+        showLogin();
+    }
     $game = VolscoreDB::getGame($gameid);
     $setInProgress = $game->setInProgress();
     if ($setInProgress == null) {
@@ -351,6 +566,9 @@ function resumeScoring($gameid)
 
 function scorePoint($setid,$receiving)
 {
+    if (!isset($_SESSION['user_id'])) {
+        showLogin();
+    }
     $set = VolscoreDb::getSet($setid);
     VolscoreDB::addPoint($set,$receiving);
     if (!VolscoreDB::setIsOver($set)) {
@@ -364,6 +582,9 @@ function scorePoint($setid,$receiving)
 
 function validateTeamForGame($teamid,$gameid)
 {
+    if (!isset($_SESSION['user_id'])) {
+        showLogin();
+    }
     foreach(VolscoreDB::getRoster($gameid,$teamid) as $member) {
         VolscoreDB::validatePlayer($gameid,$member->id);
     }
@@ -373,5 +594,10 @@ function validateTeamForGame($teamid,$gameid)
 function executeUnitTests() 
 {
     require 'unittests.php';
+}
+
+function Clear(){
+    $_SESSION['user_id'] = null;
+    require_once 'view/login.php';
 }
 ?>

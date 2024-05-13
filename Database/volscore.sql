@@ -308,6 +308,8 @@ CREATE TABLE `signatures` (
   FOREIGN KEY (`role_id`) REFERENCES `roles` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
+INSERT INTO roles (name) VALUES ('admin'), ('marqueur'), ('arbitre');
+
 
 
 

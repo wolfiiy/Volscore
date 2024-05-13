@@ -245,5 +245,17 @@ interface IVolscoreDb {
 
     public static function nextTeamServing($set) : int;
 
+    public static function getUserByUsername($username);
+
+    public static function getUserByMail($email);
+
+    public static function getUser($id);
+
+    public static function insertToken($id, $token);
+
+    public static function getUserByToken($token);
+
+    public static function updateUserPassword($userId, $newPassword);
+
 #endregion
 }
