@@ -63,7 +63,7 @@ switch ($action)
         executeUnitTests();
         break;
     case 'login':
-        showLogin();
+        showLogin($_POST['username'],$_POST['password']);
     case 'mailsend':
         showMailSend();
     case 'resetpassword':

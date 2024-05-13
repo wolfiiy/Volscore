@@ -328,9 +328,27 @@ function showBookings($teamid, $setid)
     require_once 'view/selectBooking.php';
 }
 
-function showLogin()
+function showLogin($username = null,$password = null)
 {
-    require_once 'view/login.php';
+    $error = "";
+    $user = VolscoreDB::getUser($username);
+
+    // Vérification du mot de passe (à adapter si vous utilisez un hachage)
+    if (password_verify($password, $user['password'])) {
+        // Connexion réussie, stockage de l'ID utilisateur dans un cookie
+        // Définition d'un cookie pour stocker l'ID de l'utilisateur
+        if ($user['validate'] == true) {
+            $_SESSION['user_id'] = $user['id'];
+            showHome();
+            exit;
+        } else {
+            $error = 'Compte non validé.';
+            require_once 'view/login.php'; // Affichez la page de connexion avec l'erreur
+        }
+    } else {
+        $error = 'Mot de passe incorrect.';
+        require_once 'view/login.php';
+    }    
 }
 
 function showMailSend()

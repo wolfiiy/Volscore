@@ -3,11 +3,17 @@ $title = 'Connexion';
 
 ob_start();
 ?>
+
+<?php if($error != ""){
+    echo "<script type='text/javascript'>alert('$error');</script>";
+}
+?>
+
 <h2>Connexion</h2>
 
-<form method="post" action="index.php">
-    <label for="username_email">Nom d'utilisateur/Email:</label><br>
-    <input type="text" id="username_email" name="username_email" required><br>
+<form method="post" action="?action=login">
+    <label for="username">Nom d'utilisateur/Email:</label><br>
+    <input type="text" id="username" name="username" required><br>
     <label for="password">Mot de passe:</label><br>
     <input type="password" id="password" name="password" required><br><br>
     <input type="submit" value="Se connecter">
