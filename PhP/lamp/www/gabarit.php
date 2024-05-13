@@ -11,14 +11,15 @@
     <link rel="stylesheet" href="/css/gamesheet.css">
 </head>
 <body>
-<header class="text-center">
+<header class="text-center flex-header">
     <a href="/" style="text-decoration:none;"><h1>VolScore</h1></a>
+    <p class="username"><?php if($_SESSION['username'] != null){echo $_SESSION['username'];} ?></p>
 </header>
 <div class="container">
 <?= $content ?>
 </div>
 <footer class="text-center">
-    <p>© ETML 2023</p>
+    <p>© ETML 2024</p>
 </footer>
 </body>
 </html>

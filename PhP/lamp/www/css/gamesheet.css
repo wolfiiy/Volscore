@@ -263,4 +263,20 @@
     justify-content: flex-start;
 }
 
+.username {
+    margin-right: 50px; /* Aligns text to the right of the container */
+    font-size: 40px; /* Adjust size as needed */
+    color: black; /* Username text color */
+}
+
+.flex-header{
+    display:flex;
+    flex-direction: row;
+}
+
+.flex-header a,.flex-header p{
+    width: 50%;
+    text-align: right;
+}
+
   /*ALEX*/

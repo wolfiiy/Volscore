@@ -342,6 +342,7 @@ function showLogin($username = null,$password = null)
         // Définition d'un cookie pour stocker l'ID de l'utilisateur
         if ($user['validate'] == true) {
             $_SESSION['user_id'] = $user['id'];
+            $_SESSION['username'] = $username;
             showHome();
             exit;
         } else {
