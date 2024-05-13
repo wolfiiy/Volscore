@@ -4,10 +4,9 @@ $title = 'Mail Send';
 ob_start();
 ?>
 
-
-<h2>Réinitialiser votre mot de passe</h2>
+<h2>Réinitialiser votre mot de passe pour le compte <?= $user['username']; ?></h2>
 <p>Veuillez remplir ce formulaire pour réinitialiser votre mot de passe.</p>
-<form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post"> 
+<form action="?action=newpassword" method="post"> 
     <div>
         <label>Nouveau mot de passe</label>
         <input type="password" name="new_password" value="<?php echo $new_password; ?>">

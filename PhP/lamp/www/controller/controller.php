@@ -334,7 +334,7 @@ function showBookings($teamid, $setid)
 function showLogin($username = null,$password = null)
 {
     $error = "";
-    $user = VolscoreDB::getUser($username);
+    $user = VolscoreDB::getUserByUsername($username);
 
     // Vérification du mot de passe (à adapter si vous utilisez un hachage)
     if (password_verify($password, $user['password'])) {
@@ -359,9 +359,23 @@ function showMailSend()
     require_once 'view/mailSend.php';
 }
 
-function showResetPassword()
+function showResetPassword($token)
 {
+    $user = VolscoreDB::getUserByToken($token);
+    // TODO Changer la manière
+    $_SESSION['try_user_id'] = $user['id'];
+    if($user == null){
+        showHome();
+    }
+    
     require_once 'view/resetPassword.php';
+}
+
+function updatePassword($user, $password){
+
+    VolscoreDB::updateUserPassword($user,$password);
+
+    showHome();
 }
 
 function showMailValidate($email)

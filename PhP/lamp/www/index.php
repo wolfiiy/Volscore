@@ -67,9 +67,11 @@ switch ($action)
     case 'mailsend':
         showMailSend();
     case 'resetpassword':
-        showResetPassword();
+        showResetPassword($_GET['token']);
     case 'mailvalidate':
         showMailValidate($_POST['email']);
+    case 'newpassword':
+        updatePassword($_SESSION['try_user_id'],$_POST['confirm_password']);
     default:
         showHome();
 }
