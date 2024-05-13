@@ -63,11 +63,12 @@ while ($row = $statement->fetch()) {
     array_push($pastgames, $newgame);
 }
 
+session_destroy();
 $dbh = VolscoreDB::connexionDB(); // Assurez-vous que cette méthode retourne bien un objet PDO
 $username = "admin";
 $password = "1234"; // Vous devriez obtenir ces valeurs via $_POST ou une autre méthode sécurisée
 $phone = "1234567890";
-$email = "user@example.com";
+$email = "aproject37@gmail.com";
 $role_id = 1; // ID du rôle attribué à l'utilisateur
 
 // Hashage du mot de passe
