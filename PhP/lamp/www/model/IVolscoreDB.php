@@ -258,6 +258,8 @@ interface IVolscoreDb {
     public static function updateUserPassword($userId, $newPassword);
 
     public static function getUserRoleById($userId);
+    
+    public static function getAllUsers();
 
 #endregion
 }

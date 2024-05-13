@@ -1126,17 +1126,38 @@ class VolscoreDB implements IVolscoreDb {
             $stmt->execute([$userId]);
         
             $user = $stmt->fetch();
-            
-            if ($user) {
-                echo "Username: " . $user['username'] . "\n";
-                echo "Role: " . $user['role_name'] . "\n";
-            } else {
-                echo "No user found with ID $userId";
-            }
+
+            return $user['role_name'];
+
         } catch (\PDOException $e) {
             throw new \PDOException($e->getMessage(), (int)$e->getCode());
         }
     }
+
+    public static function getAllUsers()
+    {
+        try
+        {
+            $dbh = self::connexionDB();
+            $query = "SELECT * FROM users";
+
+            $statement = $dbh->prepare($query);
+            
+            $statement->execute();
+
+            $queryResult = $statement->fetchAll(PDO::FETCH_ASSOC);
+
+            $dbh = null;
+            
+            return $queryResult;
+        }
+        catch (PDOException $e)
+        {
+            print 'Error!: ' . $e->getMessage() . '<br/>';
+            return null;
+        }
+    }
+
 }
 
 
