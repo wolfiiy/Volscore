@@ -5,7 +5,7 @@ ob_start();
 ?>
 
 
-<form action="forgot_password.php" method="GET">
+<form action="?action=mailvalidate" method="POST">
     <label for="email">Votre Email :</label>
     <input type="email" id="email" name="email" required>
     <input type="submit" value="Envoyer">
