@@ -19,7 +19,7 @@ ob_start();
     <input type="submit" value="Se connecter">
 </form>
 
-<p><a href="email/wich_mail.php">Mot de passe oublié ?</a></p>
+<p><a href="?action=mailsend">Mot de passe oublié ?</a></p>
 <?php
 $content = ob_get_clean();
 require_once 'gabarit.php';
