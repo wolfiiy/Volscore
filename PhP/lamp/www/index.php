@@ -73,7 +73,7 @@ switch ($action)
     case 'newpassword':
         updatePassword($_SESSION['try_user_id'],$_POST['new_password'],$_POST['confirm_password']);
     case 'clear':
-        clear();
+        Clear();
     default:
         showHome();
 }

@@ -5,11 +5,22 @@ use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\SMTP;
 use PHPMailer\PHPMailer\Exception;
 
+// TODO Trouver un moyen de verifier si un user dans la session diffèrement qu'aux debut de chaque function
+/* 
+*    if (isset($_SESSION['user_id'])) {
+*        showHome();
+*    }
+*
+*/
+
 /**
  * Display list of teams
  */
 function showTeams()
 {
+    if (!isset($_SESSION['user_id'])) {
+        showLogin();
+    }
     // Get data
     $teams = VolscoreDb::getTeams();
 
@@ -25,6 +36,9 @@ function showTeams()
 
 function showGames()
 {
+    if (!isset($_SESSION['user_id'])) {
+        showLogin();
+    }
     // Get data
     $games = VolscoreDb::getGames();
 
@@ -44,6 +58,9 @@ function showHome()
 
 function showGame($gameid)
 {
+    if (!isset($_SESSION['user_id'])) {
+        showLogin();
+    }
     if ($gameid == null) {
         $message = "On essaye des trucs ???";
         require_once 'view/error.php';
@@ -64,6 +81,9 @@ function showGame($gameid)
 }
 
 function markGame($gameid) {
+    if (!isset($_SESSION['user_id'])) {
+        showLogin();
+    }
     if ($gameid == null) {
         $message = "On essaye des trucs ???";
         require_once 'view/error.php';
@@ -101,6 +121,9 @@ function markGame($gameid) {
 
 function registerToss($gameid,$winner)
 {
+    if (!isset($_SESSION['user_id'])) {
+        showLogin();
+    }
     $game = VolscoreDB::getGame($gameid);
     $game->toss = $winner;
     VolscoreDB::saveGame($game);
@@ -110,6 +133,9 @@ function registerToss($gameid,$winner)
 // Copies the positions passed to the specified set of the specified game
 function reportPositions ($positions,$gameid,$setid,$teamid)
 {
+    if (isset($_SESSION['user_id'])) {
+        showHome();
+    }
     $report = [];
     foreach ($positions as $playerInPreviousSet) {
         $playerToday = VolscoreDB::getPlayer($playerInPreviousSet->id,$gameid);
@@ -120,6 +146,9 @@ function reportPositions ($positions,$gameid,$setid,$teamid)
 
 function prepareSet($setid)
 {
+    if (!isset($_SESSION['user_id'])) {
+        showLogin();
+    }
     $set = VolscoreDB::getSet($setid);
     $game = VolscoreDB::getGame($set->game_id);
     $receivingRoster = VolscoreDB::getRoster($game->number,$game->receivingTeamId);
@@ -151,12 +180,19 @@ function prepareSet($setid)
 
 function changePosition()
 {
+    if (!isset($_SESSION['user_id'])) {
+        showLogin();
+    }
     header('Location: ?action=prepareSet&id='.$setid);
 }
 
 function setPositions ($gameid, $setid, $teamid, $pos1, $pos2, $pos3, $pos4, $pos5, $pos6, $final) // MODIF ALEX
 {
-// TODO : Trouver un moyen pour que seulement 6 position passent et que le code fonctionne toujours
+    if (!isset($_SESSION['user_id'])) {
+        showLogin();
+    }
+
+    // TODO : Trouver un moyen pour que seulement 6 position passent et que le code fonctionne toujours
 
     $positions = VolscoreDB::getStartingPositions($setid,$teamid); // check if we already have them
     if (count($positions) == 0) {
@@ -170,6 +206,9 @@ function setPositions ($gameid, $setid, $teamid, $pos1, $pos2, $pos3, $pos4, $po
 
 function updatePositionScoring($gameid, $setid, $teamid, $pos1, $pos2, $pos3, $pos4, $pos5, $pos6, $final)
 {
+    if (!isset($_SESSION['user_id'])) {
+        showLogin();
+    }
     $positions = VolscoreDB::getPosition($setid, $teamid);
     $subs = VolscoreDB::getSubTeam($setid, $teamid);
     $subPoint = 1;
@@ -201,7 +240,9 @@ function updatePositionScoring($gameid, $setid, $teamid, $pos1, $pos2, $pos3, $p
 
 function playerEligible($playerId, $subs, $positions) {
     // Vérifie si le joueur est déjà un substitut dans une autre position
-
+    if (!isset($_SESSION['user_id'])) {
+        showLogin();
+    }
     for ($i = 1; $i <= 6; $i++) {
         
         $posKey = "player_position_{$i}_id";
@@ -257,6 +298,9 @@ function playerState($position) {
 
 function keepScore($setid)
 {
+    if (!isset($_SESSION['user_id'])) {
+        showLogin();
+    }
     $set = VolscoreDB::getSet($setid);
     $game = VolscoreDB::getGame($set->game_id);
     $game->receivingTimeouts = VolscoreDB::getTimeouts($game->receivingTeamId,$setid);
@@ -319,12 +363,18 @@ function rotateOrder($points, $game, $set,$teamid,$team_id){
 
 function timeout($teamid,$setid)
 {
+    if (!isset($_SESSION['user_id'])) {
+        showLogin();
+    }
     VolscoreDB::addTimeout($teamid,$setid);
     header('Location: ?action=keepScore&setid='.$setid);
 }
 
 function showBookings($teamid, $setid)
 {
+    if (!isset($_SESSION['user_id'])) {
+        showLogin();
+    }
     $set = VolscoreDB::getSet($setid);
     $roster = VolscoreDB::getRoster($set->game_id,$teamid);
     $team = VolscoreDB::getTeam($teamid);
@@ -382,13 +432,16 @@ function showResetPassword($token)
 }
 
 function updatePassword($user_id, $password, $password_confirm){
+    if (isset($_SESSION['user_id'])) {
+        showHome();
+    }
     if($password != $password_confirm){
         $user = VolscoreDB::getUser($user_id);
         echo "<script type='text/javascript'>alert('Les mots de passe ne sont pas identiques');</script>";
         showResetPassword($user['token']);
     }
     VolscoreDB::updateUserPassword($user_id,$password);
-    echo "<script type='text/javascript'>alert('Votre mot de passe a été modifié avec succès');</script>";
+    
     showHome();
 }
 
@@ -479,6 +532,9 @@ function showMailValidate($email)
 
 function registerBooking($playerid,$setid,$severity)
 {
+    if (!isset($_SESSION['user_id'])) {
+        showLogin();
+    }
     VolscoreDB::giveBooking($playerid,$setid,$severity);
     header('Location: ?action=keepScore&setid='.$setid);
 }
@@ -488,6 +544,9 @@ function registerBooking($playerid,$setid,$severity)
  */
 function continueGame($gameid)
 {
+    if (!isset($_SESSION['user_id'])) {
+        showLogin();
+    }
     $game = VolscoreDB::getGame($gameid);
     if (VolscoreDB::gameIsOver($game)) {
         require_once 'view/gameOver.php';
@@ -499,6 +558,9 @@ function continueGame($gameid)
 
 function resumeScoring($gameid)
 {
+    if (!isset($_SESSION['user_id'])) {
+        showLogin();
+    }
     $game = VolscoreDB::getGame($gameid);
     $setInProgress = $game->setInProgress();
     if ($setInProgress == null) {
@@ -510,6 +572,9 @@ function resumeScoring($gameid)
 
 function scorePoint($setid,$receiving)
 {
+    if (!isset($_SESSION['user_id'])) {
+        showLogin();
+    }
     $set = VolscoreDb::getSet($setid);
     VolscoreDB::addPoint($set,$receiving);
     if (!VolscoreDB::setIsOver($set)) {
@@ -523,6 +588,9 @@ function scorePoint($setid,$receiving)
 
 function validateTeamForGame($teamid,$gameid)
 {
+    if (!isset($_SESSION['user_id'])) {
+        showLogin();
+    }
     foreach(VolscoreDB::getRoster($gameid,$teamid) as $member) {
         VolscoreDB::validatePlayer($gameid,$member->id);
     }
@@ -536,6 +604,6 @@ function executeUnitTests()
 
 function Clear(){
     session_destroy();
-    showHome();
+    showLogin();
 }
 ?>
