@@ -71,7 +71,9 @@ switch ($action)
     case 'mailvalidate':
         showMailValidate($_POST['email']);
     case 'newpassword':
-        updatePassword($_SESSION['try_user_id'],$_POST['confirm_password']);
+        updatePassword($_SESSION['try_user_id'],$_POST['new_password'],$_POST['confirm_password']);
+    case 'clear':
+        clear();
     default:
         showHome();
 }

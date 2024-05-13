@@ -332,7 +332,10 @@ function showBookings($teamid, $setid)
 }
 
 function showLogin($username = null,$password = null)
-{
+{   
+    if (isset($_SESSION['user_id'])) {
+        showHome();
+    }
     $error = "";
     $user = VolscoreDB::getUserByUsername($username);
 
@@ -357,11 +360,17 @@ function showLogin($username = null,$password = null)
 
 function showMailSend()
 {
+    if (isset($_SESSION['user_id'])) {
+        showHome();
+    }
     require_once 'view/mailSend.php';
 }
 
 function showResetPassword($token)
 {
+    if (isset($_SESSION['user_id'])) {
+        showHome();
+    }
     $user = VolscoreDB::getUserByToken($token);
     // TODO Changer la manière
     $_SESSION['try_user_id'] = $user['id'];
@@ -372,15 +381,22 @@ function showResetPassword($token)
     require_once 'view/resetPassword.php';
 }
 
-function updatePassword($user, $password){
-
-    VolscoreDB::updateUserPassword($user,$password);
-
+function updatePassword($user_id, $password, $password_confirm){
+    if($password != $password_confirm){
+        $user = VolscoreDB::getUser($user_id);
+        echo "<script type='text/javascript'>alert('Les mots de passe ne sont pas identiques');</script>";
+        showResetPassword($user['token']);
+    }
+    VolscoreDB::updateUserPassword($user_id,$password);
+    echo "<script type='text/javascript'>alert('Votre mot de passe a été modifié avec succès');</script>";
     showHome();
 }
 
 function showMailValidate($email)
-{
+{   
+    if (isset($_SESSION['user_id'])) {
+        showHome();
+    }
     require_once __DIR__ . '/../vendor/PHPMailer/src/Exception.php';
     require_once __DIR__ . '/../vendor/PHPMailer/src/PHPMailer.php';
     require_once __DIR__ . '/../vendor/PHPMailer/src/SMTP.php';
