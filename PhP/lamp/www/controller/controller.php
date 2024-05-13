@@ -387,7 +387,12 @@ function showLogin($username = null,$password = null)
         showHome();
     }
     $error = "";
+    
     $user = VolscoreDB::getUserByUsername($username);
+
+    if($password != null && $username != null){
+        $error = 'Mot de passe incorrect.';
+    }
 
     // Vérification du mot de passe (à adapter si vous utilisez un hachage)
     if (password_verify($password, $user['password'])) {
@@ -403,24 +408,17 @@ function showLogin($username = null,$password = null)
             require_once 'view/login.php'; // Affichez la page de connexion avec l'erreur
         }
     } else {
-        $error = 'Mot de passe incorrect.';
         require_once 'view/login.php';
     }    
 }
 
 function showMailSend()
 {
-    if (isset($_SESSION['user_id'])) {
-        showHome();
-    }
     require_once 'view/mailSend.php';
 }
 
 function showResetPassword($token)
 {
-    if (isset($_SESSION['user_id'])) {
-        showHome();
-    }
     $user = VolscoreDB::getUserByToken($token);
     // TODO Changer la manière
     $_SESSION['try_user_id'] = $user['id'];
@@ -432,14 +430,13 @@ function showResetPassword($token)
 }
 
 function updatePassword($user_id, $password, $password_confirm){
-    if (isset($_SESSION['user_id'])) {
-        showHome();
-    }
+    
     if($password != $password_confirm){
         $user = VolscoreDB::getUser($user_id);
         echo "<script type='text/javascript'>alert('Les mots de passe ne sont pas identiques');</script>";
         showResetPassword($user['token']);
     }
+
     VolscoreDB::updateUserPassword($user_id,$password);
     
     showHome();
@@ -447,9 +444,6 @@ function updatePassword($user_id, $password, $password_confirm){
 
 function showMailValidate($email)
 {   
-    if (isset($_SESSION['user_id'])) {
-        showHome();
-    }
     require_once __DIR__ . '/../vendor/PHPMailer/src/Exception.php';
     require_once __DIR__ . '/../vendor/PHPMailer/src/PHPMailer.php';
     require_once __DIR__ . '/../vendor/PHPMailer/src/SMTP.php';
@@ -603,7 +597,7 @@ function executeUnitTests()
 }
 
 function Clear(){
-    session_destroy();
-    showLogin();
+    $_SESSION['user_id'] = null;
+    require_once 'view/login.php';
 }
 ?>
