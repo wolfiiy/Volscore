@@ -998,21 +998,25 @@ class VolscoreDB implements IVolscoreDb {
 
     public static function getUserByMail($email)
     {
-        $dbh = self::connexionDB();
+        try{
 
-        $query = $dbh->prepare("SELECT id FROM users WHERE email = :email");
+            $dbh = self::connexionDB();
 
-        $query->bindParam(':email', $email, PDO::PARAM_STR);
+            $query = $dbh->prepare("SELECT id FROM users WHERE email = :email");
 
-        $query->execute();
+            $query->bindParam(':email', $email, PDO::PARAM_STR);
 
-        $row = $query->fetch(PDO::FETCH_ASSOC);
+            $query->execute();
 
-        $dbh = null;
-        
-        if ($row) {
-            return $row['id'];
-        } else {
+            $row = $query->fetch(PDO::FETCH_ASSOC);
+
+            $dbh = null;
+            
+            return $row;
+        }
+        catch (PDOException $e)
+        {
+            echo 'Error!: ' . $e->getMessage() . '<br/>';
             return null;
         }
     }

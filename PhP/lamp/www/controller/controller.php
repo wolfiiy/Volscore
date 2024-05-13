@@ -1,6 +1,9 @@
 <?php
 
 session_start();
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\SMTP;
+use PHPMailer\PHPMailer\Exception;
 
 /**
  * Display list of teams
@@ -361,8 +364,84 @@ function showResetPassword()
     require_once 'view/resetPassword.php';
 }
 
-function showMailValidate()
+function showMailValidate($email)
 {
+    require_once __DIR__ . '/../vendor/PHPMailer/src/Exception.php';
+    require_once __DIR__ . '/../vendor/PHPMailer/src/PHPMailer.php';
+    require_once __DIR__ . '/../vendor/PHPMailer/src/SMTP.php';
+
+    
+    $mail = new PHPMailer(true);
+
+    $error = "";
+    
+    try {
+
+        $userId = VolscoreDB::getUserByMail($email);
+
+        // Générez un token unique
+        $token = bin2hex(random_bytes(16));
+        $expiresAt = new DateTime('now');
+        $expiresAt->add(new DateInterval('PT01H')); // Le token expire dans 1 heure
+        $expiresAt = $expiresAt->format('Y-m-d H:i:s');
+
+        VolscoreDB::insertToken($userId, $token);
+
+        // Paramètres du serveur
+        //$mail->SMTPDebug = 0; // Désactiver le mode debug
+        // TODO le mot de passe d'application a stocker autre part que dans le code en brut et changer le mail
+        $mail->isSMTP();
+        $mail->Host       = 'smtp.gmail.com';
+        $mail->SMTPAuth   = true;
+        $mail->Username   = 'socloseink@gmail.com'; // Utilisez un mécanisme sécurisé pour gérer les identifiants
+        $mail->Password   = 'gknf yonq zuzp yckp';   // Assurez-vous que ce mot de passe est correct et sécurisé
+        $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
+        $mail->Port       = 587;
+
+        // Destinataires
+        $mail->setFrom('socloseink@gmail.com', 'VolScore');
+        $mail->addAddress($email, 'User');
+        
+        // Contenu
+        $mail->isHTML(true);
+        $mail->Subject = 'Valider votre compte';
+        // TODO Faire un lien qui n'est pas ecris en brut
+        $resetLink = "http://localhost:8000/?action=resetpassword&&token=$token";
+        $mail->Body = <<<EOT
+        <html>
+        <head>
+            <style>
+                body { font-family: Arial, sans-serif; }
+                .button {
+                    background-color: #007bff; /* Bootstrap primary */
+                    border: none;
+                    color: white;
+                    padding: 15px 32px;
+                    text-align: center;
+                    text-decoration: none;
+                    display: inline-block;
+                    font-size: 16px;
+                    margin: 4px 2px;
+                    cursor: pointer;
+                    border-radius: 5px; /* Arrondissement des angles */
+                }
+            </style>
+        </head>
+        <body>
+            <h1>Réinitialisation de votre mot de passe VolScore</h1>
+            <p>Vous avez demandé à réinitialiser votre mot de passe. Pour choisir un nouveau mot de passe, veuillez cliquer sur le bouton ci-dessous :</p>
+            <a href="$resetLink" class="button">Réinitialiser mon mot de passe</a>
+            <p>Si vous n'avez pas demandé à réinitialiser votre mot de passe, veuillez ignorer ce message ou sécuriser votre compte.</p>
+        </body>
+        </html>
+        EOT;
+
+        $mail->send();
+        $error = "Un mail de confirmation a été envoyé à votre adresse. Veuillez vérifier votre boîte de réception.";
+    } catch (Exception $e) {
+        $error = "Le message n'a pas pu être envoyé. Erreur de Mailer : {$mail->ErrorInfo}";
+    }
+
     require_once 'view/mailValidate.php';
 }
 

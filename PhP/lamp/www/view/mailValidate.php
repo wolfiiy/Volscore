@@ -4,7 +4,7 @@ $title = 'Connexion';
 ob_start();
 ?>
 
-<div class='success-message'>Un mail de confirmation a été envoyé à votre adresse. Veuillez vérifier votre boîte de réception.</div>
+<div class='success-message'><?= $error ?></div>
 
 <?php
 $content = ob_get_clean();
