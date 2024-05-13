@@ -533,4 +533,9 @@ function executeUnitTests()
 {
     require 'unittests.php';
 }
+
+function Clear(){
+    session_destroy();
+    showHome();
+}
 ?>
