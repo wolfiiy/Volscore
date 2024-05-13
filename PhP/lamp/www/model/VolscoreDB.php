@@ -1116,9 +1116,27 @@ class VolscoreDB implements IVolscoreDb {
         }
     }
 
+    public static function getUserRoleById($userId)
+    {
+        try {
+            $dbh = self::connexionDB();
 
-
-
+            $stmt = $dbh->prepare("SELECT users.username, roles.name AS role_name FROM users JOIN roles ON users.role_id = roles.id WHERE users.id = ?");
+            
+            $stmt->execute([$userId]);
+        
+            $user = $stmt->fetch();
+            
+            if ($user) {
+                echo "Username: " . $user['username'] . "\n";
+                echo "Role: " . $user['role_name'] . "\n";
+            } else {
+                echo "No user found with ID $userId";
+            }
+        } catch (\PDOException $e) {
+            throw new \PDOException($e->getMessage(), (int)$e->getCode());
+        }
+    }
 }
 
 
