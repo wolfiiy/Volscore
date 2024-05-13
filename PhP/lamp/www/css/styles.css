@@ -96,9 +96,7 @@ form {
 }
 
 /* Styles for input fields */
-input[type="text"],
-input[type="email"],
-input[type="password"] {
+.inputtext {
     width: calc(100% - 22px); /* Full width minus padding */
     padding: 10px; /* Padding inside the text fields */
     border: 1px solid #ddd; /* Light grey border */
@@ -107,7 +105,7 @@ input[type="password"] {
 }
 
 /* Style for the submit button */
-input[type="submit"] {
+.inputsubmit {
     background-color: #0056b3; /* A blue background */
     color: white; /* White text color */
     padding: 10px 20px;
@@ -119,7 +117,7 @@ input[type="submit"] {
     margin-top: 10px; /* Margin on top for spacing */
 }
 
-input[type="submit"]:hover {
+.inputsubmit:hover {
     background-color: #004494; /* A slightly darker blue on hover */
 }
 
