@@ -30,6 +30,7 @@ td, th {
 
 .container{
     margin: 0 auto;
+    text-align: center;
 }
 
 /* Thanks http://jsfiddle.net/mirohristov/awayF/473/ */
@@ -82,4 +83,55 @@ select:disabled {
 }
 .add {
     background-color: #e9ecef;
+}
+
+/* Styles for the form container */
+form {
+    background-color: #ffffff; /* White background for the form */
+    padding: 20px;
+    border-radius: 8px; /* Rounded corners for the form */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Subtle shadow around the form */
+    width: 300px; /* Fixed width */
+    margin: 30px auto; /* Centering the form horizontally */
+}
+
+/* Styles for input fields */
+input[type="text"],
+input[type="email"],
+input[type="password"] {
+    width: calc(100% - 22px); /* Full width minus padding */
+    padding: 10px; /* Padding inside the text fields */
+    border: 1px solid #ddd; /* Light grey border */
+    border-radius: 4px; /* Rounded borders for the input fields */
+    box-sizing: border-box; /* Includes padding in width calculation */
+}
+
+/* Style for the submit button */
+input[type="submit"] {
+    background-color: #0056b3; /* A blue background */
+    color: white; /* White text color */
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer; /* Pointer cursor on hover */
+    width: 100%; /* Full width */
+    box-sizing: border-box; /* Includes padding in width calculation */
+    margin-top: 10px; /* Margin on top for spacing */
+}
+
+input[type="submit"]:hover {
+    background-color: #004494; /* A slightly darker blue on hover */
+}
+
+/* Styling for the password reset link */
+a {
+    display: block; /* Makes link block level to occupy its own line */
+    text-align: center; /* Center aligning the link */
+    margin-top: 10px; /* Top margin for spacing from the form */
+    color: #0066cc; /* Blue color for the link */
+    text-decoration: none; /* Removes underline from the link */
+}
+
+a:hover {
+    text-decoration: underline; /* Underline on hover for better visibility */
 }
