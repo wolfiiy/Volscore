@@ -976,7 +976,7 @@ class VolscoreDB implements IVolscoreDb {
         return $stmt->fetchall();
     }
 
-    public static function getUser($username)
+    public static function getUserByUsername($username)
     {
         try
         {
@@ -995,6 +995,52 @@ class VolscoreDB implements IVolscoreDb {
             return null;
         }
     }
+
+    public static function getUserByMail($email)
+    {
+        $dbh = self::connexionDB();
+
+        $query = $dbh->prepare("SELECT id FROM users WHERE email = :email");
+
+        $query->bindParam(':email', $email, PDO::PARAM_STR);
+
+        $query->execute();
+
+        $row = $query->fetch(PDO::FETCH_ASSOC);
+
+        $dbh = null;
+        
+        if ($row) {
+            return $row['id'];
+        } else {
+            return null;
+        }
+    }
+
+    public static function getUser($id)
+    {
+        try
+        {
+            $dbh = self::connexionDB();
+            $query = "SELECT * FROM users WHERE id = :id";
+            $statement = $dbh->prepare($query);
+            $statement->bindParam(':id', $id, PDO::PARAM_STR);
+            $statement->execute();
+            $queryResult = $statement->fetch();
+            $dbh = null;
+            return $queryResult;
+        }
+        catch (PDOException $e)
+        {
+            print 'Error!: ' . $e->getMessage() . '<br/>';
+            return null;
+        }
+    }
+
+    
+
+
+
 
     
 
