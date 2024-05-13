@@ -1058,6 +1058,67 @@ class VolscoreDB implements IVolscoreDb {
             return false;
         }
     }
+
+    public static function getUserByToken($token)
+    {
+        try
+        {
+            $dbh = self::connexionDB();
+
+            $query = "SELECT * FROM users WHERE token = :token";
+            $statement = $dbh->prepare($query);
+
+            $statement->bindParam(':token', $token, PDO::PARAM_STR);
+
+            $statement->execute();
+
+            $user = $statement->fetch(PDO::FETCH_ASSOC);
+
+            $dbh = null;
+
+            return $user;
+        }
+        catch (PDOException $e)
+        {
+            print 'Error!: ' . $e->getMessage() . '<br/>';
+            return null;
+        }
+    }
+
+    public static function updateUserPassword($userId, $newPassword)
+    {
+        try
+        {
+            $dbh = self::connexionDB();
+
+            $hashedPassword = password_hash($newPassword, PASSWORD_DEFAULT);
+
+            $query = "UPDATE users SET password = :password WHERE id = :id";
+            $statement = $dbh->prepare($query);
+
+            $statement->bindParam(':id', $userId, PDO::PARAM_INT);
+            $statement->bindParam(':password', $hashedPassword, PDO::PARAM_STR);
+
+            $statement->execute();
+
+            if ($statement->rowCount() > 0) {
+                $dbh = null;
+                return true;
+            } else {
+                $dbh = null;
+                return false;
+            }
+        }
+        catch (PDOException $e)
+        {
+            print 'Error!: ' . $e->getMessage() . '<br/>';
+            return false;
+        }
+    }
+
+
+
+
 }
 
 

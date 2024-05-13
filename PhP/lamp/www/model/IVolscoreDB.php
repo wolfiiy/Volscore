@@ -251,5 +251,11 @@ interface IVolscoreDb {
 
     public static function getUser($id);
 
+    public static function insertToken($id, $token);
+
+    public static function getUserByToken($token);
+
+    public static function updateUserPassword($userId, $newPassword);
+
 #endregion
 }
