@@ -13,7 +13,7 @@ ob_start();
     <div class="user">
         <div class="user-info">Username: <?= $user['username'] ?></div>
         <div class="user-info">Email: <?= $user['email'] ?></div>
-        <div class="user-info">Role: <?= $user['role_id'] ?></div>
+        <div class="user-info">Role: <?= $roles[$user['role_id'] - 1]['name'] ?></div>
     </div>
     </a>
     <?php } ?>

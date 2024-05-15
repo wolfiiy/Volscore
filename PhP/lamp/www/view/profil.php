@@ -4,9 +4,9 @@ ob_start();
 ?>
 
 <h1>Profil de <?= $user['username'] ?></h1>
-<h2><?= $user['role_id'] ?></h2>
+<h2>Roles : <?= $roles[$user['role_id'] - 1]['name'] ?></h2>
 <div class="flexrow">
-<p>Status :</p>
+<p>Status : </p>
 <?php
 
 if($user['validate'] == true){

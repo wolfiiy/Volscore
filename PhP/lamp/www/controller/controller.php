@@ -57,6 +57,7 @@ function showProfil($id){
     $user = VolscoreDB::getUser($id);
     $signatures = VolscoreDB::getSignaturesByUserId($id);
     $games = VolscoreDB::getGamesByUserId($id);
+    $roles = VolscoreDB::getRoles();
 
     require_once 'view/profil.php';
 
@@ -103,6 +104,7 @@ function showAccounts(){
     }
 
     $users = VolscoreDB::getAllUsers();
+    $roles = VolscoreDB::getRoles();
 
     require_once 'view/accounts.php';
 }
