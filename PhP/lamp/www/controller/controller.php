@@ -50,6 +50,9 @@ function showGames()
 
 function showProfil($id){
 
+    if (!isset($_SESSION['user_id'])) {
+        showLogin();
+    }
     if($id == null){
         showAccounts();
     }
@@ -65,6 +68,9 @@ function showProfil($id){
 
 function showCreateAccount(){
 
+    if (!isset($_SESSION['user_id'])) {
+        showLogin();
+    }
     $roles = VolscoreDB::getRoles();
 
     require_once 'view/createAccount.php';
@@ -73,6 +79,9 @@ function showCreateAccount(){
 
 function createUser($username, $password,$phone,$email,$validate,$role_id){
 
+    if (!isset($_SESSION['user_id'])) {
+        showLogin();
+    }
     if (VolscoreDB::insertUser($username, $password, $phone, $email, $role_id, $validate)) {
         try {
             mailNewPassword($email);
@@ -95,6 +104,7 @@ function validateUser($state,$user_id){
 }
 
 function showAccounts(){
+    
     if (!isset($_SESSION['user_id'])) {
         showLogin();
     }
@@ -579,15 +589,22 @@ function mailNewPassword($email){
         EOT;
 
         $mail->send();
-        $error = "Un mail de confirmation a été envoyé à votre adresse. Veuillez vérifier votre boîte de réception.";
+        return true;
+        
     } catch (Exception $e) {
-        $error = "Le message n'a pas pu être envoyé. Erreur de Mailer : {$mail->ErrorInfo}";
+        return false;
+        
     }
 }
 
 function showMailValidate($email)
 {   
-    mailNewPassword($email);    
+    if(mailNewPassword($email)){
+        $error = "Un mail de confirmation a été envoyé à votre adresse. Veuillez vérifier votre boîte de réception.";
+    }  
+    else{
+        $error = "Le message n'a pas pu être envoyé.";
+    }
 
     require_once 'view/mailValidate.php';
 }
