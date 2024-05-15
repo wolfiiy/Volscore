@@ -565,17 +565,21 @@ function mailNewPassword($email){
             <style>
                 body { font-family: Arial, sans-serif; }
                 .button {
-                    background-color: #007bff; /* Bootstrap primary */
-                    border: none;
-                    color: white;
+                    background-color: #ffffff; /* Couleur de fond du bouton */
+                    border: solid 2px black;
+                    color: #007bff; /* Couleur du texte du bouton */
                     padding: 15px 32px;
                     text-align: center;
                     text-decoration: none;
                     display: inline-block;
                     font-size: 16px;
-                    margin: 4px 2px;
+                    margin-top: 20px; /* Espacement entre le texte et le bouton */
                     cursor: pointer;
                     border-radius: 5px; /* Arrondissement des angles */
+                    transition: background-color 0.3s ease; /* Transition douce lors du survol */
+                }
+                .button:hover {
+                    background-color: #e6e6e6; /* Changement de couleur au survol */
                 }
             </style>
         </head>
