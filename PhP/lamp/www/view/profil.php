@@ -28,13 +28,14 @@ else{
 
 <div id="usersContainer">
     <?php foreach($games as $game){ ?>
-    <a href="?action=home" style="text-decoration: none; color: inherit;">
     <div class="user">
         <div class="user-info">ID : <?= $game['id'] ?></div>
+        <div class="user-info">Type : <?= $game['type'] ?></div>
+        <div class="user-info">Level : <?= $game['level'] ?></div>
+        <div class="user-info">League : <?= $game['league'] ?></div>
         <div class="user-info">Localisation : <?= $game['location'] ?></div>
-        <div class="user-info">Heure : <?= $user['moment'] ?></div>
+        <div class="user-info">Heure : <?= $game['moment'] ?></div>
     </div>
-    </a>
     <?php } ?>
     
 </div>
