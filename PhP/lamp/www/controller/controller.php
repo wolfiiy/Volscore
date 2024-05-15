@@ -52,8 +52,13 @@ function showAccounts(){
     if (!isset($_SESSION['user_id'])) {
         showLogin();
     }
+
+    if(VolscoreDB::getUserRoleById($_SESSION['user_id']) != "admin"){
+        showHome();
+    }
+
     $users = VolscoreDB::getAllUsers();
-    
+
     require_once 'view/accounts.php';
 }
 
