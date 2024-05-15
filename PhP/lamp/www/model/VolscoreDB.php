@@ -999,7 +999,6 @@ class VolscoreDB implements IVolscoreDb {
     public static function getUserByMail($email)
     {
         try{
-
             $dbh = self::connexionDB();
 
             $query = $dbh->prepare("SELECT id FROM users WHERE email = :email");
@@ -1012,7 +1011,7 @@ class VolscoreDB implements IVolscoreDb {
 
             $dbh = null;
             
-            return $row;
+            return $row['id'];
         }
         catch (PDOException $e)
         {
@@ -1116,9 +1115,151 @@ class VolscoreDB implements IVolscoreDb {
         }
     }
 
+    public static function getUserRoleById($userId)
+    {
+        try {
+            $dbh = self::connexionDB();
 
+            $stmt = $dbh->prepare("SELECT users.username, roles.name AS role_name FROM users JOIN roles ON users.role_id = roles.id WHERE users.id = ?");
+            
+            $stmt->execute([$userId]);
+        
+            $user = $stmt->fetch();
 
+            return $user['role_name'];
 
+        } catch (\PDOException $e) {
+            throw new \PDOException($e->getMessage(), (int)$e->getCode());
+        }
+    }
+
+    public static function getAllUsers()
+    {
+        try
+        {
+            $dbh = self::connexionDB();
+            $query = "SELECT * FROM users";
+
+            $statement = $dbh->prepare($query);
+            
+            $statement->execute();
+
+            $queryResult = $statement->fetchAll(PDO::FETCH_ASSOC);
+
+            $dbh = null;
+            
+            return $queryResult;
+        }
+        catch (PDOException $e)
+        {
+            print 'Error!: ' . $e->getMessage() . '<br/>';
+            return null;
+        }
+    }
+
+    public static function getSignaturesByUserId($id){
+
+        $db = self::connexionDB();
+    
+        $query = "SELECT * FROM signatures WHERE user_id = :user_id";
+
+        $statement = $db->prepare($query);
+
+        $statement->bindParam(':user_id', $id, PDO::PARAM_INT);
+
+        $statement->execute();
+
+        $signatures = $statement->fetchAll(PDO::FETCH_ASSOC);
+    
+        return $signatures;
+    }
+
+    public static function getGamesByUserId($id){
+
+        $db = self::connexionDB();
+
+        $query = "SELECT g.* FROM signatures s
+                INNER JOIN games g ON s.game_id = g.id
+                WHERE s.user_id = :user_id";
+
+        $statement = $db->prepare($query);
+
+        $statement->bindParam(':user_id', $id, PDO::PARAM_INT);
+
+        $statement->execute();
+
+        $games = $statement->fetchAll(PDO::FETCH_ASSOC);
+
+        return $games;
+
+    }
+
+    public static function getRoles(){
+
+        $db = self::connexionDB();
+
+        $query = "SELECT * FROM roles";
+    
+        $statement = $db->prepare($query);
+    
+        $statement->execute();
+    
+        $roles = $statement->fetchAll(PDO::FETCH_ASSOC);
+    
+        return $roles;
+    }
+
+    public static function insertUser($username, $password, $phone, $email, $role_id, $validate = false) {
+        try {
+            $hashed_password = password_hash($password, PASSWORD_DEFAULT);
+    
+            $db = self::connexionDB();
+    
+            $query = "INSERT INTO users (username, password, phone, email, validate, role_id) 
+                      VALUES (:username, :password, :phone, :email, :validate, :role_id)";
+    
+            $statement = $db->prepare($query);
+    
+            $validate_int = $validate ? 1 : 0;
+    
+            $statement->bindParam(':username', $username, PDO::PARAM_STR);
+            $statement->bindParam(':password', $hashed_password, PDO::PARAM_STR);
+            $statement->bindParam(':phone', $phone, PDO::PARAM_STR);
+            $statement->bindParam(':email', $email, PDO::PARAM_STR);
+            $statement->bindParam(':validate', $validate_int, PDO::PARAM_INT);
+            $statement->bindParam(':role_id', $role_id, PDO::PARAM_INT);
+    
+            if ($statement->execute()) {
+                return true;
+            } else {
+                return false;
+            }
+        } catch (PDOException $e) {
+            return false;
+        }
+    }
+
+    public static function updateValidateUserState($id, $state) {
+        try {
+            $db = self::connexionDB();
+    
+            $query = "UPDATE users SET validate = :state WHERE id = :id";
+    
+            $statement = $db->prepare($query);
+            $statement->bindParam(':id', $id, PDO::PARAM_INT);
+            $statement->bindParam(':state', $state, PDO::PARAM_INT);
+    
+            if ($statement->execute()) {
+                return true;
+            } else {
+                return false;
+            }
+        } catch (PDOException $e) {
+            return false;
+        }
+    }
+    
+    
 }
 
 

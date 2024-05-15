@@ -64,20 +64,20 @@ while ($row = $statement->fetch()) {
 }
 
 session_destroy();
-$dbh = VolscoreDB::connexionDB(); // Assurez-vous que cette méthode retourne bien un objet PDO
+
+// Insertion de user tests
+$dbh = VolscoreDB::connexionDB();
 $username = "admin";
-$password = "1234"; // Vous devriez obtenir ces valeurs via $_POST ou une autre méthode sécurisée
+$password = "1234";
 $phone = "1234567890";
 $email = "aproject37@gmail.com";
-$role_id = 1; // ID du rôle attribué à l'utilisateur
+$role_id = 1;
 $validate = 1;
 
-// Hashage du mot de passe
 $hashed_password = password_hash($password, PASSWORD_DEFAULT);
 
-// Utilisation d'une requête préparée
 $query = "INSERT INTO users (username, password, phone, email, validate, role_id) VALUES (:username, :password, :phone, :email, :validate, :role_id)";
-$statement = $dbh->prepare($query); // Préparation de la requête
+$statement = $dbh->prepare($query);
 $statement->execute([
     ':username' => $username,
     ':password' => $hashed_password,
@@ -85,9 +85,115 @@ $statement->execute([
     ':email' => $email,
     ':role_id' => $role_id,
     ':validate' => $validate
-]); // Exécution de la requête avec des paramètres liés
+]);
 
 $dbh = null;
+
+
+$dbh = VolscoreDB::connexionDB();
+$username = "user1";
+$password = "1234";
+$phone = "123456789";
+$email = "test1@gmail.com";
+$role_id = 1; 
+$validate = 0;
+
+$hashed_password = password_hash($password, PASSWORD_DEFAULT);
+
+$query = "INSERT INTO users (username, password, phone, email, validate, role_id) VALUES (:username, :password, :phone, :email, :validate, :role_id)";
+$statement = $dbh->prepare($query);
+$statement->execute([
+    ':username' => $username,
+    ':password' => $hashed_password,
+    ':phone' => $phone,
+    ':email' => $email,
+    ':role_id' => $role_id,
+    ':validate' => $validate
+]);
+
+$dbh = null;
+
+
+$dbh = VolscoreDB::connexionDB();
+$username = "user2";
+$password = "1234";
+$phone = "12345678";
+$email = "test2@gmail.com";
+$role_id = 2;
+$validate = 1;
+
+$hashed_password = password_hash($password, PASSWORD_DEFAULT);
+
+$query = "INSERT INTO users (username, password, phone, email, validate, role_id) VALUES (:username, :password, :phone, :email, :validate, :role_id)";
+$statement = $dbh->prepare($query);
+$statement->execute([
+    ':username' => $username,
+    ':password' => $hashed_password,
+    ':phone' => $phone,
+    ':email' => $email,
+    ':role_id' => $role_id,
+    ':validate' => $validate
+]);
+
+$dbh = null;
+
+$dbh = VolscoreDB::connexionDB();
+$username = "user3";
+$password = "1234";
+$phone = "1234567";
+$email = "test3@gmail.com";
+$role_id = 3;
+$validate = 1;
+
+$hashed_password = password_hash($password, PASSWORD_DEFAULT);
+
+$query = "INSERT INTO users (username, password, phone, email, validate, role_id) VALUES (:username, :password, :phone, :email, :validate, :role_id)";
+$statement = $dbh->prepare($query);
+$statement->execute([
+    ':username' => $username,
+    ':password' => $hashed_password,
+    ':phone' => $phone,
+    ':email' => $email,
+    ':role_id' => $role_id,
+    ':validate' => $validate
+]);
+
+$dbh = null;
+
+// Insertion de signatures tests
+
+// Génération de données aléatoires pour les signatures
+$users = [1, 2, 3, 4];
+$games = [1, 2, 3];
+$roles = [2, 3];
+$tokens = [
+    bin2hex(random_bytes(16)),
+    bin2hex(random_bytes(16)),
+    bin2hex(random_bytes(16)),
+    bin2hex(random_bytes(16))
+];
+
+// Connexion à la base de données
+$dbh = VolscoreDB::connexionDB();
+
+foreach ($users as $user_id) {
+    foreach ($games as $game_id) {
+        $role_id = $roles[array_rand($roles)];
+        $token_signature = $tokens[array_rand($tokens)];
+
+        $query = "INSERT INTO signatures (token_signature, game_id, user_id, role_id) 
+                  VALUES (:token_signature, :game_id, :user_id, :role_id)";
+
+        $statement = $dbh->prepare($query);
+        $statement->bindParam(':token_signature', $token_signature, PDO::PARAM_STR);
+        $statement->bindParam(':game_id', $game_id, PDO::PARAM_INT);
+        $statement->bindParam(':user_id', $user_id, PDO::PARAM_INT);
+        $statement->bindParam(':role_id', $role_id, PDO::PARAM_INT);
+
+        $statement->execute();
+
+    }
+}
 
 // Add players to games (liste d'engagement)
 foreach (VolscoreDB::getGames() as $game) {

@@ -74,6 +74,16 @@ switch ($action)
         updatePassword($_SESSION['try_user_id'],$_POST['new_password'],$_POST['confirm_password']);
     case 'clear':
         Clear();
+    case 'accounts':
+        showAccounts();
+    case 'profil':
+        showProfil($_GET['id']);
+    case 'createaccount':
+        showCreateAccount();
+    case 'createuser':
+        createUser($_POST['username'], $_POST['password'], $_POST['phone'], $_POST['email'], $_POST['validate'], $_POST['role_id']);
+    case 'uservalidate':
+        validateUser($_GET['state'],$_GET['user_id']);
     default:
         showHome();
 }

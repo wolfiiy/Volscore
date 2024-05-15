@@ -257,5 +257,16 @@ interface IVolscoreDb {
 
     public static function updateUserPassword($userId, $newPassword);
 
+    public static function getUserRoleById($userId);
+    
+    public static function getAllUsers();
+    
+    public static function getSignaturesByUserId($id);
+
+    public static function getGamesByUserId($id);
+
+    public static function insertUser($username, $password, $phone, $email, $role_id, $validate = false);
+
+    public static function updateValidateUserState($id,$state);
 #endregion
 }

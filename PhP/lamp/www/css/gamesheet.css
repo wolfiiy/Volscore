@@ -269,14 +269,103 @@
     color: black; /* Username text color */
 }
 
-.flex-header{
-    display:flex;
-    flex-direction: row;
+.flex-header {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 60px; /* ajustez cette valeur si nécessaire */
 }
 
-.flex-header a,.flex-header p{
-    width: 50%;
+.flex-header h1 {
+    margin: 0;
+    text-align: center;
+}
+
+.flex-header a {
+    text-decoration: none;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.flex-header p {
+    margin: 0;
+    position: absolute;
+    right: 10px; /* ajustez cette valeur pour plus d'espace depuis le bord droit */
     text-align: right;
 }
+
+
+/* Style du bouton */
+.createButton {
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    margin-bottom: 20px;
+    width: 100px;
+    justify-content: center; /* Centre horizontalement */
+    text-align: center; /* Assure également que le texte est centré */
+    margin: 20px auto;
+}
+
+/* Style du conteneur des utilisateurs */
+#usersContainer {
+    width: 80%;
+    height: 300px;
+    overflow-y: auto; /* Ajoute une barre de défilement vertical si nécessaire */
+    border: 1px solid #ccc;
+    padding: 10px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    margin: 0 auto;
+}
+
+/* Style de chaque utilisateur */
+.user {
+    border: 1px solid #ddd;
+    margin-bottom: 10px;
+    padding: 10px;
+    background-color: #f9f9f9;
+}
+
+.user-info {
+    margin: 5px 0;
+}
+
+.flexrow {
+    display: flex;
+    flex-direction: row;
+    justify-content: center; /* Centre horizontalement */
+    text-align: center; /* Assure également que le texte est centré */
+    font-size: 40px;
+    
+}
+.form-container {
+    width: 300px;
+    margin: auto;
+}
+
+.form-container label {
+    display: block;
+    margin-bottom: 5px;
+}
+
+.input-field, .select-field {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+.checkbox-field {
+    margin-bottom: 10px;
+}
+
 
   /*ALEX*/

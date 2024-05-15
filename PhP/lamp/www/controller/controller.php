@@ -48,11 +48,86 @@ function showGames()
     require_once 'view/games.php';
 }
 
+function showProfil($id){
+
+    if (!isset($_SESSION['user_id'])) {
+        showLogin();
+    }
+    if($id == null){
+        showAccounts();
+    }
+
+    $user = VolscoreDB::getUser($id);
+    $signatures = VolscoreDB::getSignaturesByUserId($id);
+    $games = VolscoreDB::getGamesByUserId($id);
+    $roles = VolscoreDB::getRoles();
+
+    require_once 'view/profil.php';
+
+}
+
+function showCreateAccount(){
+
+    if (!isset($_SESSION['user_id'])) {
+        showLogin();
+    }
+    $roles = VolscoreDB::getRoles();
+
+    require_once 'view/createAccount.php';
+
+}
+
+function createUser($username, $password,$phone,$email,$validate,$role_id){
+
+    if (!isset($_SESSION['user_id'])) {
+        showLogin();
+    }
+    if (VolscoreDB::insertUser($username, $password, $phone, $email, $role_id, $validate)) {
+        try {
+            mailNewPassword($email);
+        } catch (Exception $e) {
+            echo "<script type='text/javascript'>alert('Une erreur est survenue lors de l'envoi du mail');</script>";
+        }
+        
+        echo "<script type='text/javascript'>alert('Le compte a été créé avec succès');</script>";
+    } else if($username != null){
+        //echo "<script type='text/javascript'>alert('Une erreur est survenue lors de la création du compte');</script>";
+    }
+       
+    showCreateAccount();
+}
+
+function validateUser($state,$user_id){
+    VolscoreDB::updateValidateUserState($user_id,$state);
+
+    showProfil($user_id);
+}
+
+function showAccounts(){
+    
+    if (!isset($_SESSION['user_id'])) {
+        showLogin();
+    }
+
+    if(VolscoreDB::getUserRoleById($_SESSION['user_id']) != "admin"){
+        showHome();
+    }
+
+    $users = VolscoreDB::getAllUsers();
+    $roles = VolscoreDB::getRoles();
+
+    require_once 'view/accounts.php';
+}
+
 function showHome()
 {
     if (!isset($_SESSION['user_id'])) {
         require_once 'view/login.php';
     }
+
+    $user = VolscoreDB::getUser($_SESSION['user_id']);
+    $user_role = VolscoreDB::getUserRoleById($_SESSION['user_id']);
+
     require_once 'view/home.php';
 }
 
@@ -442,8 +517,7 @@ function updatePassword($user_id, $password, $password_confirm){
     showHome();
 }
 
-function showMailValidate($email)
-{   
+function mailNewPassword($email){
     require_once __DIR__ . '/../vendor/PHPMailer/src/Exception.php';
     require_once __DIR__ . '/../vendor/PHPMailer/src/PHPMailer.php';
     require_once __DIR__ . '/../vendor/PHPMailer/src/SMTP.php';
@@ -491,17 +565,21 @@ function showMailValidate($email)
             <style>
                 body { font-family: Arial, sans-serif; }
                 .button {
-                    background-color: #007bff; /* Bootstrap primary */
-                    border: none;
-                    color: white;
+                    background-color: #ffffff; /* Couleur de fond du bouton */
+                    border: solid 2px black;
+                    color: #007bff; /* Couleur du texte du bouton */
                     padding: 15px 32px;
                     text-align: center;
                     text-decoration: none;
                     display: inline-block;
                     font-size: 16px;
-                    margin: 4px 2px;
+                    margin-top: 20px; /* Espacement entre le texte et le bouton */
                     cursor: pointer;
                     border-radius: 5px; /* Arrondissement des angles */
+                    transition: background-color 0.3s ease; /* Transition douce lors du survol */
+                }
+                .button:hover {
+                    background-color: #e6e6e6; /* Changement de couleur au survol */
                 }
             </style>
         </head>
@@ -515,9 +593,21 @@ function showMailValidate($email)
         EOT;
 
         $mail->send();
-        $error = "Un mail de confirmation a été envoyé à votre adresse. Veuillez vérifier votre boîte de réception.";
+        return true;
+        
     } catch (Exception $e) {
-        $error = "Le message n'a pas pu être envoyé. Erreur de Mailer : {$mail->ErrorInfo}";
+        return false;
+        
+    }
+}
+
+function showMailValidate($email)
+{   
+    if(mailNewPassword($email)){
+        $error = "Un mail de confirmation a été envoyé à votre adresse. Veuillez vérifier votre boîte de réception.";
+    }  
+    else{
+        $error = "Le message n'a pas pu être envoyé.";
     }
 
     require_once 'view/mailValidate.php';
