@@ -11,12 +11,12 @@ ob_start();
 
 <h2>Connexion</h2>
 
-<form method="post" action="?action=login">
+<form id="userCreationForm" method="post" action="?action=login">
     <label for="username">Nom d'utilisateur/Email:</label><br>
-    <input type="text" id="username" name="username" required><br>
+    <input type="text" id="username" name="username" class="input-field" required><br>
     <label for="password">Mot de passe:</label><br>
-    <input type="password" id="password" name="password" required><br><br>
-    <input type="submit" value="Se connecter">
+    <input type="password" id="password" name="password" class="input-field" required><br><br>
+    <input type="submit" value="Se connecter" ><!--class="createButton"-->
 </form>
 
 <p><a href="?action=mailsend">Mot de passe oublié ?</a></p>
