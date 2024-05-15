@@ -1192,8 +1192,23 @@ class VolscoreDB implements IVolscoreDb {
         $games = $statement->fetchAll(PDO::FETCH_ASSOC);
 
         return $games;
-        
-        }
+
+    }
+
+    public static function getRoles(){
+
+        $db = self::connexionDB();
+
+        $query = "SELECT * FROM roles";
+    
+        $statement = $db->prepare($query);
+    
+        $statement->execute();
+    
+        $roles = $statement->fetchAll(PDO::FETCH_ASSOC);
+    
+        return $roles;
+    }
 
 }
 

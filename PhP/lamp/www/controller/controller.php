@@ -64,6 +64,8 @@ function showProfil($id){
 
 function showCreateAccount(){
 
+    $roles = VolscoreDB::getRoles();
+
     require_once 'view/createAccount.php';
 
 }
