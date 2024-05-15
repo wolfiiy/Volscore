@@ -64,6 +64,7 @@ while ($row = $statement->fetch()) {
 }
 
 session_destroy();
+
 $dbh = VolscoreDB::connexionDB(); // Assurez-vous que cette méthode retourne bien un objet PDO
 $username = "admin";
 $password = "1234"; // Vous devriez obtenir ces valeurs via $_POST ou une autre méthode sécurisée
@@ -88,6 +89,86 @@ $statement->execute([
 ]); // Exécution de la requête avec des paramètres liés
 
 $dbh = null;
+
+
+$dbh = VolscoreDB::connexionDB(); // Assurez-vous que cette méthode retourne bien un objet PDO
+$username = "user1";
+$password = "1234"; // Vous devriez obtenir ces valeurs via $_POST ou une autre méthode sécurisée
+$phone = "1234567890";
+$email = "aproject37@gmail.com";
+$role_id = 1; // ID du rôle attribué à l'utilisateur
+$validate = 0;
+
+// Hashage du mot de passe
+$hashed_password = password_hash($password, PASSWORD_DEFAULT);
+
+// Utilisation d'une requête préparée
+$query = "INSERT INTO users (username, password, phone, email, validate, role_id) VALUES (:username, :password, :phone, :email, :validate, :role_id)";
+$statement = $dbh->prepare($query); // Préparation de la requête
+$statement->execute([
+    ':username' => $username,
+    ':password' => $hashed_password,
+    ':phone' => $phone,
+    ':email' => $email,
+    ':role_id' => $role_id,
+    ':validate' => $validate
+]); // Exécution de la requête avec des paramètres liés
+
+$dbh = null;
+
+
+$dbh = VolscoreDB::connexionDB(); // Assurez-vous que cette méthode retourne bien un objet PDO
+$username = "user2";
+$password = "1234"; // Vous devriez obtenir ces valeurs via $_POST ou une autre méthode sécurisée
+$phone = "1234567890";
+$email = "aproject37@gmail.com";
+$role_id = 2; // ID du rôle attribué à l'utilisateur
+$validate = 1;
+
+// Hashage du mot de passe
+$hashed_password = password_hash($password, PASSWORD_DEFAULT);
+
+// Utilisation d'une requête préparée
+$query = "INSERT INTO users (username, password, phone, email, validate, role_id) VALUES (:username, :password, :phone, :email, :validate, :role_id)";
+$statement = $dbh->prepare($query); // Préparation de la requête
+$statement->execute([
+    ':username' => $username,
+    ':password' => $hashed_password,
+    ':phone' => $phone,
+    ':email' => $email,
+    ':role_id' => $role_id,
+    ':validate' => $validate
+]); // Exécution de la requête avec des paramètres liés
+
+$dbh = null;
+
+
+$dbh = VolscoreDB::connexionDB(); // Assurez-vous que cette méthode retourne bien un objet PDO
+$username = "user3";
+$password = "1234"; // Vous devriez obtenir ces valeurs via $_POST ou une autre méthode sécurisée
+$phone = "1234567890";
+$email = "aproject37@gmail.com";
+$role_id = 3; // ID du rôle attribué à l'utilisateur
+$validate = 1;
+
+// Hashage du mot de passe
+$hashed_password = password_hash($password, PASSWORD_DEFAULT);
+
+// Utilisation d'une requête préparée
+$query = "INSERT INTO users (username, password, phone, email, validate, role_id) VALUES (:username, :password, :phone, :email, :validate, :role_id)";
+$statement = $dbh->prepare($query); // Préparation de la requête
+$statement->execute([
+    ':username' => $username,
+    ':password' => $hashed_password,
+    ':phone' => $phone,
+    ':email' => $email,
+    ':role_id' => $role_id,
+    ':validate' => $validate
+]); // Exécution de la requête avec des paramètres liés
+
+$dbh = null;
+
+
 
 // Add players to games (liste d'engagement)
 foreach (VolscoreDB::getGames() as $game) {
