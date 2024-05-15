@@ -269,15 +269,33 @@
     color: black; /* Username text color */
 }
 
-.flex-header{
-    display:flex;
-    flex-direction: row;
+.flex-header {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 60px; /* ajustez cette valeur si nécessaire */
 }
 
-.flex-header a,.flex-header p{
-    width: 50%;
+.flex-header h1 {
+    margin: 0;
+    text-align: center;
+}
+
+.flex-header a {
+    text-decoration: none;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.flex-header p {
+    margin: 0;
+    position: absolute;
+    right: 10px; /* ajustez cette valeur pour plus d'espace depuis le bord droit */
     text-align: right;
 }
+
 
 /* Style du bouton */
 .createButton {
@@ -318,20 +336,12 @@
     margin: 5px 0;
 }
 
-.cross {
-    font-size: 40px;
-}
-
-.check {
-
-   font-size: 40px;
-}
-
 .flexrow {
     display: flex;
     flex-direction: row;
     justify-content: center; /* Centre horizontalement */
     text-align: center; /* Assure également que le texte est centré */
+    font-size: 40px;
 }
 .form-container {
     width: 300px;
