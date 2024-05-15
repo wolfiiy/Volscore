@@ -48,6 +48,18 @@ function showGames()
     require_once 'view/games.php';
 }
 
+function showProfil($id){
+
+    if($id == null){
+        showAccounts();
+    }
+
+    $user = VolscoreDB::getUser($id);
+
+    require_once 'view/profil.php';
+
+}
+
 function showAccounts(){
     if (!isset($_SESSION['user_id'])) {
         showLogin();

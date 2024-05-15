@@ -76,6 +76,8 @@ switch ($action)
         Clear();
     case 'accounts':
         showAccounts();
+    case 'profil':
+        showProfil($_GET['id']);
     default:
         showHome();
 }

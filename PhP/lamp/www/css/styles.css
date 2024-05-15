@@ -133,3 +133,8 @@ a {
 a:hover {
     text-decoration: underline; /* Underline on hover for better visibility */
 }
+
+.flexrow{
+    display: flex;
+    flex-direction: row;;
+}
