@@ -1158,6 +1158,43 @@ class VolscoreDB implements IVolscoreDb {
         }
     }
 
+    public static function getSignaturesByUserId($id){
+
+        $db = self::connexionDB();
+    
+        $query = "SELECT * FROM signatures WHERE user_id = :user_id";
+
+        $statement = $db->prepare($query);
+
+        $statement->bindParam(':user_id', $id, PDO::PARAM_INT);
+
+        $statement->execute();
+
+        $signatures = $statement->fetchAll(PDO::FETCH_ASSOC);
+    
+        return $signatures;
+    }
+
+    public static function getGamesByUserId($id){
+
+        $db = self::connexionDB();
+
+        $query = "SELECT g.* FROM signatures s
+                INNER JOIN games g ON s.game_id = g.id
+                WHERE s.user_id = :user_id";
+
+        $statement = $db->prepare($query);
+
+        $statement->bindParam(':user_id', $id, PDO::PARAM_INT);
+
+        $statement->execute();
+
+        $games = $statement->fetchAll(PDO::FETCH_ASSOC);
+
+        return $games;
+        
+        }
+
 }
 
 

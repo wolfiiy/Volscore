@@ -26,9 +26,6 @@ else{
 
 <h2>Historique</h2>
 
-
-
-
 <div id="usersContainer">
     <?php foreach($signatures as $signature){ ?>
     <a href="?action=home" style="text-decoration: none; color: inherit;">

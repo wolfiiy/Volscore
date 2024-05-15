@@ -260,6 +260,9 @@ interface IVolscoreDb {
     public static function getUserRoleById($userId);
     
     public static function getAllUsers();
+    
+    public static function getSignaturesByUserId($id);
 
+    public static function getGamesByUserId($id);
 #endregion
 }
