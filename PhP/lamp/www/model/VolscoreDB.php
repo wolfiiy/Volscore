@@ -1239,11 +1239,28 @@ class VolscoreDB implements IVolscoreDb {
             return false;
         }
     }
-    
-    
-    
-    
 
+    public static function updateValidateUserState($id, $state) {
+        try {
+            $db = self::connexionDB();
+    
+            $query = "UPDATE users SET validate = :state WHERE id = :id";
+    
+            $statement = $db->prepare($query);
+            $statement->bindParam(':id', $id, PDO::PARAM_INT);
+            $statement->bindParam(':state', $state, PDO::PARAM_INT);
+    
+            if ($statement->execute()) {
+                return true;
+            } else {
+                return false;
+            }
+        } catch (PDOException $e) {
+            return false;
+        }
+    }
+    
+    
 }
 
 
