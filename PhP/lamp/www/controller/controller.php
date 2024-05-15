@@ -66,8 +66,6 @@ function showCreateAccount(){
 
     $roles = VolscoreDB::getRoles();
 
-    
-
     require_once 'view/createAccount.php';
 
 }
@@ -82,7 +80,7 @@ function createUser($username, $password,$phone,$email,$validate,$role_id){
         }
         
         echo "<script type='text/javascript'>alert('Le compte a été créé avec succès');</script>";
-    } else {
+    } else if($username != null){
         echo "<script type='text/javascript'>alert('Une erreur est survenue lors de la création du compte');</script>";
     }
        
