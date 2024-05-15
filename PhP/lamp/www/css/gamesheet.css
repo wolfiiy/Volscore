@@ -342,6 +342,7 @@
     justify-content: center; /* Centre horizontalement */
     text-align: center; /* Assure également que le texte est centré */
     font-size: 40px;
+    
 }
 .form-container {
     width: 300px;
