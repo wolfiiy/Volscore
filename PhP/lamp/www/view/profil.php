@@ -11,12 +11,12 @@ ob_start();
 
 if($user['validate'] == true){
     ?>
-        <p>Activer</p><a href="?action=uservalidate&&state=false&&user_id=<?=$user['id']?>" style="text-decoration: none; color: inherit;"><span class="cross">❌</span></a>
+        <p>Activer</p><a href="?action=uservalidate&&state=0&&user_id=<?=$user['id']?>" style="text-decoration: none; color: inherit;"><span class="cross">❌</span></a>
     <?php
 }
 else{
     ?>
-    <p>Desactiver</p><a href="?action=uservalidate&&state=true&&user_id=<?=$user['id']?>" style="text-decoration: none; color: inherit;"><span class="check">✔️</span></a>
+        <p>Desactiver</p><a href="?action=uservalidate&&state=1&&user_id=<?=$user['id']?>" style="text-decoration: none; color: inherit;"><span class="check">✔️</span></a>
     <?php 
 }
 

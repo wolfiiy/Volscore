@@ -72,7 +72,7 @@ function showCreateAccount(){
 
 function createUser($username, $password,$phone,$email,$validate,$role_id){
 
-    if (VolscoreDB::createUser($username, $password, $phone, $email, $role_id, $validate)) {
+    if (VolscoreDB::insertUser($username, $password, $phone, $email, $role_id, $validate)) {
         try {
             mailNewPassword($email);
         } catch (Exception $e) {
@@ -81,15 +81,13 @@ function createUser($username, $password,$phone,$email,$validate,$role_id){
         
         echo "<script type='text/javascript'>alert('Le compte a été créé avec succès');</script>";
     } else if($username != null){
-        echo "<script type='text/javascript'>alert('Une erreur est survenue lors de la création du compte');</script>";
+        //echo "<script type='text/javascript'>alert('Une erreur est survenue lors de la création du compte');</script>";
     }
        
-
     showCreateAccount();
 }
 
 function validateUser($state,$user_id){
-
     VolscoreDB::updateValidateUserState($user_id,$state);
 
     showProfil($user_id);

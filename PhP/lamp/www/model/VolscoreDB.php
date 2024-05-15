@@ -1210,7 +1210,7 @@ class VolscoreDB implements IVolscoreDb {
         return $roles;
     }
 
-    public static function createUser($username, $password, $phone, $email, $role_id, $validate = false) {
+    public static function insertUser($username, $password, $phone, $email, $role_id, $validate = false) {
         try {
             $hashed_password = password_hash($password, PASSWORD_DEFAULT);
     
