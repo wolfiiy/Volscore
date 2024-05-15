@@ -293,8 +293,10 @@ CREATE TABLE `users` (
   `token` VARCHAR(255) NULL,
   `role_id` INT(11) NOT NULL,
   PRIMARY KEY (`id`),
+  UNIQUE KEY `email_unique` (`email`), -- Contrainte d'unicité sur la colonne email
   FOREIGN KEY (`role_id`) REFERENCES `roles` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+
 
 CREATE TABLE `signatures` (
   `id` INT(11) NOT NULL AUTO_INCREMENT,

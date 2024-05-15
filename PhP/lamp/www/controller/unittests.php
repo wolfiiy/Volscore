@@ -95,7 +95,7 @@ $dbh = VolscoreDB::connexionDB(); // Assurez-vous que cette méthode retourne bi
 $username = "user1";
 $password = "1234"; // Vous devriez obtenir ces valeurs via $_POST ou une autre méthode sécurisée
 $phone = "1234567890";
-$email = "aproject37@gmail.com";
+$email = "test1@gmail.com";
 $role_id = 1; // ID du rôle attribué à l'utilisateur
 $validate = 0;
 
@@ -121,7 +121,7 @@ $dbh = VolscoreDB::connexionDB(); // Assurez-vous que cette méthode retourne bi
 $username = "user2";
 $password = "1234"; // Vous devriez obtenir ces valeurs via $_POST ou une autre méthode sécurisée
 $phone = "1234567890";
-$email = "aproject37@gmail.com";
+$email = "test2@gmail.com";
 $role_id = 2; // ID du rôle attribué à l'utilisateur
 $validate = 1;
 
@@ -147,7 +147,7 @@ $dbh = VolscoreDB::connexionDB(); // Assurez-vous que cette méthode retourne bi
 $username = "user3";
 $password = "1234"; // Vous devriez obtenir ces valeurs via $_POST ou une autre méthode sécurisée
 $phone = "1234567890";
-$email = "aproject37@gmail.com";
+$email = "test3@gmail.com";
 $role_id = 3; // ID du rôle attribué à l'utilisateur
 $validate = 1;
 
