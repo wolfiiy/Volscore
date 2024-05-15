@@ -5,7 +5,7 @@ ob_start();
 
 <h1>Comptes</h1>
 
-<button id="createButton" src="">Créer</button>
+<a class="createButton" href="?action=createaccount">Créer</a>
 
 <div id="usersContainer">
     <?php foreach($users as $user){ ?>

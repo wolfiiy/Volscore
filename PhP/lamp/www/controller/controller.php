@@ -62,6 +62,12 @@ function showProfil($id){
 
 }
 
+function showCreateAccount(){
+
+    require_once 'view/createAccount.php';
+
+}
+
 function showAccounts(){
     if (!isset($_SESSION['user_id'])) {
         showLogin();

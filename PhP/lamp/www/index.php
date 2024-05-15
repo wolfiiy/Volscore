@@ -78,6 +78,8 @@ switch ($action)
         showAccounts();
     case 'profil':
         showProfil($_GET['id']);
+    case 'createaccount':
+        showCreateAccount();
     default:
         showHome();
 }
