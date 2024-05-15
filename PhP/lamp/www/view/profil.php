@@ -11,12 +11,12 @@ ob_start();
 
 if($user['validate'] == true){
     ?>
-        <p>Activer</p><a href="?action=" style="text-decoration: none; color: inherit;">❌</a>
+        <p>Activer</p><a href="?action=" style="text-decoration: none; color: inherit;"><span class="cross">❌</span></a>
     <?php
 }
 else{
     ?>
-    <p>Desactiver</p><a href="?action=" style="text-decoration: none; color: inherit;">✔️</a>
+    <p>Desactiver</p><a href="?action=" style="text-decoration: none; color: inherit;"><span class="check">✔️</span></a>
     <?php 
 }
 
@@ -27,12 +27,12 @@ else{
 <h2>Historique</h2>
 
 <div id="usersContainer">
-    <?php foreach($signatures as $signature){ ?>
+    <?php foreach($games as $game){ ?>
     <a href="?action=home" style="text-decoration: none; color: inherit;">
     <div class="user">
-        <div class="user-info">Infos : <?= $user['username'] ?></div>
-        <div class="user-info">Infos : <?= $user['email'] ?></div>
-        <div class="user-info">Infos : <?= $user['role_id'] ?></div>
+        <div class="user-info">ID : <?= $game['id'] ?></div>
+        <div class="user-info">Localisation : <?= $game['location'] ?></div>
+        <div class="user-info">Heure : <?= $user['moment'] ?></div>
     </div>
     </a>
     <?php } ?>

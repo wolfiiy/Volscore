@@ -314,4 +314,20 @@
     margin: 5px 0;
 }
 
+.cross {
+    font-size: 40px;
+}
+
+.check {
+
+   font-size: 40px;
+}
+
+.flexrow {
+    display: flex;
+    flex-direction: row;
+    justify-content: center; /* Centre horizontalement */
+    text-align: center; /* Assure également que le texte est centré */
+}
+
   /*ALEX*/
