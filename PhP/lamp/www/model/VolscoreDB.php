@@ -999,7 +999,6 @@ class VolscoreDB implements IVolscoreDb {
     public static function getUserByMail($email)
     {
         try{
-
             $dbh = self::connexionDB();
 
             $query = $dbh->prepare("SELECT id FROM users WHERE email = :email");
@@ -1012,7 +1011,7 @@ class VolscoreDB implements IVolscoreDb {
 
             $dbh = null;
             
-            return $row;
+            return $row['id'];
         }
         catch (PDOException $e)
         {
