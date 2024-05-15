@@ -80,6 +80,8 @@ switch ($action)
         showProfil($_GET['id']);
     case 'createaccount':
         showCreateAccount();
+    case 'createuser':
+        createUser($_POST['username'], $_POST['password'], $_POST['phone'], $_POST['email'], $_POST['validate'], $_POST['role_id']);
     default:
         showHome();
 }

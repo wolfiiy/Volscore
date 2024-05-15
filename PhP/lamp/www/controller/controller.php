@@ -70,6 +70,13 @@ function showCreateAccount(){
 
 }
 
+function createUser($username, $password,$phone,$email,$validate,$role_id){
+
+    VolscoreDB::createUser($username, $password,$phone,$email,$role_id,$validate);
+
+    showCreateAccount();
+}
+
 function showAccounts(){
     if (!isset($_SESSION['user_id'])) {
         showLogin();

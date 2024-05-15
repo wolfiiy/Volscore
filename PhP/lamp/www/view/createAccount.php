@@ -5,7 +5,7 @@ ob_start();
 
 <h1>Créer un compte</h1>
 
-<form id="userCreationForm" action="process_user_creation.php" method="post">
+<form id="userCreationForm" action="?action=createuser" method="post">
     <label for="username">Nom d'utilisateur :</label>
     <input type="text" id="username" name="username" class="input-field" required><br><br>
 
