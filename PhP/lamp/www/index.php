@@ -82,6 +82,8 @@ switch ($action)
         showCreateAccount();
     case 'createuser':
         createUser($_POST['username'], $_POST['password'], $_POST['phone'], $_POST['email'], $_POST['validate'], $_POST['role_id']);
+    case 'uservalidate':
+        validateUser($_GET['state'],$_GET['user_id']);
     default:
         showHome();
 }

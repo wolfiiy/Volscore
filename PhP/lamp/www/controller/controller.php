@@ -88,6 +88,13 @@ function createUser($username, $password,$phone,$email,$validate,$role_id){
     showCreateAccount();
 }
 
+function validateUser($state,$user_id){
+
+    VolscoreDB::updateValidateUserState($user_id,$state);
+
+    showProfil($user_id);
+}
+
 function showAccounts(){
     if (!isset($_SESSION['user_id'])) {
         showLogin();
