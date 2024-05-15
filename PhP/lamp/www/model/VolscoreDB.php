@@ -1210,6 +1210,40 @@ class VolscoreDB implements IVolscoreDb {
         return $roles;
     }
 
+    public static function createUser($username, $password, $phone, $email, $role_id, $validate = false) {
+
+        echo "INSERT INTO users (username, password, phone, email, validate, role_id) 
+        VALUES ($username, $password, $phone, $email, 1, $role_id)";
+
+
+        $hashed_password = password_hash($password, PASSWORD_DEFAULT);
+
+        $db = self::connexionDB();
+
+        $query = "INSERT INTO users (username, password, phone, email, validate, role_id) 
+                  VALUES (:username, :password, :phone, :email, :validate, :role_id)";
+
+        $statement = $db->prepare($query);
+    
+        $validate_int = $validate ? 1 : 0;
+    
+        $statement->bindParam(':username', $username, PDO::PARAM_STR);
+        $statement->bindParam(':password', $hashed_password, PDO::PARAM_STR);
+        $statement->bindParam(':phone', $phone, PDO::PARAM_STR);
+        $statement->bindParam(':email', $email, PDO::PARAM_STR);
+        $statement->bindParam(':validate', $validate_int, PDO::PARAM_INT);
+        $statement->bindParam(':role_id', $role_id, PDO::PARAM_INT);
+    
+        if ($statement->execute()) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+    
+    
+    
+
 }
 
 
