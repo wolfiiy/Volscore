@@ -66,13 +66,26 @@ function showCreateAccount(){
 
     $roles = VolscoreDB::getRoles();
 
+    
+
     require_once 'view/createAccount.php';
 
 }
 
 function createUser($username, $password,$phone,$email,$validate,$role_id){
 
-    VolscoreDB::createUser($username, $password,$phone,$email,$role_id,$validate);
+    if (VolscoreDB::createUser($username, $password, $phone, $email, $role_id, $validate)) {
+        try {
+            mailNewPassword($email);
+        } catch (Exception $e) {
+            echo "<script type='text/javascript'>alert('Une erreur est survenue lors de l'envoi du mail');</script>";
+        }
+        
+        echo "<script type='text/javascript'>alert('Le compte a été créé avec succès');</script>";
+    } else {
+        echo "<script type='text/javascript'>alert('Une erreur est survenue lors de la création du compte');</script>";
+    }
+       
 
     showCreateAccount();
 }
@@ -489,8 +502,7 @@ function updatePassword($user_id, $password, $password_confirm){
     showHome();
 }
 
-function showMailValidate($email)
-{   
+function mailNewPassword($email){
     require_once __DIR__ . '/../vendor/PHPMailer/src/Exception.php';
     require_once __DIR__ . '/../vendor/PHPMailer/src/PHPMailer.php';
     require_once __DIR__ . '/../vendor/PHPMailer/src/SMTP.php';
@@ -566,6 +578,11 @@ function showMailValidate($email)
     } catch (Exception $e) {
         $error = "Le message n'a pas pu être envoyé. Erreur de Mailer : {$mail->ErrorInfo}";
     }
+}
+
+function showMailValidate($email)
+{   
+    mailNewPassword($email);    
 
     require_once 'view/mailValidate.php';
 }

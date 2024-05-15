@@ -1212,10 +1212,6 @@ class VolscoreDB implements IVolscoreDb {
 
     public static function createUser($username, $password, $phone, $email, $role_id, $validate = false) {
 
-        echo "INSERT INTO users (username, password, phone, email, validate, role_id) 
-        VALUES ($username, $password, $phone, $email, 1, $role_id)";
-
-
         $hashed_password = password_hash($password, PASSWORD_DEFAULT);
 
         $db = self::connexionDB();
