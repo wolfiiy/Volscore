@@ -487,6 +487,18 @@ function showLogin($username = null,$password = null)
     }    
 }
 
+function showAuthUser($user_id,$game_id){
+
+    $user = VolscoreDB::getUser($user_id);
+
+    $game = VolscoreDB::getGame($game_id);
+
+    $username = $user['username'];
+
+    require_once 'view/authUser.php';
+
+}
+
 function showMailSend()
 {
     require_once 'view/mailSend.php';

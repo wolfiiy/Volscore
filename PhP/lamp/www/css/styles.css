@@ -85,15 +85,15 @@ select:disabled {
     background-color: #e9ecef;
 }
 
-/* Styles for the form container */
+/* Styles for the form container *//*
 form {
-    background-color: #ffffff; /* White background for the form */
+    background-color: #ffffff; 
     padding: 20px;
-    border-radius: 8px; /* Rounded corners for the form */
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Subtle shadow around the form */
-    width: 300px; /* Fixed width */
-    margin: 30px auto; /* Centering the form horizontally */
-}
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    width: 300px;
+    margin: 30px auto; 
+}*/
 
 /* Styles for input fields */
 .inputtext {
