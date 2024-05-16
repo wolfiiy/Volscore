@@ -307,11 +307,13 @@ CREATE TABLE `signatures` (
   `game_id` INT(11) NOT NULL,
   `user_id` INT(11) NOT NULL,
   `role_id` INT(11) NOT NULL,
+  `validate` BOOLEAN NOT NULL DEFAULT FALSE, -- Ajout du champ booléen `validate`
   PRIMARY KEY (`id`),
   FOREIGN KEY (`game_id`) REFERENCES `games` (`id`) ON DELETE CASCADE,
   FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE,
   FOREIGN KEY (`role_id`) REFERENCES `roles` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+
 
 INSERT INTO roles (name) VALUES ('admin'), ('marqueur'), ('arbitre');
 
