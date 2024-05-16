@@ -314,7 +314,7 @@
 }
 
 /* Style du conteneur des utilisateurs */
-#usersContainer {
+.usersContainer {
     width: 80%;
     height: 300px;
     overflow-y: auto; /* Ajoute une barre de défilement vertical si nécessaire */

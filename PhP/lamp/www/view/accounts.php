@@ -7,7 +7,7 @@ ob_start();
 
 <a class="createButton" href="?action=createaccount">Créer</a>
 
-<div id="usersContainer">
+<div class="usersContainer">
     <?php foreach($users as $user){ ?>
     <a href="?action=profil&&id=<?= $user['id'] ?>" style="text-decoration: none; color: inherit;">
     <div class="user">

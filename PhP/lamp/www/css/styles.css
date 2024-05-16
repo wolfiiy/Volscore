@@ -125,8 +125,3 @@ a {
     color: #0066cc; /* Blue color for the link */
     text-decoration: none; /* Removes underline from the link */
 }
-
-a:hover {
-    text-decoration: underline; /* Underline on hover for better visibility */
-}
-
