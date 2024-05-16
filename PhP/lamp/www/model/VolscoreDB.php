@@ -1259,20 +1259,29 @@ class VolscoreDB implements IVolscoreDb {
         }
     }
 
-    public static function insertSignature($user_id,$game_id,$role_id,$token){
+    public static function insertSignature($user_id, $game_id, $role_id, $token) {
 
         try {
-
-            $db = self::connexionDB(); // Assurez-vous d'avoir votre propre méthode pour la connexion à la base de données
-
+            $db = self::connexionDB();
+    
+            $checkQuery = "SELECT COUNT(*) FROM signatures WHERE game_id = :game_id AND user_id = :user_id AND role_id = :role_id";
+            $checkStmt = $db->prepare($checkQuery);
+            $checkStmt->bindParam(':game_id', $game_id, PDO::PARAM_INT);
+            $checkStmt->bindParam(':user_id', $user_id, PDO::PARAM_INT);
+            $checkStmt->bindParam(':role_id', $role_id, PDO::PARAM_INT);
+            $checkStmt->execute();
+    
+            if ($checkStmt->fetchColumn() > 0) {
+                return false;
+            }
+    
             $query = "INSERT INTO signatures (token_signature, game_id, user_id, role_id) VALUES (:token_signature, :game_id, :user_id, :role_id)";
-
             $statement = $db->prepare($query);
             $statement->bindParam(':token_signature', $token);
             $statement->bindParam(':game_id', $game_id, PDO::PARAM_INT);
             $statement->bindParam(':user_id', $user_id, PDO::PARAM_INT);
             $statement->bindParam(':role_id', $role_id, PDO::PARAM_INT);
-
+    
             if ($statement->execute()) {
                 return true;
             } else {
@@ -1282,6 +1291,7 @@ class VolscoreDB implements IVolscoreDb {
             return false;
         }
     }
+    
 
      // Méthode pour obtenir tous les jeux avec les conditions spécifiées
     public static function getSpecificGames($userId) {

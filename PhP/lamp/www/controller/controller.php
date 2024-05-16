@@ -508,7 +508,7 @@ function checkAuth($user_id,$game_id,$password){
     if (password_verify($password, $user['password'])) {
 
         $token = bin2hex(random_bytes(16));
-
+        
         VolscoreDB::insertSignature($user_id,$game_id,$user['role_id'],$token);
 
         markGame($game_id);
