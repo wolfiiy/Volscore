@@ -499,6 +499,26 @@ function showAuthUser($user_id,$game_id){
 
 }
 
+function checkAuth($user_id,$game_id,$password){
+
+    $user = VolscoreDB::getUser($user_id);
+
+    $game = VolscoreDB::getGame($game_id);
+
+    if (password_verify($password, $user['password'])) {
+        
+        $token = bin2hex(random_bytes(16));
+
+        VolscoreDB::insertSignature($user_id,$game_id,$user['role_id'],$token);
+
+        markGame($game_id);
+
+    } else {
+        showAuthUser($user_id,$game_id);
+    }
+
+}
+
 function showMailSend()
 {
     require_once 'view/mailSend.php';
