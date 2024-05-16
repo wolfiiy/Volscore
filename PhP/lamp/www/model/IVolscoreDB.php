@@ -270,5 +270,7 @@ interface IVolscoreDb {
     public static function updateValidateUserState($id,$state);
 
     public static function insertSignature($user_id,$game_id,$role_id,$token);
+
+    public static function getSpecificGames($userId);
 #endregion
 }
