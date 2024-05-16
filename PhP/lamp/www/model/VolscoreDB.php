@@ -1258,6 +1258,30 @@ class VolscoreDB implements IVolscoreDb {
             return false;
         }
     }
+
+    public static function insertSignature($user_id,$game_id,$role_id,$token){
+
+        try {
+
+            $db = self::connexionDB(); // Assurez-vous d'avoir votre propre méthode pour la connexion à la base de données
+
+            $query = "INSERT INTO signatures (token_signature, game_id, user_id, role_id) VALUES (:token_signature, :game_id, :user_id, :role_id)";
+
+            $statement = $db->prepare($query);
+            $statement->bindParam(':token_signature', $token);
+            $statement->bindParam(':game_id', $game_id, PDO::PARAM_INT);
+            $statement->bindParam(':user_id', $user_id, PDO::PARAM_INT);
+            $statement->bindParam(':role_id', $role_id, PDO::PARAM_INT);
+
+            if ($statement->execute()) {
+                return true;
+            } else {
+                return false;
+            }
+        } catch (PDOException $e) {
+            return false;
+        }
+    }
     
     
 }
