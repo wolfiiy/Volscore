@@ -40,7 +40,10 @@ function showGames()
         showLogin();
     }
     // Get data
+    // TODO Faire d'une autre facon que de prendre directement dans le model les games
     $games = VolscoreDb::getSpecificGames($_SESSION['user_id']);
+
+    $otherGames = VolscoreDB::getOtherGames($_SESSION['user_id']);
 
     $user = VolscoreDB::getUser($_SESSION['user_id']);
 
@@ -158,6 +161,8 @@ function showGame($gameid)
         require_once 'view/gamesheet/main.php';
     }
 }
+
+// TODO un bug surviens lorsqu'on Authentifie le marqueur. La page reviens sur le menu home juste apres la validation des equipes. Si on raffraichit on va sur la bonne page
 
 function markGame($gameid) {
     if (!isset($_SESSION['user_id'])) {
@@ -515,7 +520,7 @@ function checkAuth($user_id,$game_id,$password){
 
         VolscoreDB::insertSignature($user_id,$game_id,$user['role_id'],$token);
 
-        markGame($game_id);
+        header('Location: ?action=mark&id='.$game_id);
 
     } else {
         showAuthUser($user_id,$game_id);

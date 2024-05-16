@@ -1335,8 +1335,55 @@ class VolscoreDB implements IVolscoreDb {
             return null;
         }
     }   
+
+    public static function getOtherGames($userId) {
+        try {
+            $dbh = self::connexionDB(); // Assurez-vous que cette méthode retourne une instance PDO
     
+            // Requête pour obtenir tous les jeux qui ont une signature
+            $query = "
+                SELECT DISTINCT games.id as number, type, level, category, league, receiving_id as receivingTeamId, 
+                       r.name as receivingTeamName, visiting_id as visitingTeamId, v.name as visitingTeamName, 
+                       location as place, venue, moment
+                FROM games 
+                INNER JOIN signatures ON games.id = signatures.game_id
+                INNER JOIN teams r ON games.receiving_id = r.id 
+                INNER JOIN teams v ON games.visiting_id = v.id
+                WHERE signatures.user_id != :user_id
+                OR games.id IN (
+                    SELECT game_id FROM signatures
+                    WHERE user_id != :user_id
+                )
+                GROUP BY games.id
+            ";
     
+            $statement = $dbh->prepare($query);
+            $statement->bindParam(':user_id', $userId, PDO::PARAM_INT);
+            $statement->setFetchMode(PDO::FETCH_ASSOC);
+            $statement->execute();
+    
+            $res = [];
+            while ($rec = $statement->fetch()) {
+                $game = new Game($rec);
+                $game->scoreReceiving = 0;
+                $game->scoreVisiting = 0;
+                foreach (self::getSets($game) as $set) {
+                    if (self::setIsOver($set)) {
+                        if ($set->scoreReceiving > $set->scoreVisiting) {
+                            $game->scoreReceiving++;
+                        } else {
+                            $game->scoreVisiting++;
+                        }
+                    }
+                }
+                $res[] = $game;
+            }
+            return $res;
+        } catch (PDOException $e) {
+            print 'Error!:' . $e->getMessage() . '<br/>';
+            return null;
+        }
+    }
     
 }
 

@@ -87,7 +87,6 @@ select:disabled {
 
 /* Styles for the form container */
 form {
-    padding: 20px;
     width: 300px;
     margin: 30px auto; 
 }
