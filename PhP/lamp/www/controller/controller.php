@@ -42,6 +42,10 @@ function showGames()
     // Get data
     $games = VolscoreDb::getSpecificGames($_SESSION['user_id']);
 
+    $user = VolscoreDB::getUser($_SESSION['user_id']);
+
+    $rolename = VolscoreDB::getUserRoleById($user['id']);
+
     // Prepare data: nothing for now
 
     // Go ahead and show it
@@ -508,7 +512,7 @@ function checkAuth($user_id,$game_id,$password){
     if (password_verify($password, $user['password'])) {
 
         $token = bin2hex(random_bytes(16));
-        
+
         VolscoreDB::insertSignature($user_id,$game_id,$user['role_id'],$token);
 
         markGame($game_id);
