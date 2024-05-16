@@ -40,7 +40,7 @@ function showGames()
         showLogin();
     }
     // Get data
-    $games = VolscoreDb::getGames();
+    $games = VolscoreDb::getSpecificGames($_SESSION['user_id']);
 
     // Prepare data: nothing for now
 
@@ -506,7 +506,7 @@ function checkAuth($user_id,$game_id,$password){
     $game = VolscoreDB::getGame($game_id);
 
     if (password_verify($password, $user['password'])) {
-        
+
         $token = bin2hex(random_bytes(16));
 
         VolscoreDB::insertSignature($user_id,$game_id,$user['role_id'],$token);

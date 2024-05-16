@@ -85,15 +85,12 @@ select:disabled {
     background-color: #e9ecef;
 }
 
-/* Styles for the form container *//*
+/* Styles for the form container */
 form {
-    background-color: #ffffff; 
     padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     width: 300px;
     margin: 30px auto; 
-}*/
+}
 
 /* Styles for input fields */
 .inputtext {
