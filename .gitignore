@@ -404,3 +404,5 @@ Database/.dbeaver/
 .credentials.php
 
 *vendor/
+
+credentials-mail.php

@@ -579,17 +579,10 @@ function mailNewPassword($email){
         $expiresAt = $expiresAt->format('Y-m-d H:i:s');
 
         VolscoreDB::insertToken($userId, $token);
-
+        
         // Paramètres du serveur
-        //$mail->SMTPDebug = 0; // Désactiver le mode debug
-        // TODO le mot de passe d'application a stocker autre part que dans le code en brut et changer le mail
-        $mail->isSMTP();
-        $mail->Host       = 'smtp.gmail.com';
-        $mail->SMTPAuth   = true;
-        $mail->Username   = 'socloseink@gmail.com'; // Utilisez un mécanisme sécurisé pour gérer les identifiants
-        $mail->Password   = 'gknf yonq zuzp yckp';   // Assurez-vous que ce mot de passe est correct et sécurisé
-        $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
-        $mail->Port       = 587;
+        
+        require '../model/credentials-mail.php';
 
         // Destinataires
         $mail->setFrom('socloseink@gmail.com', 'VolScore');
