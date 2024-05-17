@@ -26,7 +26,7 @@ else{
 
 <h2>Historique</h2>
 
-<div id="usersContainer">
+<div class="usersContainer">
     <?php foreach($games as $game){ ?>
     <div class="user">
         <div class="user-info">ID : <?= $game['id'] ?></div>
