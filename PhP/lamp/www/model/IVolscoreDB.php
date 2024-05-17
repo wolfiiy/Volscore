@@ -274,5 +274,9 @@ interface IVolscoreDb {
     public static function getSpecificGames($userId);
 
     public static function getOtherGames($userId);
+
+    public static function hasMarkerRoleInGame($gameId);
+
+    public static function updateSignature($user_id, $game_id);
 #endregion
 }

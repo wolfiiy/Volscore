@@ -1409,6 +1409,28 @@ class VolscoreDB implements IVolscoreDb {
             return false;
         }
     }
+
+    public static function updateSignature($user_id, $game_id) {
+        try {
+            $db = self::connexionDB();
+            
+            $query = "UPDATE signatures SET validate = TRUE 
+                      WHERE user_id = :user_id AND game_id = :game_id";
+            
+            $statement = $db->prepare($query);
+            $statement->bindParam(':user_id', $user_id, PDO::PARAM_INT);
+            $statement->bindParam(':game_id', $game_id, PDO::PARAM_INT);
+            
+            if ($statement->execute()) {
+                return true;
+            } else {
+                return false;
+            }
+        } catch (PDOException $e) {
+            return false;
+        }
+    }
+    
     
     
 }
