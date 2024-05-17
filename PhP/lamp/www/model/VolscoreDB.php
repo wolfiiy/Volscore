@@ -1431,27 +1431,30 @@ class VolscoreDB implements IVolscoreDb {
         }
     }
 
-    public static function gameIsValidate($game_id) {
+    public static function gameIsValidate($game_id, $role_name) {
         try {
             $db = self::connexionDB();
             
             $query = "SELECT COUNT(*) as total
-                      FROM signatures 
-                      WHERE game_id = :game_id AND validate = FALSE";
+                      FROM signatures s
+                      JOIN roles r ON s.role_id = r.id
+                      WHERE s.game_id = :game_id AND r.name = :role_name AND s.validate = TRUE";
             
             $statement = $db->prepare($query);
             $statement->bindParam(':game_id', $game_id, PDO::PARAM_INT);
+            $statement->bindParam(':role_name', $role_name, PDO::PARAM_STR);
             
             if ($statement->execute()) {
                 $result = $statement->fetch(PDO::FETCH_ASSOC);
-                return $result['total'] == 0;
+                return $result['total'] > 0;
             } else {
                 return false;
             }
         } catch (PDOException $e) {
             return false;
         }
-    } 
+    }
+    
 }
 
 
