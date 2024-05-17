@@ -94,14 +94,16 @@ function createUser($username, $password,$phone,$email,$validate,$role_id){
             mailNewPassword($email);
         } catch (Exception $e) {
             echo "<script type='text/javascript'>alert('Une erreur est survenue lors de l'envoi du mail');</script>";
+            showCreateAccount();
         }
         
         echo "<script type='text/javascript'>alert('Le compte a été créé avec succès');</script>";
     } else if($username != null){
-        //echo "<script type='text/javascript'>alert('Une erreur est survenue lors de la création du compte');</script>";
+        echo "<script type='text/javascript'>alert('Une erreur est survenue lors de la création du compte');</script>";
+        showCreateAccount();
     }
        
-    showCreateAccount();
+    showAccounts();
 }
 
 function validateUser($state,$user_id){
@@ -562,6 +564,7 @@ function mailNewPassword($email){
     require_once __DIR__ . '/../vendor/phpmailer/phpmailer/src/Exception.php';
     require_once __DIR__ . '/../vendor/phpmailer/phpmailer/src/PHPMailer.php';
     require_once __DIR__ . '/../vendor/phpmailer/phpmailer/src/SMTP.php';
+    require_once __DIR__ . '/../model/credentials-mail.php';
 
     
     $mail = new PHPMailer(true);
@@ -579,10 +582,15 @@ function mailNewPassword($email){
         $expiresAt = $expiresAt->format('Y-m-d H:i:s');
 
         VolscoreDB::insertToken($userId, $token);
-        
+
         // Paramètres du serveur
-        
-        require '../model/credentials-mail.php';
+        $mail->isSMTP();
+        $mail->Host       = $mailHost;
+        $mail->SMTPAuth   = $mailSMTPAuth;
+        $mail->Username   = $mailusername;
+        $mail->Password   = $mailpassword;
+        $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
+        $mail->Port       = $mailPort;
 
         // Destinataires
         $mail->setFrom('socloseink@gmail.com', 'VolScore');
