@@ -282,7 +282,7 @@
     text-align: center;
 }
 
-.flex-header a {
+.flex-header title {
     text-decoration: none;
     position: absolute;
     left: 50%;
@@ -293,6 +293,13 @@
     margin: 0;
     position: absolute;
     right: 10px; /* ajustez cette valeur pour plus d'espace depuis le bord droit */
+    text-align: right;
+}
+
+.buttondeconnect {
+    margin: 0;
+    position: absolute;
+    right: 300px; /* ajustez cette valeur pour plus d'espace depuis le bord droit */
     text-align: right;
 }
 

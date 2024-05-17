@@ -722,6 +722,7 @@ function executeUnitTests()
 
 function Clear(){
     $_SESSION['user_id'] = null;
+    $_SESSION['username'] = null;
     require_once 'view/login.php';
 }
 ?>
