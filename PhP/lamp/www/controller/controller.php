@@ -94,14 +94,16 @@ function createUser($username, $password,$phone,$email,$validate,$role_id){
             mailNewPassword($email);
         } catch (Exception $e) {
             echo "<script type='text/javascript'>alert('Une erreur est survenue lors de l'envoi du mail');</script>";
+            showCreateAccount();
         }
         
         echo "<script type='text/javascript'>alert('Le compte a été créé avec succès');</script>";
     } else if($username != null){
-        //echo "<script type='text/javascript'>alert('Une erreur est survenue lors de la création du compte');</script>";
+        echo "<script type='text/javascript'>alert('Une erreur est survenue lors de la création du compte');</script>";
+        showCreateAccount();
     }
        
-    showCreateAccount();
+    showAccounts();
 }
 
 function validateUser($state,$user_id){
@@ -593,9 +595,10 @@ function updatePassword($user_id, $password, $password_confirm){
 }
 
 function mailNewPassword($email){
-    require_once __DIR__ . '/../vendor/PHPMailer/src/Exception.php';
-    require_once __DIR__ . '/../vendor/PHPMailer/src/PHPMailer.php';
-    require_once __DIR__ . '/../vendor/PHPMailer/src/SMTP.php';
+    require_once __DIR__ . '/../vendor/phpmailer/phpmailer/src/Exception.php';
+    require_once __DIR__ . '/../vendor/phpmailer/phpmailer/src/PHPMailer.php';
+    require_once __DIR__ . '/../vendor/phpmailer/phpmailer/src/SMTP.php';
+    require_once __DIR__ . '/../model/credentials-mail.php';
 
     
     $mail = new PHPMailer(true);
@@ -615,15 +618,13 @@ function mailNewPassword($email){
         VolscoreDB::insertToken($userId, $token);
 
         // Paramètres du serveur
-        //$mail->SMTPDebug = 0; // Désactiver le mode debug
-        // TODO le mot de passe d'application a stocker autre part que dans le code en brut et changer le mail
         $mail->isSMTP();
-        $mail->Host       = 'smtp.gmail.com';
-        $mail->SMTPAuth   = true;
-        $mail->Username   = 'socloseink@gmail.com'; // Utilisez un mécanisme sécurisé pour gérer les identifiants
-        $mail->Password   = 'gknf yonq zuzp yckp';   // Assurez-vous que ce mot de passe est correct et sécurisé
+        $mail->Host       = $mailHost;
+        $mail->SMTPAuth   = $mailSMTPAuth;
+        $mail->Username   = $mailusername;
+        $mail->Password   = $mailpassword;
         $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
-        $mail->Port       = 587;
+        $mail->Port       = $mailPort;
 
         // Destinataires
         $mail->setFrom('socloseink@gmail.com', 'VolScore');
@@ -763,6 +764,7 @@ function executeUnitTests()
 
 function Clear(){
     $_SESSION['user_id'] = null;
+    $_SESSION['username'] = null;
     require_once 'view/login.php';
 }
 ?>

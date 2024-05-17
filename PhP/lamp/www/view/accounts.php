@@ -8,10 +8,10 @@ ob_start();
 <a class="createButton" href="?action=createaccount">Créer</a>
 
 <div class="usersContainer">
-    <?php foreach($users as $user){ ?>
+<?php foreach($users as $user){ ?>
     <a href="?action=profil&&id=<?= $user['id'] ?>" style="text-decoration: none; color: inherit;">
     <div class="user">
-        <div class="user-info">Username: <?= $user['username'] ?></div>
+        <div class="user-info">ID: <?= $user['id']; ?></div>
         <div class="user-info">Email: <?= $user['email'] ?></div>
         <div class="user-info">Role: <?= $roles[$user['role_id'] - 1]['name'] ?></div>
     </div>

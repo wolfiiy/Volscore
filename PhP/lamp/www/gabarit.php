@@ -12,8 +12,11 @@
 </head>
 <body>
 <header class="text-center flex-header">
-    <a href="/" style="text-decoration:none;"><h1>VolScore</h1></a>
-    <p class="username"><?php if($_SESSION['username'] != null){echo $_SESSION['username'];} ?></p>
+    <a class="title" href="/" style="text-decoration:none;"><h1>VolScore</h1></a>
+    <?php if($_SESSION['username'] != null){ ?>
+        <a class="buttondeconnect" href="?action=clear">Deconnexion</a> 
+        <p class="username"><?php echo $_SESSION['username']; ?></p>
+    <?php } ?>
 </header>
 <div class="container">
 <?= $content ?>
