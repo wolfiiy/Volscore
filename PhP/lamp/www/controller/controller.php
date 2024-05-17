@@ -559,9 +559,9 @@ function updatePassword($user_id, $password, $password_confirm){
 }
 
 function mailNewPassword($email){
-    require_once __DIR__ . '/../vendor/PHPMailer/src/Exception.php';
-    require_once __DIR__ . '/../vendor/PHPMailer/src/PHPMailer.php';
-    require_once __DIR__ . '/../vendor/PHPMailer/src/SMTP.php';
+    require_once __DIR__ . '/../vendor/phpmailer/phpmailer/src/Exception.php';
+    require_once __DIR__ . '/../vendor/phpmailer/phpmailer/src/PHPMailer.php';
+    require_once __DIR__ . '/../vendor/phpmailer/phpmailer/src/SMTP.php';
 
     
     $mail = new PHPMailer(true);

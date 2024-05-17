@@ -402,3 +402,5 @@ Database/.dbeaver/
 
 # Volscore specifics
 .credentials.php
+
+*vendor/
