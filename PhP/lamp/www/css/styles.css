@@ -91,6 +91,10 @@ form {
     margin: 30px auto; 
 }
 
+select{
+    margin: 0 auto;
+}
+
 /* Styles for input fields */
 .inputtext {
     width: calc(100% - 22px); /* Full width minus padding */

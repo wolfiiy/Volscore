@@ -91,7 +91,7 @@ switch ($action)
     case 'authuservalidation':
         authUserValidation($_SESSION['user_id'],$_GET['id']);
     case 'checkuservalidation':
-        checkUserValidation($_SESSION['user_id'],$_GET['id'], $_POST['password']);
+        checkUserValidation($_GET['id'], $_POST['password']);
     default:
         showHome();
 }

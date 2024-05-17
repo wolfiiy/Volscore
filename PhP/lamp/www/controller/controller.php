@@ -532,6 +532,36 @@ function checkAuth($user_id,$game_id,$password){
 
 }
 
+function authUserValidation($game_id){
+
+    $user = VolscoreDB::getMarqueur($user_id);
+
+    $game = VolscoreDB::getGame($game_id);
+
+    $username = $user['username'];
+
+    require_once 'view/authUserValidation.php';
+
+}
+
+function checkUserValidation($game_id,$password){
+
+    $user = VolscoreDB::getUser($user_id);
+
+    $game = VolscoreDB::getGame($game_id);
+
+    if (password_verify($password, $user['password'])) {
+
+        VolscoreDB::updateSignature($user_id,$game_id);
+
+        showHome();
+
+    } else {
+        authUserValidation($user_id,$game_id);
+    }
+
+}
+
 function showMailSend()
 {
     require_once 'view/mailSend.php';
