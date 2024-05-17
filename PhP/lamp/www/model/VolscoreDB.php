@@ -1430,9 +1430,28 @@ class VolscoreDB implements IVolscoreDb {
             return false;
         }
     }
-    
-    
-    
+
+    public static function gameIsValidate($game_id) {
+        try {
+            $db = self::connexionDB();
+            
+            $query = "SELECT COUNT(*) as total
+                      FROM signatures 
+                      WHERE game_id = :game_id AND validate = FALSE";
+            
+            $statement = $db->prepare($query);
+            $statement->bindParam(':game_id', $game_id, PDO::PARAM_INT);
+            
+            if ($statement->execute()) {
+                $result = $statement->fetch(PDO::FETCH_ASSOC);
+                return $result['total'] == 0;
+            } else {
+                return false;
+            }
+        } catch (PDOException $e) {
+            return false;
+        }
+    } 
 }
 
 
