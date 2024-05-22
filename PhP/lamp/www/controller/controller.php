@@ -504,11 +504,6 @@ function showAuthUser($user_id,$game_id){
 
     $game = VolscoreDB::getGame($game_id);
 
-    /*
-    if(VolscoreDB::hasMarkerRoleInGame($game_id)){
-        header('Location: ?action=mark&id='.$game_id);
-    }*/
-
     $username = $user['username'];
 
     require_once 'view/authUser.php';

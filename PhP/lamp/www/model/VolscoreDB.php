@@ -1092,7 +1092,8 @@ class VolscoreDB implements IVolscoreDb {
 
             $hashedPassword = password_hash($newPassword, PASSWORD_DEFAULT);
 
-            $query = "UPDATE users SET password = :password WHERE id = :id";
+            $query = "UPDATE users SET password = :password, token = NULL WHERE id = :id";
+
             $statement = $dbh->prepare($query);
 
             $statement->bindParam(':id', $userId, PDO::PARAM_INT);
