@@ -46,7 +46,17 @@
                     </div>
                     <div class="scoringsequence">
                         <div class="playerpoints">
-                            <?= implode('</div><div class="playerpoints">',VolscoreDB::getSetScoringSequence($set)[$game->visitingTeamId]) ?>
+                        <?php
+                            $scoringSequence = VolscoreDB::getSetScoringSequence($set)[$game->visitingTeamId];
+
+                            if (is_array($scoringSequence)) {
+                                echo implode('</div><div class="playerpoints">', $scoringSequence);
+                            } else {
+                                // Gestion des cas où $scoringSequence n'est pas un tableau
+                                echo '<div class="playerpoints">Pas de données disponibles</div>';
+                            }
+                            ?>
+
                         </div>
                     </div>
                     <div>

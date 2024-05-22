@@ -567,7 +567,7 @@ function checkUserValidation($game_id,$password,$role){
         showHome();
 
     } else {
-        authUserValidation($user['id'],$game_id);
+        authUserValidation($game_id);
     }
 
 }
