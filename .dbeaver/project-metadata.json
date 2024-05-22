@@ -1,1 +1,1 @@
-{"resources":{"Database/volscore.sql":{"default-datasource":"mariaDB-18dd59ed6ed-4b3252f78cf56ed0","default-catalog":"volscore"}}}
+{"resources":{"Database/volscore.sql":{"default-datasource":"mariaDB-18dd59ed6ed-4b3252f78cf56ed0","default-catalog":"volscore"},"Scripts/Script.sql":{"default-datasource":"mariaDB-18e50db0d7c-314f676957535f9f","default-catalog":"volscore"}}}

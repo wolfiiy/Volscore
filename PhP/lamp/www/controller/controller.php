@@ -504,9 +504,10 @@ function showAuthUser($user_id,$game_id){
 
     $game = VolscoreDB::getGame($game_id);
 
+    /*
     if(VolscoreDB::hasMarkerRoleInGame($game_id)){
         header('Location: ?action=mark&id='.$game_id);
-    }
+    }*/
 
     $username = $user['username'];
 
@@ -535,8 +536,13 @@ function checkAuth($user_id,$game_id,$password){
 }
 
 function authUserValidation($game_id){
+    $signatures = VolscoreDB::getSignaturesbyGameId($game_id);
 
-    $user = VolscoreDB::getMarqueur($user_id);
+    foreach($signatures as $row){
+        if($row['role_id'] == 2){
+            $user = VolscoreDB::getUser($row['user_id']);
+        }
+    }
 
     $game = VolscoreDB::getGame($game_id);
 
@@ -548,18 +554,18 @@ function authUserValidation($game_id){
 
 function checkUserValidation($game_id,$password){
 
-    $user = VolscoreDB::getUser($user_id);
+    $user = VolscoreDB::getUser($game_id);
 
     $game = VolscoreDB::getGame($game_id);
 
     if (password_verify($password, $user['password'])) {
 
-        VolscoreDB::updateSignature($user_id,$game_id);
+        VolscoreDB::updateSignature($user['id'],$game_id);
 
         showHome();
 
     } else {
-        authUserValidation($user_id,$game_id);
+        authUserValidation($user['id'],$game_id);
     }
 
 }

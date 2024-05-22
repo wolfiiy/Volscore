@@ -244,7 +244,7 @@ class VolscoreDB implements IVolscoreDb {
         return self::executeUpdateQuery($query);
     }
 
-    
+    // TODO une erreur a été détectée ici
     public static function getMembers($teamid) : array
     {
         try
@@ -1454,6 +1454,30 @@ class VolscoreDB implements IVolscoreDb {
             return false;
         }
     }
+
+    public static function getSignaturesbyGameId($game_id){
+        try {
+            $dbh = self::connexionDB();
+    
+            $query = "SELECT * FROM signatures WHERE game_id = :game_id";
+            
+            $statement = $dbh->prepare($query);
+            $statement->bindParam(':game_id', $game_id, PDO::PARAM_INT);
+            $statement->execute();
+    
+            $queryResult = $statement->fetchAll(PDO::FETCH_ASSOC);
+
+            $dbh = null;
+    
+            return $queryResult;
+        } catch (PDOException $e) {
+            return null;
+        }
+    }
+       
+    
+    
+    
     
 }
 
