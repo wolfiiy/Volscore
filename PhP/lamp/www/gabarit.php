@@ -17,10 +17,23 @@
         <a class="buttondeconnect" href="?action=clear">Deconnexion</a> 
         <p class="username"><?php echo $_SESSION['username']; ?></p>
     <?php } ?>
+    <?php
+    if($error != ""){
+        ?>
+        <div id="myModal" class="modal">
+        <div class="modal-content">
+            <span id="closeModal" class="close">&times;</span>
+            <p id="errorMessage" data-error="<?= htmlspecialchars($error, ENT_QUOTES, 'UTF-8') ?>"></p>
+        </div>
+        </div>
+    <?php
+    }
+    ?>
 </header>
 <div class="container">
 <?= $content ?>
 </div>
+<script src="/js/modal.js"></script>
 <footer class="text-center">
     <p>© ETML 2024</p>
 </footer>

@@ -73,7 +73,7 @@ function showProfil($id){
 
 }
 
-function showCreateAccount(){
+function showCreateAccount($error = null){
 
     if (!isset($_SESSION['user_id'])) {
         showLogin();
@@ -89,21 +89,24 @@ function createUser($username, $password,$phone,$email,$validate,$role_id){
     if (!isset($_SESSION['user_id'])) {
         showLogin();
     }
+    $error = "";
     if (VolscoreDB::insertUser($username, $password, $phone, $email, $role_id, $validate)) {
         try {
             mailNewPassword($email);
+            $error = "Le compte a été créé";
         } catch (Exception $e) {
-            echo "<script type='text/javascript'>alert('Une erreur est survenue lors de l'envoi du mail');</script>";
-            showCreateAccount();
+            $error = "Une erreur est survenue lors de l'envoi du mail";
+            showCreateAccount($error);
         }
         
-        echo "<script type='text/javascript'>alert('Le compte a été créé avec succès');</script>";
+        
     } else if($username != null){
-        echo "<script type='text/javascript'>alert('Une erreur est survenue lors de la création du compte');</script>";
-        showCreateAccount();
+
+        $error = "Le compte a été créé mais une erreur est survenue lors de l'envoi du mail";
+        showCreateAccount($error);
     }
        
-    showAccounts();
+    showAccounts($error);
 }
 
 function validateUser($state,$user_id){
@@ -112,7 +115,7 @@ function validateUser($state,$user_id){
     showProfil($user_id);
 }
 
-function showAccounts(){
+function showAccounts($error = null){
     
     if (!isset($_SESSION['user_id'])) {
         showLogin();
@@ -590,10 +593,10 @@ function showResetPassword($token)
 }
 
 function updatePassword($user_id, $password, $password_confirm){
-    
+    $error = "";
     if($password != $password_confirm){
         $user = VolscoreDB::getUser($user_id);
-        echo "<script type='text/javascript'>alert('Les mots de passe ne sont pas identiques');</script>";
+        $error = "Les mots de passe ne sont pas identiques";
         showResetPassword($user['token']);
     }
 

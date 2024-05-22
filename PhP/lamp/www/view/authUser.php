@@ -4,11 +4,6 @@ $title = 'Auth';
 ob_start();
 ?>
 
-<?php if($error != ""){
-    echo "<script type='text/javascript'>alert('$error');</script>";
-}
-?>
-
 <h2>Connexion</h2>
 <h3>S'assigner a la partie N°<?= $game->number ?></h3>
 
