@@ -25,9 +25,13 @@ ob_start();
     foreach ($games as $game)
     {
         echo "<tr><td>".$game->number."</td><td>".$game->receivingTeamName."</td><td>".$game->visitingTeamName."</td><td>".(($game->scoreReceiving+$game->scoreVisiting) > 0 ? $game->scoreReceiving."-".$game->scoreVisiting : "")."</td><td>";
-        if ($game->isMarkable() && $rolename == "marqueur") {
+        if(VolscoreDB::hasMarkerRoleInGame($game->number) ){
+            echo "<a href='?action=mark&id=".$game->number."' class='btn btn-sm btn-primary m-1'>Marquer</a>";
+        }
+        elseif ($game->isMarkable() && $rolename == "marqueur") {
             echo "<a href='?action=authUser&id=".$game->number."' class='btn btn-sm btn-primary m-1'>Marquer</a>";
         }
+
         if ($game->isEditable() && $rolename == "marqueur") {
             echo "<a href='?action=edit&id=".$game->number."' class='btn btn-sm btn-primary m-1'>Modifier</a>";
         }

@@ -303,11 +303,10 @@ CREATE TABLE `users` (
 
 CREATE TABLE `signatures` (
   `id` INT(11) NOT NULL AUTO_INCREMENT,
-  `token_signature` VARCHAR(255) NOT NULL,
+  `token_signature` VARCHAR(255) DEFAULT NULL,
   `game_id` INT(11) NOT NULL,
   `user_id` INT(11) NOT NULL,
   `role_id` INT(11) NOT NULL,
-  `validate` BOOLEAN NOT NULL DEFAULT FALSE, -- Ajout du champ booléen `validate`
   PRIMARY KEY (`id`),
   FOREIGN KEY (`game_id`) REFERENCES `games` (`id`) ON DELETE CASCADE,
   FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE,

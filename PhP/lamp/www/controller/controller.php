@@ -170,6 +170,7 @@ function markGame($gameid) {
     if (!isset($_SESSION['user_id'])) {
         showLogin();
     }
+    VolscoreDB::removeToken($gameid);
     if ($gameid == null) {
         $message = "On essaye des trucs ???";
         require_once 'view/error.php';
@@ -518,9 +519,7 @@ function checkAuth($user_id,$game_id,$password){
 
     if (password_verify($password, $user['password'])) {
 
-        $token = bin2hex(random_bytes(16));
-
-        VolscoreDB::insertSignature($user_id,$game_id,$user['role_id'],$token);
+        VolscoreDB::insertSignature($user_id,$game_id,$user['role_id']);
 
         header('Location: ?action=mark&id='.$game_id);
 
@@ -561,7 +560,9 @@ function checkUserValidation($game_id,$password,$role){
 
     if (password_verify($password, $user['password'])) {
 
-        VolscoreDB::updateSignature($user['id'],$game_id);
+        $token =bin2hex(random_bytes(16));
+
+        VolscoreDB::updateSignature($user['id'],$game_id,$token);
 
         showHome();
 

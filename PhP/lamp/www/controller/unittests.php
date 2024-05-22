@@ -166,12 +166,6 @@ $dbh = null;
 $users = [1, 2, 3, 4];
 $games = [1, 2, 3];
 $roles = [2, 3];
-$tokens = [
-    bin2hex(random_bytes(16)),
-    bin2hex(random_bytes(16)),
-    bin2hex(random_bytes(16)),
-    bin2hex(random_bytes(16))
-];
 
 // Connexion à la base de données
 $dbh = VolscoreDB::connexionDB();
@@ -179,21 +173,19 @@ $dbh = VolscoreDB::connexionDB();
 foreach ($users as $user_id) {
     foreach ($games as $game_id) {
         $role_id = $roles[array_rand($roles)];
-        $token_signature = $tokens[array_rand($tokens)];
 
-        $query = "INSERT INTO signatures (token_signature, game_id, user_id, role_id) 
-                  VALUES (:token_signature, :game_id, :user_id, :role_id)";
+        $query = "INSERT INTO signatures (game_id, user_id, role_id, token_signature) 
+                  VALUES (:game_id, :user_id, :role_id, NULL)";
 
         $statement = $dbh->prepare($query);
-        $statement->bindParam(':token_signature', $token_signature, PDO::PARAM_STR);
         $statement->bindParam(':game_id', $game_id, PDO::PARAM_INT);
         $statement->bindParam(':user_id', $user_id, PDO::PARAM_INT);
         $statement->bindParam(':role_id', $role_id, PDO::PARAM_INT);
 
         $statement->execute();
-
     }
 }
+
 
 // Add players to games (liste d'engagement)
 foreach (VolscoreDB::getGames() as $game) {
