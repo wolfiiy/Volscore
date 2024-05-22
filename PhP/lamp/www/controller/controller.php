@@ -552,9 +552,15 @@ function authUserValidation($game_id){
 
 }
 
-function checkUserValidation($game_id,$password){
+function checkUserValidation($game_id,$password,$role){
 
-    $user = VolscoreDB::getUser($game_id);
+    $signatures = VolscoreDB::getSignaturesbyGameId($game_id);
+
+    foreach($signatures as $row){
+        if($row['role_id'] == $role){
+            $user = VolscoreDB::getUser($row['user_id']);
+        }
+    }
 
     $game = VolscoreDB::getGame($game_id);
 
