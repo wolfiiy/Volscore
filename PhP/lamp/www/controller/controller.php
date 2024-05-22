@@ -219,8 +219,8 @@ function registerToss($gameid,$winner)
 // Copies the positions passed to the specified set of the specified game
 function reportPositions ($positions,$gameid,$setid,$teamid)
 {
-    if (isset($_SESSION['user_id'])) {
-        showHome();
+    if (!isset($_SESSION['user_id'])) {
+        showLogin();
     }
     $report = [];
     foreach ($positions as $playerInPreviousSet) {
