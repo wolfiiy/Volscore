@@ -163,7 +163,7 @@ $dbh = null;
 // Insertion de signatures tests
 
 // Génération de données aléatoires pour les signatures
-$users = [1, 2, 3, 4];
+$users = [1, 2, 4];
 $games = [1, 2, 3];
 $roles = [2, 3];
 
