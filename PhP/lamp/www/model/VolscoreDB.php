@@ -1343,13 +1343,17 @@ class VolscoreDB implements IVolscoreDb {
     
             $query = "
                 SELECT DISTINCT games.id as number, type, level, category, league, receiving_id as receivingTeamId, 
-                       r.name as receivingTeamName, visiting_id as visitingTeamId, v.name as visitingTeamName, 
-                       location as place, venue, moment
+                        r.name as receivingTeamName, visiting_id as visitingTeamId, v.name as visitingTeamName, 
+                        location as place, venue, moment
                 FROM games 
-                INNER JOIN signatures ON games.id = signatures.game_id
+                INNER JOIN signatures s1 ON games.id = s1.game_id
                 INNER JOIN teams r ON games.receiving_id = r.id 
                 INNER JOIN teams v ON games.visiting_id = v.id
-                WHERE signatures.user_id != :user_id
+                WHERE games.id NOT IN (
+                    SELECT game_id 
+                    FROM signatures 
+                    WHERE user_id = :user_id
+                )
             ";
     
             $statement = $dbh->prepare($query);
@@ -1380,9 +1384,6 @@ class VolscoreDB implements IVolscoreDb {
         }
     }
     
-    
-    
-
     public static function hasMarkerRoleInGame($gameId) {
         try {
             $db = self::connexionDB();
