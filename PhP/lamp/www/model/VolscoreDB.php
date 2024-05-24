@@ -1293,68 +1293,20 @@ class VolscoreDB implements IVolscoreDb {
     }
     
 
-     // Méthode pour obtenir tous les jeux avec les conditions spécifiées
+    // Méthode pour obtenir tous les jeux avec les conditions spécifiées
     public static function getSpecificGames($userId) {
         try {
-            $dbh = self::connexionDB(); // Assurez-vous que cette méthode retourne une instance PDO
-
-            // Requête pour obtenir tous les jeux qui n'ont pas de signature ou qui ont une signature liée à l'utilisateur
-            $query = "
-                SELECT games.id as number, type, level, category, league, receiving_id as receivingTeamId, r.name as receivingTeamName, visiting_id as visitingTeamId, v.name as visitingTeamName, location as place, venue, moment
-                FROM games 
-                LEFT JOIN signatures ON games.id = signatures.game_id AND signatures.user_id != :user_id
-                INNER JOIN teams r ON games.receiving_id = r.id 
-                INNER JOIN teams v ON games.visiting_id = v.id
-                WHERE signatures.id IS NULL OR signatures.user_id = :user_id
-            ";
-
-            $statement = $dbh->prepare($query);
-            $statement->bindParam(':user_id', $userId, PDO::PARAM_INT);
-            $statement->setFetchMode(PDO::FETCH_ASSOC);
-            $statement->execute();
-
-            $res = [];
-            while ($rec = $statement->fetch()) {
-                $game = new Game($rec);
-                $game->scoreReceiving = 0;
-                $game->scoreVisiting = 0;
-                foreach (self::getSets($game) as $set) {
-                    if (self::setIsOver($set)) {
-                        if ($set->scoreReceiving > $set->scoreVisiting) {
-                            $game->scoreReceiving++;
-                        } else {
-                            $game->scoreVisiting++;
-                        }
-                    }
-                }
-                $res[] = $game;
-            }
-            return $res;
-        } catch (PDOException $e) {
-            print 'Error!:' . $e->getMessage() . '<br/>';
-            return null;
-        }
-    }   
-
-    public static function getOtherGames($userId) {
-        try {
-            $dbh = self::connexionDB(); // Assurez-vous que cette méthode retourne une instance PDO
+            $dbh = self::connexionDB();
     
-            // Requête pour obtenir tous les jeux qui ont une signature
             $query = "
                 SELECT DISTINCT games.id as number, type, level, category, league, receiving_id as receivingTeamId, 
                        r.name as receivingTeamName, visiting_id as visitingTeamId, v.name as visitingTeamName, 
                        location as place, venue, moment
                 FROM games 
-                INNER JOIN signatures ON games.id = signatures.game_id
+                LEFT JOIN signatures ON games.id = signatures.game_id 
                 INNER JOIN teams r ON games.receiving_id = r.id 
                 INNER JOIN teams v ON games.visiting_id = v.id
-                WHERE signatures.user_id != :user_id
-                OR games.id IN (
-                    SELECT game_id FROM signatures
-                    WHERE user_id != :user_id
-                )
-                GROUP BY games.id
+                WHERE signatures.user_id = :user_id OR signatures.game_id IS NULL
             ";
     
             $statement = $dbh->prepare($query);
@@ -1384,7 +1336,54 @@ class VolscoreDB implements IVolscoreDb {
             return null;
         }
     }
-
+    
+    public static function getOtherGames($userId) {
+        try {
+            $dbh = self::connexionDB();
+    
+            $query = "
+                SELECT DISTINCT games.id as number, type, level, category, league, receiving_id as receivingTeamId, 
+                        r.name as receivingTeamName, visiting_id as visitingTeamId, v.name as visitingTeamName, 
+                        location as place, venue, moment
+                FROM games 
+                INNER JOIN signatures s1 ON games.id = s1.game_id
+                INNER JOIN teams r ON games.receiving_id = r.id 
+                INNER JOIN teams v ON games.visiting_id = v.id
+                WHERE games.id NOT IN (
+                    SELECT game_id 
+                    FROM signatures 
+                    WHERE user_id = :user_id
+                )
+            ";
+    
+            $statement = $dbh->prepare($query);
+            $statement->bindParam(':user_id', $userId, PDO::PARAM_INT);
+            $statement->setFetchMode(PDO::FETCH_ASSOC);
+            $statement->execute();
+    
+            $res = [];
+            while ($rec = $statement->fetch()) {
+                $game = new Game($rec);
+                $game->scoreReceiving = 0;
+                $game->scoreVisiting = 0;
+                foreach (self::getSets($game) as $set) {
+                    if (self::setIsOver($set)) {
+                        if ($set->scoreReceiving > $set->scoreVisiting) {
+                            $game->scoreReceiving++;
+                        } else {
+                            $game->scoreVisiting++;
+                        }
+                    }
+                }
+                $res[] = $game;
+            }
+            return $res;
+        } catch (PDOException $e) {
+            print 'Error!:' . $e->getMessage() . '<br/>';
+            return null;
+        }
+    }
+    
     public static function hasMarkerRoleInGame($gameId) {
         try {
             $db = self::connexionDB();
@@ -1394,6 +1393,31 @@ class VolscoreDB implements IVolscoreDb {
                         FROM signatures s
                         JOIN roles r ON s.role_id = r.id
                         WHERE s.game_id = :game_id AND r.name = 'marqueur'
+                    ) AS has_marker";
+            
+            $statement = $db->prepare($query);
+            $statement->bindParam(':game_id', $gameId, PDO::PARAM_INT);
+            
+            if ($statement->execute()) {
+                $result = $statement->fetch(PDO::FETCH_ASSOC);
+                return (bool) $result['has_marker'];
+            } else {
+                return false;
+            }
+        } catch (PDOException $e) {
+            return false;
+        }
+    }
+
+    public static function hasArbitreRoleInGame($gameId) {
+        try {
+            $db = self::connexionDB();
+            
+            $query = "SELECT EXISTS (
+                        SELECT 1
+                        FROM signatures s
+                        JOIN roles r ON s.role_id = r.id
+                        WHERE s.game_id = :game_id AND r.name = 'arbitre'
                     ) AS has_marker";
             
             $statement = $db->prepare($query);
@@ -1497,6 +1521,73 @@ class VolscoreDB implements IVolscoreDb {
         }
     }
        
+    public static function getArbitres() {
+        try {
+            // Connexion à la base de données
+            $dbh = self::connexionDB();
+            
+            // Requête pour récupérer les utilisateurs avec le rôle d'arbitre
+            $query = "
+                SELECT users.id, users.username, users.email 
+                FROM users 
+                INNER JOIN roles ON users.role_id = roles.id 
+                WHERE roles.name = 'arbitre'
+            ";
+            
+            // Préparation et exécution de la requête
+            $statement = $dbh->prepare($query);
+            $statement->execute();
+    
+            // Récupération des résultats
+            $queryResult = $statement->fetchAll(PDO::FETCH_ASSOC);
+    
+            // Fermeture de la connexion
+            $dbh = null;
+    
+            return $queryResult;
+        } catch (PDOException $e) {
+            return null;
+        }
+    }
+
+    public static function getRoleNotValidate($gameId) {
+        try {
+            // Connexion à la base de données
+            $dbh = self::connexionDB();
+    
+            // Requête pour compter le nombre de signatures avec un token pour un jeu spécifique
+            $query = "
+                SELECT COUNT(*) as token_count
+                FROM signatures
+                WHERE game_id = :game_id AND token_signature IS NOT NULL
+            ";
+    
+            // Préparation et exécution de la requête
+            $statement = $dbh->prepare($query);
+            $statement->bindParam(':game_id', $gameId, PDO::PARAM_INT);
+            $statement->execute();
+    
+            // Récupération du résultat
+            $result = $statement->fetch(PDO::FETCH_ASSOC);
+            $tokenCount = $result['token_count'];
+    
+            // Déterminer le role_id basé sur le nombre de tokens
+            if ($tokenCount == 0) {
+                return 2;
+            } elseif ($tokenCount == 1) {
+                return 3;
+            } else {
+                return null; // Ou une autre valeur par défaut si nécessaire
+            }
+        } catch (PDOException $e) {
+            // Gérer les erreurs
+            print 'Error!:' . $e->getMessage() . '<br/>';
+            return null;
+        }
+    }
+    
+    
+    
     
     
     

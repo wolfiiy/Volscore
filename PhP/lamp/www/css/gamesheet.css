@@ -441,6 +441,10 @@ button.icon-btn.check {
     margin: 0 auto;
     position: relative;
 }
+#arbitresTable{
+    margin : 20px auto;
+    padding: 5px;
+}
 
 
   /*ALEX*/

@@ -73,6 +73,13 @@ function showProfil($id){
 
 }
 
+function showSelectArbitre($game_id){
+
+    $arbitres = VolscoreDB::getArbitres();
+
+    require_once 'view/selectArbitre.php';
+}
+
 function showCreateAccount($error = null){
 
     if (!isset($_SESSION['user_id'])) {
@@ -502,6 +509,7 @@ function showLogin($username = null,$password = null)
     }    
 }
 
+// TODO Changer non de méthodes / ainsi que l'action
 function showAuthUser($user_id,$game_id){
 
     $user = VolscoreDB::getUser($user_id);
@@ -514,6 +522,7 @@ function showAuthUser($user_id,$game_id){
 
 }
 
+// TODO Changer non de méthodes / ainsi que l'action
 function checkAuth($user_id,$game_id,$password){
 
     $user = VolscoreDB::getUser($user_id);
@@ -524,19 +533,25 @@ function checkAuth($user_id,$game_id,$password){
 
         VolscoreDB::insertSignature($user_id,$game_id,$user['role_id']);
 
-        header('Location: ?action=mark&id='.$game_id);
+        if($user['role_id'] == 2){
+            header('Location: ?action=selectarbitre&id='.$game_id);
+        }
+        else{
+            header('Location: ?action=mark&id='.$game_id);
+        }
 
     } else {
         showAuthUser($user_id,$game_id);
+        //header('Location: ?action=authUser&user_id='. $user_id .'&game_id='.$game_id);
     }
 
 }
-
+// TODO Changer non de méthodes / ainsi que l'action
 function authUserValidation($game_id){
     $signatures = VolscoreDB::getSignaturesbyGameId($game_id);
 
     foreach($signatures as $row){
-        if($row['role_id'] == 2){
+        if($row['role_id'] == VolscoreDB::getRoleNotValidate($game_id)){
             $user = VolscoreDB::getUser($row['user_id']);
         }
     }
@@ -548,13 +563,13 @@ function authUserValidation($game_id){
     require_once 'view/authUserValidation.php';
 
 }
-
-function checkUserValidation($game_id,$password,$role){
+// TODO Changer non de méthodes / ainsi que l'action
+function checkUserValidation($game_id,$password){
 
     $signatures = VolscoreDB::getSignaturesbyGameId($game_id);
 
     foreach($signatures as $row){
-        if($row['role_id'] == $role){
+        if($row['role_id'] == VolscoreDB::getRoleNotValidate($game_id)){
             $user = VolscoreDB::getUser($row['user_id']);
         }
     }
@@ -565,9 +580,13 @@ function checkUserValidation($game_id,$password,$role){
 
         $token =bin2hex(random_bytes(16));
 
-        VolscoreDB::updateSignature($user['id'],$game_id,$token);
-
-        showHome();
+        if(VolscoreDB::getRoleNotValidate($game_id) == 2){
+            VolscoreDB::updateSignature($user['id'],$game_id,$token);
+            authUserValidation($game_id);
+        }else{
+            VolscoreDB::updateSignature($user['id'],$game_id,$token);
+            showGame($game_id);
+        }
 
     } else {
         authUserValidation($game_id);
@@ -583,8 +602,8 @@ function showMailSend()
 function showResetPassword($token)
 {
     $user = VolscoreDB::getUserByToken($token);
-    // TODO Changer la manière
-    $_SESSION['try_user_id'] = $user['id'];
+    // TODO Changer la manière d'envoyer 
+
     if($user == null){
         showHome();
     }
