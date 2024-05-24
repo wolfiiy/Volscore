@@ -1497,6 +1497,35 @@ class VolscoreDB implements IVolscoreDb {
         }
     }
        
+    public static function getArbitres() {
+        try {
+            // Connexion à la base de données
+            $dbh = self::connexionDB();
+            
+            // Requête pour récupérer les utilisateurs avec le rôle d'arbitre
+            $query = "
+                SELECT users.id, users.username, users.email 
+                FROM users 
+                INNER JOIN roles ON users.role_id = roles.id 
+                WHERE roles.name = 'arbitre'
+            ";
+            
+            // Préparation et exécution de la requête
+            $statement = $dbh->prepare($query);
+            $statement->execute();
+    
+            // Récupération des résultats
+            $queryResult = $statement->fetchAll(PDO::FETCH_ASSOC);
+    
+            // Fermeture de la connexion
+            $dbh = null;
+    
+            return $queryResult;
+        } catch (PDOException $e) {
+            return null;
+        }
+    }
+    
     
     
     

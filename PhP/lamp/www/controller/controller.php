@@ -75,6 +75,7 @@ function showProfil($id){
 
 function showSelectArbitre(){
 
+    $arbitres = VolscoreDB::getArbitres();
 
     require_once 'view/selectArbitre.php';
 }

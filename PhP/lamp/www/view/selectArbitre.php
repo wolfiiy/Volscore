@@ -14,22 +14,24 @@ ob_start();
 <table border="1" id="arbitresTable">
     <thead>
         <tr>
-            <th></th>
+            
             <th>Nom</th>
             <th>Email</th>
+            <th></th>
         </tr>
     </thead>
     <tbody>
         <?php foreach ($arbitres as $arbitre): ?>
         <tr>
+            
+            <td><?= $arbitre['username'] ?></td>
+            <td><?= $arbitre['email'] ?></td>
             <td>
                 <form method="post" action="page_arbitre.php">
                     <input type="hidden" name="arbitre_id" value="<?= $arbitre['id'] ?>">
                     <input type="submit" value="Sélectionner">
                 </form>
             </td>
-            <td><?= $arbitre['nom'] ?></td>
-            <td><?= $arbitre['email'] ?></td>
         </tr>
         <?php endforeach; ?>
     </tbody>
