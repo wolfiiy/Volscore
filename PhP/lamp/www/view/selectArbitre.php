@@ -27,7 +27,7 @@ ob_start();
             <td><?= $arbitre['username'] ?></td>
             <td><?= $arbitre['email'] ?></td>
             <td>
-                <form method="post" action="page_arbitre.php">
+                <form method="post" action="?action=authUser&&game_id=<?= $game_id ?>&&user_id=<?= $arbitre['id'] ?>">
                     <input type="hidden" name="arbitre_id" value="<?= $arbitre['id'] ?>">
                     <input type="submit" value="Sélectionner">
                 </form>

@@ -7,7 +7,7 @@ ob_start();
 <h2>Connexion</h2>
 <h3>S'assigner a la partie N°<?= $game->number ?></h3>
 
-<form id="userCreationForm" method="post" action="?action=checkAuth&&id=<?= $game->number ?>">
+<form id="userCreationForm" method="post" action="?action=checkAuth&&user_id=<?= $user_id ?>&&game_id=<?= $game->number ?>">
     <label for="username">Nom d'utilisateur/Email:</label><br>
     <input value="<?= $username ?>" type="text" id="username" name="username" class="input-field" disabled><br>
     <label for="password">Mot de passe:</label><br>

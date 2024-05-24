@@ -85,15 +85,15 @@ switch ($action)
     case 'uservalidate':
         validateUser($_GET['state'],$_GET['user_id']);
     case 'authUser':
-        showAuthUser($_SESSION['user_id'],$_GET['id']);
+        showAuthUser($_GET['user_id'],$_GET['game_id']);
     case 'checkAuth':
-        checkAuth($_SESSION['user_id'],$_GET['id'], $_POST['password']);
+        checkAuth($_GET['user_id'],$_GET['game_id'], $_POST['password']);
     case 'authuservalidation':
         authUserValidation($_GET['id']);
     case 'checkuservalidation':
         checkUserValidation($_GET['id'], $_POST['password'],2);
     case 'selectarbitre':
-        showSelectArbitre();
+        showSelectArbitre($_GET['id']);
     default:
         showHome();
 }

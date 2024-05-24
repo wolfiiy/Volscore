@@ -73,7 +73,7 @@ function showProfil($id){
 
 }
 
-function showSelectArbitre(){
+function showSelectArbitre($game_id){
 
     $arbitres = VolscoreDB::getArbitres();
 
@@ -531,10 +531,16 @@ function checkAuth($user_id,$game_id,$password){
 
         VolscoreDB::insertSignature($user_id,$game_id,$user['role_id']);
 
-        header('Location: ?action=mark&id='.$game_id);
+        if($user['role_id'] == 2){
+            header('Location: ?action=selectarbitre&id='.$game_id);
+        }
+        else{
+            header('Location: ?action=mark&id='.$game_id);
+        }
 
     } else {
         showAuthUser($user_id,$game_id);
+        //header('Location: ?action=authUser&user_id='. $user_id .'&game_id='.$game_id);
     }
 
 }

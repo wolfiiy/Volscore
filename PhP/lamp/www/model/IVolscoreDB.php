@@ -284,5 +284,7 @@ interface IVolscoreDb {
     public static function getSignaturesbyGameId($game_id);
 
     public static function removeToken($game_id);
+
+    public static function hasArbitreRoleInGame($gameId);
 #endregion
 }

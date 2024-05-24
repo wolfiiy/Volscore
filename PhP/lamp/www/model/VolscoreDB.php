@@ -1410,6 +1410,31 @@ class VolscoreDB implements IVolscoreDb {
         }
     }
 
+    public static function hasArbitreRoleInGame($gameId) {
+        try {
+            $db = self::connexionDB();
+            
+            $query = "SELECT EXISTS (
+                        SELECT 1
+                        FROM signatures s
+                        JOIN roles r ON s.role_id = r.id
+                        WHERE s.game_id = :game_id AND r.name = 'arbitre'
+                    ) AS has_marker";
+            
+            $statement = $db->prepare($query);
+            $statement->bindParam(':game_id', $gameId, PDO::PARAM_INT);
+            
+            if ($statement->execute()) {
+                $result = $statement->fetch(PDO::FETCH_ASSOC);
+                return (bool) $result['has_marker'];
+            } else {
+                return false;
+            }
+        } catch (PDOException $e) {
+            return false;
+        }
+    }
+
     public static function updateSignature($user_id, $game_id,$token) {
         try {
             $db = self::connexionDB();
