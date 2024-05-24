@@ -25,7 +25,8 @@ ob_start();
     foreach ($games as $game)
     {
         echo "<tr><td>".$game->number."</td><td>".$game->receivingTeamName."</td><td>".$game->visitingTeamName."</td><td>".(($game->scoreReceiving+$game->scoreVisiting) > 0 ? $game->scoreReceiving."-".$game->scoreVisiting : "")."</td><td>";
-        if(VolscoreDB::hasMarkerRoleInGame($game->number) &&  VolscoreDB::hasArbitreRoleInGame($game->number)){
+        if(VolscoreDB::gameIsValidate($game->number,"marqueur") == false && VolscoreDB::gameIsOver($game)){}
+        elseif(VolscoreDB::hasMarkerRoleInGame($game->number) &&  VolscoreDB::hasArbitreRoleInGame($game->number)){
             echo "<a href='?action=mark&id=".$game->number."' class='btn btn-sm btn-primary m-1'>Marquer</a>";
         }
         elseif(VolscoreDB::hasMarkerRoleInGame($game->number)){

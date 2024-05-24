@@ -1294,25 +1294,26 @@ class VolscoreDB implements IVolscoreDb {
     
 
      // Méthode pour obtenir tous les jeux avec les conditions spécifiées
-    public static function getSpecificGames($userId) {
+     public static function getSpecificGames($userId) {
         try {
-            $dbh = self::connexionDB(); // Assurez-vous que cette méthode retourne une instance PDO
-
-            // Requête pour obtenir tous les jeux qui n'ont pas de signature ou qui ont une signature liée à l'utilisateur
+            $dbh = self::connexionDB();
+    
             $query = "
-                SELECT games.id as number, type, level, category, league, receiving_id as receivingTeamId, r.name as receivingTeamName, visiting_id as visitingTeamId, v.name as visitingTeamName, location as place, venue, moment
+                SELECT games.id as number, type, level, category, league, receiving_id as receivingTeamId, 
+                       r.name as receivingTeamName, visiting_id as visitingTeamId, v.name as visitingTeamName, 
+                       location as place, venue, moment
                 FROM games 
-                LEFT JOIN signatures ON games.id = signatures.game_id AND signatures.user_id != :user_id
+                INNER JOIN signatures ON games.id = signatures.game_id
                 INNER JOIN teams r ON games.receiving_id = r.id 
                 INNER JOIN teams v ON games.visiting_id = v.id
-                WHERE signatures.id IS NULL OR signatures.user_id = :user_id
+                WHERE signatures.user_id = :user_id
             ";
-
+    
             $statement = $dbh->prepare($query);
             $statement->bindParam(':user_id', $userId, PDO::PARAM_INT);
             $statement->setFetchMode(PDO::FETCH_ASSOC);
             $statement->execute();
-
+    
             $res = [];
             while ($rec = $statement->fetch()) {
                 $game = new Game($rec);
@@ -1334,27 +1335,22 @@ class VolscoreDB implements IVolscoreDb {
             print 'Error!:' . $e->getMessage() . '<br/>';
             return null;
         }
-    }   
+    }
+    
 
     public static function getOtherGames($userId) {
         try {
-            $dbh = self::connexionDB(); // Assurez-vous que cette méthode retourne une instance PDO
+            $dbh = self::connexionDB();
     
-            // Requête pour obtenir tous les jeux qui ont une signature
             $query = "
-                SELECT DISTINCT games.id as number, type, level, category, league, receiving_id as receivingTeamId, 
+                SELECT games.id as number, type, level, category, league, receiving_id as receivingTeamId, 
                        r.name as receivingTeamName, visiting_id as visitingTeamId, v.name as visitingTeamName, 
                        location as place, venue, moment
                 FROM games 
-                INNER JOIN signatures ON games.id = signatures.game_id
+                LEFT JOIN signatures ON games.id = signatures.game_id AND signatures.user_id = :user_id
                 INNER JOIN teams r ON games.receiving_id = r.id 
                 INNER JOIN teams v ON games.visiting_id = v.id
-                WHERE signatures.user_id != :user_id
-                OR games.id IN (
-                    SELECT game_id FROM signatures
-                    WHERE user_id != :user_id
-                )
-                GROUP BY games.id
+                WHERE signatures.user_id IS NULL
             ";
     
             $statement = $dbh->prepare($query);
