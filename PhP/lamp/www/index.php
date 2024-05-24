@@ -88,6 +88,10 @@ switch ($action)
         showAuthUser($_SESSION['user_id'],$_GET['id']);
     case 'checkAuth':
         checkAuth($_SESSION['user_id'],$_GET['id'], $_POST['password']);
+    case 'authuservalidation':
+        authUserValidation($_GET['id']);
+    case 'checkuservalidation':
+        checkUserValidation($_GET['id'], $_POST['password'],2);
     default:
         showHome();
 }

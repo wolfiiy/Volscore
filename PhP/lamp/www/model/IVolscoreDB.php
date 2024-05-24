@@ -269,10 +269,20 @@ interface IVolscoreDb {
 
     public static function updateValidateUserState($id,$state);
 
-    public static function insertSignature($user_id,$game_id,$role_id,$token);
+    public static function insertSignature($user_id,$game_id,$role_id);
 
     public static function getSpecificGames($userId);
 
     public static function getOtherGames($userId);
+
+    public static function hasMarkerRoleInGame($gameId);
+
+    public static function updateSignature($user_id, $game_id,$token);
+
+    public static function gameIsValidate($game_id, $role_name);
+
+    public static function getSignaturesbyGameId($game_id);
+
+    public static function removeToken($game_id);
 #endregion
 }

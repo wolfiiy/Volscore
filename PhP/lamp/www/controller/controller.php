@@ -73,7 +73,7 @@ function showProfil($id){
 
 }
 
-function showCreateAccount(){
+function showCreateAccount($error = null){
 
     if (!isset($_SESSION['user_id'])) {
         showLogin();
@@ -89,21 +89,24 @@ function createUser($username, $password,$phone,$email,$validate,$role_id){
     if (!isset($_SESSION['user_id'])) {
         showLogin();
     }
+    $error = "";
     if (VolscoreDB::insertUser($username, $password, $phone, $email, $role_id, $validate)) {
         try {
             mailNewPassword($email);
+            $error = "Le compte a été créé";
         } catch (Exception $e) {
-            echo "<script type='text/javascript'>alert('Une erreur est survenue lors de l'envoi du mail');</script>";
-            showCreateAccount();
+            $error = "Une erreur est survenue lors de l'envoi du mail";
+            showCreateAccount($error);
         }
         
-        echo "<script type='text/javascript'>alert('Le compte a été créé avec succès');</script>";
+        
     } else if($username != null){
-        echo "<script type='text/javascript'>alert('Une erreur est survenue lors de la création du compte');</script>";
-        showCreateAccount();
+
+        $error = "Le compte a été créé mais une erreur est survenue lors de l'envoi du mail";
+        showCreateAccount($error);
     }
        
-    showAccounts();
+    showAccounts($error);
 }
 
 function validateUser($state,$user_id){
@@ -112,7 +115,7 @@ function validateUser($state,$user_id){
     showProfil($user_id);
 }
 
-function showAccounts(){
+function showAccounts($error = null){
     
     if (!isset($_SESSION['user_id'])) {
         showLogin();
@@ -170,6 +173,7 @@ function markGame($gameid) {
     if (!isset($_SESSION['user_id'])) {
         showLogin();
     }
+    VolscoreDB::removeToken($gameid);
     if ($gameid == null) {
         $message = "On essaye des trucs ???";
         require_once 'view/error.php';
@@ -219,8 +223,8 @@ function registerToss($gameid,$winner)
 // Copies the positions passed to the specified set of the specified game
 function reportPositions ($positions,$gameid,$setid,$teamid)
 {
-    if (isset($_SESSION['user_id'])) {
-        showHome();
+    if (!isset($_SESSION['user_id'])) {
+        showLogin();
     }
     $report = [];
     foreach ($positions as $playerInPreviousSet) {
@@ -518,14 +522,55 @@ function checkAuth($user_id,$game_id,$password){
 
     if (password_verify($password, $user['password'])) {
 
-        $token = bin2hex(random_bytes(16));
-
-        VolscoreDB::insertSignature($user_id,$game_id,$user['role_id'],$token);
+        VolscoreDB::insertSignature($user_id,$game_id,$user['role_id']);
 
         header('Location: ?action=mark&id='.$game_id);
 
     } else {
         showAuthUser($user_id,$game_id);
+    }
+
+}
+
+function authUserValidation($game_id){
+    $signatures = VolscoreDB::getSignaturesbyGameId($game_id);
+
+    foreach($signatures as $row){
+        if($row['role_id'] == 2){
+            $user = VolscoreDB::getUser($row['user_id']);
+        }
+    }
+
+    $game = VolscoreDB::getGame($game_id);
+
+    $username = $user['username'];
+
+    require_once 'view/authUserValidation.php';
+
+}
+
+function checkUserValidation($game_id,$password,$role){
+
+    $signatures = VolscoreDB::getSignaturesbyGameId($game_id);
+
+    foreach($signatures as $row){
+        if($row['role_id'] == $role){
+            $user = VolscoreDB::getUser($row['user_id']);
+        }
+    }
+
+    $game = VolscoreDB::getGame($game_id);
+
+    if (password_verify($password, $user['password'])) {
+
+        $token =bin2hex(random_bytes(16));
+
+        VolscoreDB::updateSignature($user['id'],$game_id,$token);
+
+        showHome();
+
+    } else {
+        authUserValidation($game_id);
     }
 
 }
@@ -548,10 +593,10 @@ function showResetPassword($token)
 }
 
 function updatePassword($user_id, $password, $password_confirm){
-    
+    $error = "";
     if($password != $password_confirm){
         $user = VolscoreDB::getUser($user_id);
-        echo "<script type='text/javascript'>alert('Les mots de passe ne sont pas identiques');</script>";
+        $error = "Les mots de passe ne sont pas identiques";
         showResetPassword($user['token']);
     }
 

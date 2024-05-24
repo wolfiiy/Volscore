@@ -244,7 +244,7 @@ class VolscoreDB implements IVolscoreDb {
         return self::executeUpdateQuery($query);
     }
 
-    
+    // TODO une erreur a été détectée ici
     public static function getMembers($teamid) : array
     {
         try
@@ -1092,7 +1092,8 @@ class VolscoreDB implements IVolscoreDb {
 
             $hashedPassword = password_hash($newPassword, PASSWORD_DEFAULT);
 
-            $query = "UPDATE users SET password = :password WHERE id = :id";
+            $query = "UPDATE users SET password = :password, token = NULL WHERE id = :id";
+
             $statement = $dbh->prepare($query);
 
             $statement->bindParam(':id', $userId, PDO::PARAM_INT);
@@ -1259,7 +1260,7 @@ class VolscoreDB implements IVolscoreDb {
         }
     }
 
-    public static function insertSignature($user_id, $game_id, $role_id, $token) {
+    public static function insertSignature($user_id, $game_id, $role_id) {
 
         try {
             $db = self::connexionDB();
@@ -1275,9 +1276,8 @@ class VolscoreDB implements IVolscoreDb {
                 return false;
             }
     
-            $query = "INSERT INTO signatures (token_signature, game_id, user_id, role_id) VALUES (:token_signature, :game_id, :user_id, :role_id)";
+            $query = "INSERT INTO signatures (game_id, user_id, role_id, token_signature) VALUES (:game_id, :user_id, :role_id, NULL)";
             $statement = $db->prepare($query);
-            $statement->bindParam(':token_signature', $token);
             $statement->bindParam(':game_id', $game_id, PDO::PARAM_INT);
             $statement->bindParam(':user_id', $user_id, PDO::PARAM_INT);
             $statement->bindParam(':role_id', $role_id, PDO::PARAM_INT);
@@ -1384,6 +1384,122 @@ class VolscoreDB implements IVolscoreDb {
             return null;
         }
     }
+
+    public static function hasMarkerRoleInGame($gameId) {
+        try {
+            $db = self::connexionDB();
+            
+            $query = "SELECT EXISTS (
+                        SELECT 1
+                        FROM signatures s
+                        JOIN roles r ON s.role_id = r.id
+                        WHERE s.game_id = :game_id AND r.name = 'marqueur'
+                    ) AS has_marker";
+            
+            $statement = $db->prepare($query);
+            $statement->bindParam(':game_id', $gameId, PDO::PARAM_INT);
+            
+            if ($statement->execute()) {
+                $result = $statement->fetch(PDO::FETCH_ASSOC);
+                return (bool) $result['has_marker'];
+            } else {
+                return false;
+            }
+        } catch (PDOException $e) {
+            return false;
+        }
+    }
+
+    public static function updateSignature($user_id, $game_id,$token) {
+        try {
+            $db = self::connexionDB();
+            
+            $query = "UPDATE signatures SET token_signature = :token 
+                      WHERE user_id = :user_id AND game_id = :game_id";
+            
+            $statement = $db->prepare($query);
+            $statement->bindParam(':token', $token, PDO::PARAM_STR);
+            $statement->bindParam(':user_id', $user_id, PDO::PARAM_INT);
+            $statement->bindParam(':game_id', $game_id, PDO::PARAM_INT);
+            
+            if ($statement->execute()) {
+                return true;
+            } else {
+                return false;
+            }
+        } catch (PDOException $e) {
+            return false;
+        }
+    }
+
+    public static function removeToken($game_id){
+        try {
+            $db = self::connexionDB();
+            
+            $query = "UPDATE signatures SET token_signature = NULL 
+                      WHERE game_id = :game_id";
+            
+            $statement = $db->prepare($query);
+            $statement->bindParam(':game_id', $game_id, PDO::PARAM_INT);
+            
+            if ($statement->execute()) {
+                return true;
+            } else {
+                return false;
+            }
+        } catch (PDOException $e) {
+            return false;
+        }
+    }
+
+    public static function gameIsValidate($game_id, $role_name) {
+        try {
+            $db = self::connexionDB();
+            
+            $query = "SELECT COUNT(*) as total
+                      FROM signatures s
+                      JOIN roles r ON s.role_id = r.id
+                      WHERE s.game_id = :game_id AND r.name = :role_name AND s.token_signature IS NOT NULL";
+            
+            $statement = $db->prepare($query);
+            $statement->bindParam(':game_id', $game_id, PDO::PARAM_INT);
+            $statement->bindParam(':role_name', $role_name, PDO::PARAM_STR);
+            
+            if ($statement->execute()) {
+                $result = $statement->fetch(PDO::FETCH_ASSOC);
+                return $result['total'] > 0;
+            } else {
+                return false;
+            }
+        } catch (PDOException $e) {
+            return false;
+        }
+    }
+    
+
+    public static function getSignaturesbyGameId($game_id){
+        try {
+            $dbh = self::connexionDB();
+    
+            $query = "SELECT * FROM signatures WHERE game_id = :game_id";
+            
+            $statement = $dbh->prepare($query);
+            $statement->bindParam(':game_id', $game_id, PDO::PARAM_INT);
+            $statement->execute();
+    
+            $queryResult = $statement->fetchAll(PDO::FETCH_ASSOC);
+
+            $dbh = null;
+    
+            return $queryResult;
+        } catch (PDOException $e) {
+            return null;
+        }
+    }
+       
+    
+    
+    
     
 }
 
