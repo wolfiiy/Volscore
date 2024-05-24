@@ -14,7 +14,7 @@ ob_start();
     foreach ($otherGames as $game)
     {
         echo "<tr><td>".$game->number."</td><td>".$game->receivingTeamName."</td><td>".$game->visitingTeamName."</td><td>".(($game->scoreReceiving+$game->scoreVisiting) > 0 ? $game->scoreReceiving."-".$game->scoreVisiting : "")."</td><td>";
-        if(VolscoreDB::gameIsValidate($game->number,"marqueur") == false && VolscoreDB::gameIsOver($game)){
+        if(VolscoreDB::gameIsValidate($game->number,"marqueur") == false && VolscoreDB::gameIsOver($game) || VolscoreDB::gameIsValidate($game->number,"arbitre") == false && VolscoreDB::gameIsOver($game)){
             echo "<a href='?action=authuservalidation&id=".$game->number."' class='btn btn-sm btn-primary m-1'>Valider</a>";
         } elseif (VolscoreDB::gameIsOver($game) && $rolename == "admin") {
             echo "<a href='?action=sheet&gameid=".$game->number."' class='btn btn-sm btn-primary m-1'>Consulter</a>";

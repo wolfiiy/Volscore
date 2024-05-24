@@ -583,7 +583,7 @@ function checkUserValidation($game_id,$password){
             authUserValidation($game_id);
         }else{
             VolscoreDB::updateSignature($user['id'],$game_id,$token);
-            showHome();
+            showGame($game_id);
         }
 
     } else {
