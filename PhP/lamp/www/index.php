@@ -71,7 +71,7 @@ switch ($action)
     case 'mailvalidate':
         showMailValidate($_POST['email']);
     case 'newpassword':
-        updatePassword($_SESSION['try_user_id'],$_POST['new_password'],$_POST['confirm_password']);
+        updatePassword($_GET['user_id'],$_POST['new_password'],$_POST['confirm_password']);
     case 'clear':
         Clear();
     case 'accounts':

@@ -3,7 +3,7 @@ header, footer {
 }
 
 td, th {
-    vertical-align: top;
+    /*vertical-align: top;*/
     padding-left: 20px;
 }
 

@@ -509,6 +509,7 @@ function showLogin($username = null,$password = null)
     }    
 }
 
+// TODO Changer non de méthodes / ainsi que l'action
 function showAuthUser($user_id,$game_id){
 
     $user = VolscoreDB::getUser($user_id);
@@ -521,6 +522,7 @@ function showAuthUser($user_id,$game_id){
 
 }
 
+// TODO Changer non de méthodes / ainsi que l'action
 function checkAuth($user_id,$game_id,$password){
 
     $user = VolscoreDB::getUser($user_id);
@@ -544,7 +546,7 @@ function checkAuth($user_id,$game_id,$password){
     }
 
 }
-
+// TODO Changer non de méthodes / ainsi que l'action
 function authUserValidation($game_id){
     $signatures = VolscoreDB::getSignaturesbyGameId($game_id);
 
@@ -561,7 +563,7 @@ function authUserValidation($game_id){
     require_once 'view/authUserValidation.php';
 
 }
-
+// TODO Changer non de méthodes / ainsi que l'action
 function checkUserValidation($game_id,$password){
 
     $signatures = VolscoreDB::getSignaturesbyGameId($game_id);
@@ -600,8 +602,8 @@ function showMailSend()
 function showResetPassword($token)
 {
     $user = VolscoreDB::getUserByToken($token);
-    // TODO Changer la manière
-    $_SESSION['try_user_id'] = $user['id'];
+    // TODO Changer la manière d'envoyer 
+
     if($user == null){
         showHome();
     }

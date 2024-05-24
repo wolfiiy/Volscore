@@ -6,7 +6,7 @@ ob_start();
 
 <h2>Réinitialiser votre mot de passe pour le compte <?= $user['username']; ?></h2>
 <p>Veuillez remplir ce formulaire pour réinitialiser votre mot de passe.</p>
-<form action="?action=newpassword" method="post"> 
+<form action="?action=newpassword&&user_id=<?= $user['id'] ?>" method="post"> 
     <div>
         <label>Nouveau mot de passe</label>
         <input type="password" name="new_password" value="<?php echo $new_password; ?>">

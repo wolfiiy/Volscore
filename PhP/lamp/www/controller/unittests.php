@@ -160,30 +160,29 @@ $statement->execute([
 
 $dbh = null;
 
-// Insertion de signatures tests
 
-// Génération de données aléatoires pour les signatures
-$users = [1, 2, 4];
-$games = [1, 2, 3];
-$roles = [2, 3];
-
-// Connexion à la base de données
 $dbh = VolscoreDB::connexionDB();
 
-foreach ($users as $user_id) {
-    foreach ($games as $game_id) {
-        $role_id = $roles[array_rand($roles)];
+// Données pour les signatures
+$signatures = [
+    ['game_id' => 1, 'user_id' => 1, 'role_id' => 2],
+    ['game_id' => 2, 'user_id' => 2, 'role_id' => 2],
+    ['game_id' => 3, 'user_id' => 3, 'role_id' => 2],
+    ['game_id' => 1, 'user_id' => 4, 'role_id' => 3],
+    ['game_id' => 2, 'user_id' => 4, 'role_id' => 3],
+    ['game_id' => 3, 'user_id' => 4, 'role_id' => 3],
+];
 
-        $query = "INSERT INTO signatures (game_id, user_id, role_id, token_signature) 
-                  VALUES (:game_id, :user_id, :role_id, NULL)";
-
-        $statement = $dbh->prepare($query);
-        $statement->bindParam(':game_id', $game_id, PDO::PARAM_INT);
-        $statement->bindParam(':user_id', $user_id, PDO::PARAM_INT);
-        $statement->bindParam(':role_id', $role_id, PDO::PARAM_INT);
-
-        $statement->execute();
-    }
+foreach ($signatures as $signature) {
+    $query = "INSERT INTO signatures (game_id, user_id, role_id, token_signature) 
+              VALUES (:game_id, :user_id, :role_id, NULL)";
+    
+    $statement = $dbh->prepare($query);
+    $statement->bindParam(':game_id', $signature['game_id'], PDO::PARAM_INT);
+    $statement->bindParam(':user_id', $signature['user_id'], PDO::PARAM_INT);
+    $statement->bindParam(':role_id', $signature['role_id'], PDO::PARAM_INT);
+    
+    $statement->execute();
 }
 
 
