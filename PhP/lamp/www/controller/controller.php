@@ -73,6 +73,12 @@ function showProfil($id){
 
 }
 
+function showSelectArbitre(){
+
+
+    require_once 'view/selectArbitre.php';
+}
+
 function showCreateAccount($error = null){
 
     if (!isset($_SESSION['user_id'])) {

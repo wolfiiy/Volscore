@@ -92,6 +92,8 @@ switch ($action)
         authUserValidation($_GET['id']);
     case 'checkuservalidation':
         checkUserValidation($_GET['id'], $_POST['password'],2);
+    case 'selectarbitre':
+        showSelectArbitre();
     default:
         showHome();
 }
