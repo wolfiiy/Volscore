@@ -174,8 +174,6 @@ function showGame($gameid)
     }
 }
 
-// TODO un bug surviens lorsqu'on Authentifie le marqueur. La page reviens sur le menu home juste apres la validation des equipes. Si on raffraichit on va sur la bonne page
-
 function markGame($gameid) {
     if (!isset($_SESSION['user_id'])) {
         showLogin();
@@ -509,7 +507,7 @@ function showLogin($username = null,$password = null)
     }    
 }
 
-// TODO Changer non de méthodes / ainsi que l'action
+// TODO Changer nom de méthodes / ainsi que l'action
 function showAuthUser($user_id,$game_id){
 
     $user = VolscoreDB::getUser($user_id);
@@ -522,7 +520,7 @@ function showAuthUser($user_id,$game_id){
 
 }
 
-// TODO Changer non de méthodes / ainsi que l'action
+// TODO Changer nom de méthodes / ainsi que l'action
 function checkAuth($user_id,$game_id,$password){
 
     $user = VolscoreDB::getUser($user_id);
@@ -546,7 +544,7 @@ function checkAuth($user_id,$game_id,$password){
     }
 
 }
-// TODO Changer non de méthodes / ainsi que l'action
+// TODO Changer nom de méthodes / ainsi que l'action
 function authUserValidation($game_id){
     $signatures = VolscoreDB::getSignaturesbyGameId($game_id);
 
@@ -563,7 +561,7 @@ function authUserValidation($game_id){
     require_once 'view/authUserValidation.php';
 
 }
-// TODO Changer non de méthodes / ainsi que l'action
+// TODO Changer nom de méthodes / ainsi que l'action
 function checkUserValidation($game_id,$password){
 
     $signatures = VolscoreDB::getSignaturesbyGameId($game_id);
@@ -602,7 +600,6 @@ function showMailSend()
 function showResetPassword($token)
 {
     $user = VolscoreDB::getUserByToken($token);
-    // TODO Changer la manière d'envoyer 
 
     if($user == null){
         showHome();
