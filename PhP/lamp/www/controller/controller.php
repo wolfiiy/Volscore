@@ -1,9 +1,13 @@
 <?php
 
 session_start();
+
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\SMTP;
 use PHPMailer\PHPMailer\Exception;
+use QRcode;
+
+require 'vendor/autoload.php';
 
 // TODO Trouver un moyen de verifier si un user dans la session diffèrement qu'aux debut de chaque function
 /* 
@@ -279,6 +283,18 @@ function changePosition()
         showLogin();
     }
     header('Location: ?action=prepareSet&id='.$setid);
+}
+
+function generateQRCode($text, $filePath = '/qrcode.png', $errorCorrectionLevel = 'L', $matrixPointSize = 4, $margin = 2)
+{
+    //include '../vendor/kairos/phpqrcode/qrlib.php'; 
+    // Generate QR code and save it as an image file
+   
+    // Génère et affiche directement le QR code
+    //header('Content-Type: image/png');
+    QRcode::png($text, $filePath, $errorCorrectionLevel, $matrixPointSize, $margin);
+    //QRcode::png($text);
+    //require 'view/test.php';
 }
 
 function setPositions ($gameid, $setid, $teamid, $pos1, $pos2, $pos3, $pos4, $pos5, $pos6, $final) // MODIF ALEX

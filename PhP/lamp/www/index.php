@@ -94,6 +94,8 @@ switch ($action)
         checkUserValidation($_GET['id'], $_POST['password'],2);
     case 'selectarbitre':
         showSelectArbitre($_GET['id']);
+    case 'qrcode':
+        generateQRCode($_GET['url'], $_GET['filepath']/*'view/qrcode/qrcode.png'*/,);
     default:
         showHome();
 }
