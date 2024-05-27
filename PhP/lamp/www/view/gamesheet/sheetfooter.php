@@ -40,4 +40,11 @@
             </div>
         </div>
     </div>
+    <div class="qrcode">
+        <h3>Profil du marqueur</h3>
+        <img src="/qrcode/qrcode1.png" alt="QR Code"/>
+        <h3>Profil de l'arbitre</h3>
+        <img src="/qrcode/qrcode2.png" alt="QR Code"/>
+
+    </div>
 </div>

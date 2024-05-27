@@ -174,6 +174,29 @@ function showGame($gameid)
         }
         $receivingRoster = VolscoreDB::getRoster($gameid,$game->receivingTeamId);
         $visitingRoster = VolscoreDB::getRoster($gameid,$game->visitingTeamId);
+
+        $signatures = VolscoreDB::getSignaturesbyGameId($gameid);
+
+        if($signatures[0]['role_id'] == 2){
+            $user = VolscoreDB::getUser($signatures[0]['user_id']);
+            $path = "http://localhost:8000/?action=profil&&id=".$user['id'];
+            generateQRCode($path,"qrcode/qrcode1.png");
+            
+            $user = VolscoreDB::getUser($signatures[1]['user_id']);
+            $path = "http://localhost:8000/?action=profil&&id=".$user['id'];
+            generateQRCode($path,"qrcode/qrcode2.png");
+        }
+        else{
+            
+            $user = VolscoreDB::getUser($signatures[0]['user_id']);
+            $path = "http://localhost:8000/?action=profil&&id=".$user['id'];
+            generateQRCode($path,"qrcode/qrcode2.png");
+
+            $user = VolscoreDB::getUser($signatures[1]['user_id']);
+            $path = "http://localhost:8000/?action=profil&&id=".$user['id'];
+            generateQRCode($path,"qrcode/qrcode1.png");
+        }
+
         require_once 'view/gamesheet/main.php';
     }
 }
