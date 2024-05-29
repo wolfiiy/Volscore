@@ -881,6 +881,105 @@ class VolscoreDB implements IVolscoreDb {
         }
     }
 
+    public static function getSubPositions($setid, $teamid, &$isFinal = NULL) : array
+    {
+        try
+        {
+            $res = [];
+            $dbh = self::connexionDB();
+            if ($setid > 0) { 
+                $query = "SELECT * FROM positions WHERE set_id=$setid AND team_id=$teamid;";
+            } else { // get last used positions
+                $query = "SELECT * FROM positions WHERE team_id=$teamid ORDER BY id DESC LIMIT 1;";
+            }
+            $statement = $dbh->prepare($query); // Prepare query    
+            $statement->execute(); // Executer la query
+            $positions = $statement->fetch();
+            if (!$positions) return $res;
+            if ($setid == 0) { // get it from the position sheet
+                $setid = $positions['set_id'];
+            }
+            // build the list
+            for ($pos = 1; $pos <= 6; $pos++) {
+                if($positions['sub_'.$pos.'_id'] != null){
+                    $res[] = self::findPlayer($positions['sub_'.$pos.'_id']);
+                }
+                else{
+                    $res[] = "";
+                }
+                
+            }
+            $isFinal = $positions['final'];
+            $dbh = null;
+            return $res;
+        } catch (PDOException $e) {
+            print 'Error!:' . $e->getMessage() . '<br/>';
+            return array_fill(0, 6, null);
+        }
+    }
+
+    public static function getSubInpoints($setid, $teamid, &$isFinal = NULL) : array
+    {
+        try
+        {
+            $res = [];
+            $dbh = self::connexionDB();
+            if ($setid > 0) { 
+                $query = "SELECT * FROM positions WHERE set_id=$setid AND team_id=$teamid;";
+            } else { // get last used positions
+                $query = "SELECT * FROM positions WHERE team_id=$teamid ORDER BY id DESC LIMIT 1;";
+            }
+            $statement = $dbh->prepare($query); // Prepare query    
+            $statement->execute(); // Executer la query
+            $positions = $statement->fetch();
+            if (!$positions) return $res;
+            if ($setid == 0) { // get it from the position sheet
+                $setid = $positions['set_id'];
+            }
+            // build the list
+            for ($pos = 1; $pos <= 6; $pos++) {
+                $res[] = $positions['sub_in_point_'.$pos.'_id'];
+            }
+            $isFinal = $positions['final'];
+            $dbh = null;
+            return $res;
+        } catch (PDOException $e) {
+            print 'Error!:' . $e->getMessage() . '<br/>';
+            return null;
+        }
+    }
+
+    public static function getSubOutPoints($setid, $teamid, &$isFinal = NULL) : array
+    {
+        try
+        {
+            $res = [];
+            $dbh = self::connexionDB();
+            if ($setid > 0) { 
+                $query = "SELECT * FROM positions WHERE set_id=$setid AND team_id=$teamid;";
+            } else { // get last used positions
+                $query = "SELECT * FROM positions WHERE team_id=$teamid ORDER BY id DESC LIMIT 1;";
+            }
+            $statement = $dbh->prepare($query); // Prepare query    
+            $statement->execute(); // Executer la query
+            $positions = $statement->fetch();
+            if (!$positions) return $res;
+            if ($setid == 0) { // get it from the position sheet
+                $setid = $positions['set_id'];
+            }
+            // build the list
+            for ($pos = 1; $pos <= 6; $pos++) {
+                $res[] = $positions['sub_out_point_'.$pos.'_id'];
+            }
+            $isFinal = $positions['final'];
+            $dbh = null;
+            return $res;
+        } catch (PDOException $e) {
+            print 'Error!:' . $e->getMessage() . '<br/>';
+            return null;
+        }
+    }
+
     public static function getBenchPlayers($gameid,$setid,$teamid)
     {
         try
