@@ -445,10 +445,25 @@ button.icon-btn.check {
     padding: 5px;
 }
 
-.qrcode{
+.qrcodes{
     display: flex;
     flex-direction: row;
 }
+.qrcode{
+    display: flex;
+    flex-direction: column;
+}
 
-
+.positions {
+    display: flex;
+    flex-direction: column;
+}
+.position-row {
+    display: flex;
+    margin-bottom: 10px;
+}
+.position-row > div {
+    flex: 1;
+    margin-right: 10px;
+}
   /*ALEX*/
