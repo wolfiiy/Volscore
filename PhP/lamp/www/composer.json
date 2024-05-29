@@ -3,6 +3,7 @@
         "symfony/var-dumper": "^6.2"
     },
     "require": {
-        "phpmailer/phpmailer": "^6.9"
+        "phpmailer/phpmailer": "^6.9",
+        "kairos/phpqrcode": "^1.0"
     }
 }

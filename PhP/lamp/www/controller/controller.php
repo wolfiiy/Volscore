@@ -1,9 +1,13 @@
 <?php
 
 session_start();
+
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\SMTP;
 use PHPMailer\PHPMailer\Exception;
+use QRcode;
+
+require 'vendor/autoload.php';
 
 // TODO Trouver un moyen de verifier si un user dans la session diffèrement qu'aux debut de chaque function
 /* 
@@ -170,6 +174,29 @@ function showGame($gameid)
         }
         $receivingRoster = VolscoreDB::getRoster($gameid,$game->receivingTeamId);
         $visitingRoster = VolscoreDB::getRoster($gameid,$game->visitingTeamId);
+
+        $signatures = VolscoreDB::getSignaturesbyGameId($gameid);
+
+        if($signatures[0]['role_id'] == 2){
+            $user = VolscoreDB::getUser($signatures[0]['user_id']);
+            $path = "http://localhost:8000/?action=profil&&id=".$user['id'];
+            generateQRCode($path,"qrcode/qrcode1.png");
+            
+            $user = VolscoreDB::getUser($signatures[1]['user_id']);
+            $path = "http://localhost:8000/?action=profil&&id=".$user['id'];
+            generateQRCode($path,"qrcode/qrcode2.png");
+        }
+        else{
+            
+            $user = VolscoreDB::getUser($signatures[0]['user_id']);
+            $path = "http://localhost:8000/?action=profil&&id=".$user['id'];
+            generateQRCode($path,"qrcode/qrcode2.png");
+
+            $user = VolscoreDB::getUser($signatures[1]['user_id']);
+            $path = "http://localhost:8000/?action=profil&&id=".$user['id'];
+            generateQRCode($path,"qrcode/qrcode1.png");
+        }
+
         require_once 'view/gamesheet/main.php';
     }
 }
@@ -281,6 +308,18 @@ function changePosition()
     header('Location: ?action=prepareSet&id='.$setid);
 }
 
+function generateQRCode($text, $filePath = '/qrcode.png', $errorCorrectionLevel = 'L', $matrixPointSize = 4, $margin = 2)
+{
+    //include '../vendor/kairos/phpqrcode/qrlib.php'; 
+    // Generate QR code and save it as an image file
+   
+    // Génère et affiche directement le QR code
+    //header('Content-Type: image/png');
+    QRcode::png($text, $filePath, $errorCorrectionLevel, $matrixPointSize, $margin);
+    //QRcode::png($text);
+    //require 'view/test.php';
+}
+
 function setPositions ($gameid, $setid, $teamid, $pos1, $pos2, $pos3, $pos4, $pos5, $pos6, $final) // MODIF ALEX
 {
     if (!isset($_SESSION['user_id'])) {
@@ -299,14 +338,14 @@ function setPositions ($gameid, $setid, $teamid, $pos1, $pos2, $pos3, $pos4, $po
     header('Location: ?action=prepareSet&id='.$setid);
 }
 
-function updatePositionScoring($gameid, $setid, $teamid, $pos1, $pos2, $pos3, $pos4, $pos5, $pos6, $final)
+function updatePositionScoring($gameid, $setid, $teamid, $pos1, $pos2, $pos3, $pos4, $pos5, $pos6, $point)
 {
     if (!isset($_SESSION['user_id'])) {
         showLogin();
     }
     $positions = VolscoreDB::getPosition($setid, $teamid);
     $subs = VolscoreDB::getSubTeam($setid, $teamid);
-    $subPoint = 1;
+    $subPoint = $point;
 
     // Un tableau des positions fournies en paramètre
     $newPositions = [$pos1, $pos2, $pos3, $pos4, $pos5, $pos6];

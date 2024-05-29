@@ -26,7 +26,7 @@ ob_start();
     {
         echo "<tr><td>".$game->number."</td><td>".$game->receivingTeamName."</td><td>".$game->visitingTeamName."</td><td>".(($game->scoreReceiving+$game->scoreVisiting) > 0 ? $game->scoreReceiving."-".$game->scoreVisiting : "")."</td><td>";
         if($rolename == "marqueur"){
-            if(VolscoreDB::gameIsValidate($game->number,"marqueur") == false && VolscoreDB::gameIsOver($game)){}
+            if(VolscoreDB::gameIsOver($game)){}
             elseif(VolscoreDB::hasMarkerRoleInGame($game->number) &&  VolscoreDB::hasArbitreRoleInGame($game->number)){
                 echo "<a href='?action=mark&id=".$game->number."' class='btn btn-sm btn-primary m-1'>Marquer</a>";
             }
@@ -37,7 +37,7 @@ ob_start();
                 echo "<a href='?action=authUser&user_id=". $_SESSION['user_id'] ."&game_id=".$game->number."' class='btn btn-sm btn-primary m-1'>Marquer</a>";
             }
 
-            if ($game->isEditable() && $rolename == "marqueur") {
+            if ($game->isEditable() && $rolename == "marqueur" && !VolscoreDB::gameIsOver($game)) {
                 echo "<a href='?action=edit&id=".$game->number."' class='btn btn-sm btn-primary m-1'>Modifier</a>";
             }
         }

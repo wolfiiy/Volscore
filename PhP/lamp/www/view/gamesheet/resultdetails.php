@@ -15,8 +15,17 @@
                         <?= $game->receivingTeamName ?>
                     </div>
                     <div class="setpositions">
-                        <?php foreach (VolscoreDB::getStartingPositions($set->id, $game->receivingTeamId) as $player) : ?>
+                        <?php foreach (VolscoreDB::getStartingPositions($set->id, $game->receivingTeamId) as $player) : ?>                            
                             <div class="playernumber"><?= $player->playerInfo['number'] ?></div>
+                        <?php endforeach; ?>
+                        <?php foreach (VolscoreDB::getSubPositions($set->id, $game->receivingTeamId) as $player) : ?>                            
+                            <div class="playernumber"><?= $player->playerInfo['number'] ?></div>
+                        <?php endforeach; ?>
+                        <?php foreach (VolscoreDB::getSubInpoints($set->id, $game->receivingTeamId) as $point) : ?>                            
+                            <div class="playernumber"><?= $point ?></div>
+                        <?php endforeach; ?>
+                        <?php foreach (VolscoreDB::getSubOutPoints($set->id, $game->receivingTeamId) as $point) : ?>                            
+                            <div class="playernumber"><?= $point ?></div>
                         <?php endforeach; ?>
                     </div>
                     <div class="scoringsequence">
@@ -40,9 +49,20 @@
                         <?= $game->visitingTeamName ?>
                     </div>
                     <div class="setpositions">
-                        <?php foreach (VolscoreDB::getStartingPositions($set->id, $game->visitingTeamId) as $player) : ?>
+                        <div class="setpositions">
+                        <?php foreach (VolscoreDB::getStartingPositions($set->id, $game->visitingTeamId) as $player) : ?>                            
                             <div class="playernumber"><?= $player->playerInfo['number'] ?></div>
                         <?php endforeach; ?>
+                        <?php foreach (VolscoreDB::getSubPositions($set->id, $game->visitingTeamId) as $player) : ?>                            
+                            <div class="playernumber"><?= $player->playerInfo['number'] ?></div>
+                        <?php endforeach; ?>
+                        <?php foreach (VolscoreDB::getSubInpoints($set->id, $game->visitingTeamId) as $point) : ?>                            
+                            <div class="playernumber"><?= $point ?></div>
+                        <?php endforeach; ?>
+                        <?php foreach (VolscoreDB::getSubOutPoints($set->id, $game->visitingTeamId) as $point) : ?>                            
+                            <div class="playernumber"><?= $point ?></div>
+                        <?php endforeach; ?>
+                    </div>
                     </div>
                     <div class="scoringsequence">
                         <div class="playerpoints">

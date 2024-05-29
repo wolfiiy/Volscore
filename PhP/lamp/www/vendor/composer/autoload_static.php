@@ -8,6 +8,7 @@ class ComposerStaticInitec08021f353d6a71f0e629b48a2b4064
 {
     public static $files = array (
         '0e6d7bf4a5811bfa5cf40c5ccd6fae6a' => __DIR__ . '/..' . '/symfony/polyfill-mbstring/bootstrap.php',
+        '1031b91e017487137a717f6d17f42584' => __DIR__ . '/..' . '/kairos/phpqrcode/qrlib.php',
         '667aeda72477189d0494fecd327c3641' => __DIR__ . '/..' . '/symfony/var-dumper/Resources/functions/dump.php',
     );
 
