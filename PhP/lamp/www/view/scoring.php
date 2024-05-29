@@ -49,7 +49,7 @@ ob_start();
     </div>
 
     <div class="d-flex flex-column order-<?= (($game->toss+$set->number) % 2 == 0) ? 2 : 3 ?>">
-    <form method="post" action="?action=updatePositions" onsubmit="Enable();">
+    <form method="post" action="?action=updatePositions&&point=<?=$set->scoreReceiving?>" onsubmit="Enable();">
         <input type="hidden" name="setid" value="<?= $set->id ?>" />
         <input type="hidden" name="gameid" value="<?= $game->number ?>" />
         <input type="hidden" name="teamid" value="<?= $game->receivingTeamId ?>" />
@@ -122,7 +122,7 @@ ob_start();
     
 
     <div class="d-flex flex-column order-<?= (($game->toss+$set->number) % 2 == 0) ? 3 : 2 ?>">
-        <form method="post" action="?action=updatePositions" onsubmit="Enable();">
+        <form method="post" action="?action=updatePositions&&point=<?=$set->scoreVisiting?>" onsubmit="Enable();">
             <input type="hidden" name="setid" value="<?= $set->id ?>" />
             <input type="hidden" name="gameid" value="<?= $game->number ?>" />
             <input type="hidden" name="teamid" value="<?= $game->visitingTeamId ?>" />

@@ -338,14 +338,14 @@ function setPositions ($gameid, $setid, $teamid, $pos1, $pos2, $pos3, $pos4, $po
     header('Location: ?action=prepareSet&id='.$setid);
 }
 
-function updatePositionScoring($gameid, $setid, $teamid, $pos1, $pos2, $pos3, $pos4, $pos5, $pos6, $final)
+function updatePositionScoring($gameid, $setid, $teamid, $pos1, $pos2, $pos3, $pos4, $pos5, $pos6, $point)
 {
     if (!isset($_SESSION['user_id'])) {
         showLogin();
     }
     $positions = VolscoreDB::getPosition($setid, $teamid);
     $subs = VolscoreDB::getSubTeam($setid, $teamid);
-    $subPoint = 1;
+    $subPoint = $point;
 
     // Un tableau des positions fournies en paramètre
     $newPositions = [$pos1, $pos2, $pos3, $pos4, $pos5, $pos6];

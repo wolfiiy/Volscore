@@ -48,7 +48,7 @@ switch ($action)
         break;
     case 'updatePositions':
         /*Ajout de 6 valeur en plus pour enlever un bug qu'il y avait, les valeurs peuvent etre null, ca permet de prendre plus de $_POST*/
-        updatePositionScoring($_POST['gameid'],$_POST['setid'],$_POST['teamid'],$_POST['position1'],$_POST['position2'],$_POST['position3'],$_POST['position4'],$_POST['position5'],$_POST['position6'],1 ? 1 : 0); // MODIF ALEX
+        updatePositionScoring($_POST['gameid'],$_POST['setid'],$_POST['teamid'],$_POST['position1'],$_POST['position2'],$_POST['position3'],$_POST['position4'],$_POST['position5'],$_POST['position6'],$_GET['point']); // MODIF ALEX
         break;
     case 'teams':
         showTeams();
