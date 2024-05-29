@@ -1,7 +1,6 @@
 #sheetframe {
     border: 1px solid black;
     width: 1024px;
-    height: 768px;
     padding: 1px;
     display: flex;
     flex-direction: column;
@@ -444,6 +443,11 @@ button.icon-btn.check {
 #arbitresTable{
     margin : 20px auto;
     padding: 5px;
+}
+
+.qrcode{
+    display: flex;
+    flex-direction: row;
 }
 
 
