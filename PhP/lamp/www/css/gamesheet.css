@@ -124,6 +124,7 @@
     text-align: center;
     height: 20px;
 }
+
 .scoringsequence {
     width: 100%;
     border: 1px solid black;
@@ -466,5 +467,8 @@ button.icon-btn.check {
 .position-row > div {
     flex: 1;
     margin-right: 10px;
+}
+.small{
+    font-size: 10px;
 }
   /*ALEX*/

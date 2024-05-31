@@ -479,7 +479,7 @@ class VolscoreDB implements IVolscoreDb {
         return $newset;
     }
       
-    private static function getLastPoint ($set) : ?Point
+    public static function getLastPoint ($set) : ?Point
     {
         $pdo = self::connexionDB();
         $stmt = $pdo->prepare("SELECT * FROM points WHERE set_id = :set_id ORDER BY id DESC LIMIT 1");
@@ -918,63 +918,137 @@ class VolscoreDB implements IVolscoreDb {
         }
     }
 
-    public static function getSubInpoints($setid, $teamid, &$isFinal = NULL) : array
+    public static function getSubInpoints($setid, $teamid)
     {
         try
         {
-            $res = [];
             $dbh = self::connexionDB();
+            $res = [];
+
+            // Récupération des positions
             if ($setid > 0) { 
-                $query = "SELECT * FROM positions WHERE set_id=$setid AND team_id=$teamid;";
-            } else { // get last used positions
-                $query = "SELECT * FROM positions WHERE team_id=$teamid ORDER BY id DESC LIMIT 1;";
+                $query = "SELECT * FROM positions WHERE set_id = :setid AND team_id = :teamid;";
+            } else { // obtenir les dernières positions utilisées
+                $query = "SELECT * FROM positions WHERE team_id = :teamid ORDER BY id DESC LIMIT 1;";
             }
-            $statement = $dbh->prepare($query); // Prepare query    
-            $statement->execute(); // Executer la query
-            $positions = $statement->fetch();
-            if (!$positions) return $res;
-            if ($setid == 0) { // get it from the position sheet
+            $statement = $dbh->prepare($query); // Préparer la requête
+            $statement->bindParam(':setid', $setid, PDO::PARAM_INT);
+            $statement->bindParam(':teamid', $teamid, PDO::PARAM_INT);
+            $statement->execute(); // Exécuter la requête
+            $positions = $statement->fetch(PDO::FETCH_ASSOC);
+            
+            if (!$positions) return null; // Si aucune position n'est trouvée, retourner null
+            
+            if ($setid == 0) { // obtenir l'ID du set à partir des positions
                 $setid = $positions['set_id'];
             }
-            // build the list
+
+            // Construire la liste des sub_in_points
             for ($pos = 1; $pos <= 6; $pos++) {
-                $res[] = $positions['sub_in_point_'.$pos.'_id'];
+                $sub_in_point_id = $positions['sub_in_point_' . $pos . '_id'];
+
+                // Calcul des points pour l'équipe 1
+                $query1 = "SELECT COUNT(*) as team1_points FROM points p WHERE p.id <= :sub_in_point_id AND p.team_id = :teamid AND p.set_id = :setid";
+                $statement1 = $dbh->prepare($query1);
+                $statement1->bindParam(':sub_in_point_id', $sub_in_point_id, PDO::PARAM_INT);
+                $statement1->bindParam(':teamid', $teamid, PDO::PARAM_INT);
+                $statement1->bindParam(':setid', $setid, PDO::PARAM_INT);
+                $statement1->execute();
+                $team1_points = $statement1->fetch(PDO::FETCH_ASSOC)['team1_points'];
+
+                // Calcul des points pour l'équipe 2 (où team_id est différent de $teamid)
+                $query2 = "SELECT COUNT(*) as team2_points FROM points p WHERE p.id <= :sub_in_point_id AND p.team_id != :teamid AND p.set_id = :setid";
+                $statement2 = $dbh->prepare($query2);
+                $statement2->bindParam(':sub_in_point_id', $sub_in_point_id, PDO::PARAM_INT);
+                $statement2->bindParam(':teamid', $teamid, PDO::PARAM_INT);
+                $statement2->bindParam(':setid', $setid, PDO::PARAM_INT);
+                $statement2->execute();
+                $team2_points = $statement2->fetch(PDO::FETCH_ASSOC)['team2_points'];
+
+                $result = "$team1_points:$team2_points";
+                if ($result !== "0:0") {
+                    $res[] = $result;
+                }
+                else{
+                    $res[] = "";
+                }
             }
-            $isFinal = $positions['final'];
+
             $dbh = null;
+
             return $res;
-        } catch (PDOException $e) {
+        }
+        catch (PDOException $e)
+        {
             print 'Error!:' . $e->getMessage() . '<br/>';
             return null;
         }
     }
 
-    public static function getSubOutPoints($setid, $teamid, &$isFinal = NULL) : array
+
+
+    public static function getSubOutPoints($setid, $teamid, &$isFinal = NULL)
     {
         try
         {
-            $res = [];
             $dbh = self::connexionDB();
+            $res = [];
+
+            // Récupération des positions
             if ($setid > 0) { 
-                $query = "SELECT * FROM positions WHERE set_id=$setid AND team_id=$teamid;";
-            } else { // get last used positions
-                $query = "SELECT * FROM positions WHERE team_id=$teamid ORDER BY id DESC LIMIT 1;";
+                $query = "SELECT * FROM positions WHERE set_id = :setid AND team_id = :teamid;";
+            } else { // obtenir les dernières positions utilisées
+                $query = "SELECT * FROM positions WHERE team_id = :teamid ORDER BY id DESC LIMIT 1;";
             }
-            $statement = $dbh->prepare($query); // Prepare query    
-            $statement->execute(); // Executer la query
-            $positions = $statement->fetch();
-            if (!$positions) return $res;
-            if ($setid == 0) { // get it from the position sheet
+            $statement = $dbh->prepare($query); // Préparer la requête
+            $statement->bindParam(':setid', $setid, PDO::PARAM_INT);
+            $statement->bindParam(':teamid', $teamid, PDO::PARAM_INT);
+            $statement->execute(); // Exécuter la requête
+            $positions = $statement->fetch(PDO::FETCH_ASSOC);
+            
+            if (!$positions) return null; // Si aucune position n'est trouvée, retourner null
+            
+            if ($setid == 0) { // obtenir l'ID du set à partir des positions
                 $setid = $positions['set_id'];
             }
-            // build the list
+
+            // Construire la liste des sub_in_points
             for ($pos = 1; $pos <= 6; $pos++) {
-                $res[] = $positions['sub_out_point_'.$pos.'_id'];
+                $sub_out_point_id = $positions['sub_out_point_' . $pos . '_id'];
+
+                // Calcul des points pour l'équipe 1
+                $query1 = "SELECT COUNT(*) as team1_points FROM points p WHERE p.id <= :sub_out_point_id AND p.team_id = :teamid AND p.set_id = :setid";
+                $statement1 = $dbh->prepare($query1);
+                $statement1->bindParam(':sub_out_point_id', $sub_out_point_id, PDO::PARAM_INT);
+                $statement1->bindParam(':teamid', $teamid, PDO::PARAM_INT);
+                $statement1->bindParam(':setid', $setid, PDO::PARAM_INT);
+                $statement1->execute();
+                $team1_points = $statement1->fetch(PDO::FETCH_ASSOC)['team1_points'];
+
+                // Calcul des points pour l'équipe 2 (où team_id est différent de $teamid)
+                $query2 = "SELECT COUNT(*) as team2_points FROM points p WHERE p.id <= :sub_out_point_id AND p.team_id != :teamid AND p.set_id = :setid";
+                $statement2 = $dbh->prepare($query2);
+                $statement2->bindParam(':sub_out_point_id', $sub_out_point_id, PDO::PARAM_INT);
+                $statement2->bindParam(':teamid', $teamid, PDO::PARAM_INT);
+                $statement2->bindParam(':setid', $setid, PDO::PARAM_INT);
+                $statement2->execute();
+                $team2_points = $statement2->fetch(PDO::FETCH_ASSOC)['team2_points'];
+
+                $result = "$team1_points:$team2_points";
+                if ($result !== "0:0") {
+                    $res[] = $result;
+                }
+                else{
+                    $res[] = "";
+                }
             }
-            $isFinal = $positions['final'];
+
             $dbh = null;
+
             return $res;
-        } catch (PDOException $e) {
+        }
+        catch (PDOException $e)
+        {
             print 'Error!:' . $e->getMessage() . '<br/>';
             return null;
         }

@@ -23,10 +23,10 @@
                                 <div class="playernumber"><?= $player->playerInfo['number'] ?></div>
                             <?php endforeach; ?>
                             <?php foreach (VolscoreDB::getSubInpoints($set->id, $game->receivingTeamId) as $point) : ?>                            
-                                <div class="playernumber"><?= $point ?></div>
+                                <div class="playernumber"><p class="small"><?= $point ?></p></div>
                             <?php endforeach; ?>
                             <?php foreach (VolscoreDB::getSubOutPoints($set->id, $game->receivingTeamId) as $point) : ?>                            
-                                <div class="playernumber"><?= $point ?></div>
+                                <div class="playernumber"><p class="small"><?= $point ?></p></div>
                             <?php endforeach; ?>
                         </div>
                     </div>
@@ -59,10 +59,10 @@
                             <div class="playernumber"><?= $player->playerInfo['number'] ?></div>
                         <?php endforeach; ?>
                         <?php foreach (VolscoreDB::getSubInpoints($set->id, $game->visitingTeamId) as $point) : ?>                            
-                            <div class="playernumber"><?= $point ?></div>
+                            <div class="playernumber"><p class="small"><?= $point ?></p></div>
                         <?php endforeach; ?>
                         <?php foreach (VolscoreDB::getSubOutPoints($set->id, $game->visitingTeamId) as $point) : ?>                            
-                            <div class="playernumber"><?= $point ?></div>
+                            <div class="playernumber"><p class="small"><?= $point ?></p></div>
                         <?php endforeach; ?>
                     </div>
                     </div>
