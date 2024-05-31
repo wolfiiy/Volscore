@@ -547,7 +547,7 @@ function showLogin($username = null,$password = null)
 }
 
 // TODO Changer nom de méthodes / ainsi que l'action
-function showAuthUser($user_id,$game_id){
+function showAuthUser($user_id,$game_id,$error = ""){
 
     $user = VolscoreDB::getUser($user_id);
 
@@ -569,7 +569,7 @@ function checkAuth($user_id,$game_id,$password){
     if (password_verify($password, $user['password'])) {
 
         VolscoreDB::insertSignature($user_id,$game_id,$user['role_id']);
-
+        // TODO remplacer le 2 par le role 'marqueur'
         if($user['role_id'] == 2){
             header('Location: ?action=selectarbitre&id='.$game_id);
         }
@@ -578,13 +578,13 @@ function checkAuth($user_id,$game_id,$password){
         }
 
     } else {
-        showAuthUser($user_id,$game_id);
+        showAuthUser($user_id,$game_id, "Mot de passe faux");
         //header('Location: ?action=authUser&user_id='. $user_id .'&game_id='.$game_id);
     }
-
 }
+
 // TODO Changer nom de méthodes / ainsi que l'action
-function authUserValidation($game_id){
+function authUserValidation($game_id,$error = ""){
     $signatures = VolscoreDB::getSignaturesbyGameId($game_id);
 
     foreach($signatures as $row){
@@ -592,6 +592,9 @@ function authUserValidation($game_id){
             $user = VolscoreDB::getUser($row['user_id']);
         }
     }
+
+    // TODO Remplacer le id par le nom du rôle
+    $role = $user['role_id'];
 
     $game = VolscoreDB::getGame($game_id);
 
@@ -605,6 +608,7 @@ function checkUserValidation($game_id,$password){
 
     $signatures = VolscoreDB::getSignaturesbyGameId($game_id);
 
+
     foreach($signatures as $row){
         if($row['role_id'] == VolscoreDB::getRoleNotValidate($game_id)){
             $user = VolscoreDB::getUser($row['user_id']);
@@ -617,6 +621,7 @@ function checkUserValidation($game_id,$password){
 
         $token =bin2hex(random_bytes(16));
 
+        // On affiche l'action par rapport au nombre de user valider
         if(VolscoreDB::getRoleNotValidate($game_id) == 2){
             VolscoreDB::updateSignature($user['id'],$game_id,$token);
             authUserValidation($game_id);
@@ -626,7 +631,7 @@ function checkUserValidation($game_id,$password){
         }
 
     } else {
-        authUserValidation($game_id);
+        authUserValidation($game_id,"Mot de passe faux");
     }
 
 }

@@ -1671,6 +1671,7 @@ class VolscoreDB implements IVolscoreDb {
             $tokenCount = $result['token_count'];
     
             // Déterminer le role_id basé sur le nombre de tokens
+            // TODO return des valeurs qui ne sont pas 2 ou 3 telles que marqueur arbitre
             if ($tokenCount == 0) {
                 return 2;
             } elseif ($tokenCount == 1) {

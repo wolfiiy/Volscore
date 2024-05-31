@@ -91,7 +91,7 @@ switch ($action)
     case 'authuservalidation':
         authUserValidation($_GET['id']);
     case 'checkuservalidation':
-        checkUserValidation($_GET['id'], $_POST['password'],2);
+        checkUserValidation($_GET['id'], $_POST['password']);
     case 'selectarbitre':
         showSelectArbitre($_GET['id']);
     case 'qrcode':
