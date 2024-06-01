@@ -345,8 +345,8 @@ function updatePositionScoring($gameid, $setid, $teamid, $pos1, $pos2, $pos3, $p
     }
     $positions = VolscoreDB::getPosition($setid, $teamid);
     $subs = VolscoreDB::getSubTeam($setid, $teamid);
-    $subPoint = $point;
-    $subpoint = VolscoreDB::getLastPoint($setid)->id;
+    $set = VolscoreDB::getSet($setid);
+    $subPoint = VolscoreDB::getLastPoint($set)->id;
 
     // Un tableau des positions fournies en paramètre
     $newPositions = [$pos1, $pos2, $pos3, $pos4, $pos5, $pos6];
