@@ -1,36 +1,27 @@
 <?php
 
 /**
- * Display list of teams
+ * Shows all teams as a list.
  */
-function showTeams()
-{
-    // Get data
-    $teams = VolscoreDb::getTeams();
-
-    // Prepare data: nothing for now
-
-    // Go ahead and show it
-    require_once 'view/teams.php';
+function showTeams() {
+    $teams = VolscoreDb::getTeams();    // Get data
+    require_once 'view/teams.php';      // Display view
 }
 
 /**
- * Display list of games
+ * Shows a list of games.
  */
-
-function showGames()
-{
-    // Get data
+function showGames() {
     $games = VolscoreDb::getGames();
-
-    // Prepare data: nothing for now
-
-    // Go ahead and show it
     require_once 'view/games.php';
 }
 
-function showGame($gameid)
-{
+/**
+ * Show a game's result sheet. Will display an error page if the game ID is
+ * invalid.
+ * @param int $gameid ID of the game.
+ */
+function showGame(int $gameid) {
     if ($gameid == null) {
         $message = "On essaye des trucs ???";
         require_once 'view/error.php';
