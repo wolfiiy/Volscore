@@ -57,6 +57,8 @@ switch ($action)
     case 'unittests':
         executeUnitTests();
         break;
+    case 'info':
+        require_once 'view/info.php';
     default:
         require_once 'view/home.php';
 }
