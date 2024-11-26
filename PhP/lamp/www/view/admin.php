@@ -15,7 +15,7 @@ ob_start();
 </p>
 
 <p>
-    <button type="button">
+    <button type="button" id="importButton">
         Importer
     </button>
 
@@ -23,6 +23,8 @@ ob_start();
         Exporter
     </button>
 </p>
+
+<script src="assets/js/admin.js"></script>
 
 <?php
 $content = ob_get_clean();
