@@ -50,6 +50,13 @@ function showGame($gameid)
     }
 }
 
+/**
+ * Opens the admin dashboard.
+ */
+function showAdminDashboard() {
+    require_once 'view/admin.php';
+}
+
 function markGame($gameid) {
     if ($gameid == null) {
         $message = "On essaye des trucs ???";

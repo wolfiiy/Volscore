@@ -57,6 +57,9 @@ switch ($action)
     case 'unittests':
         executeUnitTests();
         break;
+    case 'admin':
+        showAdminDashboard();
+        break;
     case 'info':
         require_once 'view/info.php';
     default:
