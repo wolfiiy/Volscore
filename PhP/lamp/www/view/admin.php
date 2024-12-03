@@ -24,6 +24,11 @@ ob_start();
     </button>
 </p>
 
+<h3>Liste des sauvegardes disponibles :</h3>
+<?php
+echo $backupList;
+?>
+
 <script src="assets/js/admin.js"></script>
 
 <?php

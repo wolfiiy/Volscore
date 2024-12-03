@@ -45,6 +45,11 @@ function showGame(int $gameid) {
  * Opens the admin dashboard.
  */
 function showAdminDashboard() {
+    // Correct the path to Writer.php based on the directory structure
+    require_once __DIR__ . '/../helpers/Writer.php';  // Adjusted the path to be relative to the current file
+    
+    $backupList = Writer::listBackups();
+
     require_once 'view/admin.php';
 }
 
