@@ -3,8 +3,17 @@ require 'IVolscoreDb.php';
 
 class VolscoreDB implements IVolscoreDb {
 
-    public static function connexionDB()
-    {
+    /**
+     * Establishes a connection to the MySQL database using PDO.
+     * 
+     * This method retrieves the database connection details from an external credentials file
+     * and returns a PDO object configured with the appropriate settings for error handling 
+     * and fetch mode.
+     * 
+     * @return PDO The PDO object representing the database connection.
+     * @throws PDOException If the connection to the database fails, an exception is thrown.
+     */
+    public static function connexionDB() {
         require '.credentials.php';
         $PDO = new PDO("mysql:host=$hostname; port=$portnumber; dbname=$database;", $username, $password);
         $PDO->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
@@ -13,7 +22,14 @@ class VolscoreDB implements IVolscoreDb {
     }
 
     /**
-     * Exports the database by using the docker exec command to run mysqldump.
+     * Exports the MySQL database to a SQL dump file.
+     * 
+     * This method connects to the database using credentials from an external configuration file
+     * and performs a backup of the database using the `mysqldump` command executed inside a Docker container.
+     * The generated SQL dump file is saved to a specified directory with a timestamped filename.
+     * 
+     * @return string|null The file path of the generated SQL dump file if successful, or null if an error occurred.
+     * @throws Exception If an error occurs while creating the directory or executing the `mysqldump` command.
      */
     public static function exportDatabase() {
         try {
