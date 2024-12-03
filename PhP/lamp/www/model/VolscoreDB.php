@@ -11,6 +11,43 @@ class VolscoreDB implements IVolscoreDb {
         $PDO->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
         return $PDO;
     }
+
+    /**
+     * Exports the database by performing an SQL dump.
+     */
+    public static function exportDatabase() {
+        try {
+            // Load credentials from the configuration file
+            require '.credentials.php';
+    
+            // Define the path to save the dump (ensure the directory exists)
+            $dumpDir = 'output/sqldump';
+            if (!is_dir($dumpDir)) {
+                mkdir($dumpDir, 0777, true); // Create the directory if it doesn't exist
+            }
+    
+            // Define the dump file name with timestamp
+            $dumpFile = $dumpDir . '/backup_' . date('Y-m-d_H-i-s') . '.sql';
+    
+            // Construct the mysqldump command to export the database
+            $command = "mysqldump --user={$username} --password={$password} --host={$hostname} --port={$portnumber} {$database} > {$dumpFile}";
+    
+            // Execute the command
+            $resultCode = null;
+            system($command, $resultCode);
+    
+            if ($resultCode === 0) {
+                // Return the file path if the export was successful
+                return $dumpFile;
+            } else {
+                throw new Exception('Error creating SQL dump. Please check your configuration.');
+            }
+        } catch (Exception $e) {
+            error_log('Database Export Error: ' . $e->getMessage());
+            return null; // Return null on failure
+        }
+    }
+    
     
     public static function executeInsertQuery($query) : ?int
     {

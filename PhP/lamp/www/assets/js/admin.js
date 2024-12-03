@@ -33,10 +33,31 @@ function attachConfirmation(buttonId, message,
     });
 }
 
+// Function to trigger the database export via an AJAX request
+function triggerDatabaseExport() {
+    fetch('export_database.php', {
+        method: 'POST',
+    })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                alert(`Database export successful! File: ${data.file}`);
+                console.log(`Export file created: ${data.file}`);
+            } else {
+                alert(`Error: ${data.message}`);
+                console.error(data.message);
+            }
+        })
+        .catch(error => {
+            alert('An unexpected error occurred.');
+            console.error('Error:', error);
+        });
+}
+
 // Attach confirmation to the "Importer" button
 attachConfirmation(
     'importButton', // ID of the button
     "Êtes-vous sûr de vouloir importer ? Cette action pourrait écraser les données existantes.", // Confirmation message
-    () => console.log("Importation confirmée !"), // onConfirm callback
+    () => triggerDatabaseExport(), // onConfirm callback
     () => console.log("Importation annulée.") // onCancel callback
 );

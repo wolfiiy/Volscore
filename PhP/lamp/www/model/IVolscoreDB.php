@@ -9,6 +9,12 @@ require_once 'Point.php';
 require_once 'TimeInThe.php';
 
 interface IVolscoreDb {
+
+    /**
+     * Exports the database by performing an SQL dump.
+     */
+    public static function exportDatabase();
+
 #region Equipes et joueurs
 
     /**
