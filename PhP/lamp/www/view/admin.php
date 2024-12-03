@@ -19,7 +19,7 @@ ob_start();
         Importer
     </button>
 
-    <button type="button">
+    <button type="button" id="exportButton">
         Exporter
     </button>
 </p>

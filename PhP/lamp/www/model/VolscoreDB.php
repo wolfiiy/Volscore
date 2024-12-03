@@ -2,7 +2,7 @@
 require 'IVolscoreDb.php';
 
 class VolscoreDB implements IVolscoreDb {
-
+    
     public static function connexionDB()
     {
         require '.credentials.php';
@@ -13,41 +13,62 @@ class VolscoreDB implements IVolscoreDb {
     }
 
     /**
-     * Exports the database by performing an SQL dump.
+     * Exports the database by manually generating an SQL dump.
      */
     public static function exportDatabase() {
         try {
             // Load credentials from the configuration file
             require '.credentials.php';
-    
-            // Define the path to save the dump (ensure the directory exists)
+
+            // Define the directory to save the dump
             $dumpDir = 'output/sqldump';
             if (!is_dir($dumpDir)) {
-                mkdir($dumpDir, 0777, true); // Create the directory if it doesn't exist
+                if (!mkdir($dumpDir, 0777, true) && !is_dir($dumpDir)) {
+                    throw new Exception("Failed to create directory: $dumpDir");
+                }
             }
-    
-            // Define the dump file name with timestamp
+
+            // Define the dump file name with a timestamp
             $dumpFile = $dumpDir . '/backup_' . date('Y-m-d_H-i-s') . '.sql';
-    
-            // Construct the mysqldump command to export the database
-            $command = "mysqldump --user={$username} --password={$password} --host={$hostname} --port={$portnumber} {$database} > {$dumpFile}";
-    
-            // Execute the command
-            $resultCode = null;
-            system($command, $resultCode);
-    
-            if ($resultCode === 0) {
-                // Return the file path if the export was successful
-                return $dumpFile;
-            } else {
-                throw new Exception('Error creating SQL dump. Please check your configuration.');
+            
+            // Open the file to write the dump
+            $file = fopen($dumpFile, 'w');
+            if (!$file) {
+                throw new Exception('Unable to create dump file.');
             }
+
+            // Get tables
+            $pdo = self::connexionDB();
+            $tables = $pdo->query("SHOW TABLES")->fetchAll(PDO::FETCH_COLUMN);
+
+            // Write dump for each table
+            foreach ($tables as $table) {
+                // Add table creation statement
+                $createTableQuery = $pdo->query("SHOW CREATE TABLE `$table`")->fetch(PDO::FETCH_ASSOC);
+                fwrite($file, "\n\n" . $createTableQuery['Create Table'] . ";\n\n");
+
+                // Add insert statements for each row in the table
+                $rows = $pdo->query("SELECT * FROM `$table`")->fetchAll(PDO::FETCH_ASSOC);
+                foreach ($rows as $row) {
+                    $columns = array_keys($row);
+                    $values = array_map(function ($value) use ($pdo) {
+                        return $pdo->quote($value);
+                    }, array_values($row));
+                    $sql = "INSERT INTO `$table` (`" . implode('`, `', $columns) . "`) VALUES (" . implode(', ', $values) . ");\n";
+                    fwrite($file, $sql);
+                }
+            }
+
+            fclose($file);
+
+            // Return the file path if the export was successful
+            return $dumpFile;
+
         } catch (Exception $e) {
             error_log('Database Export Error: ' . $e->getMessage());
             return null; // Return null on failure
         }
     }
-    
     
     public static function executeInsertQuery($query) : ?int
     {
