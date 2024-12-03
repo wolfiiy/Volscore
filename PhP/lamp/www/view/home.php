@@ -13,6 +13,11 @@ ob_start();
             <h1>Matches</h1>
         </a>
     </div>
+    <div id="info">
+        <a href="?action=info">
+            <button>Aide</button>
+        </a>
+    </div>
 </div>
 <?php
 $content = ob_get_clean();
