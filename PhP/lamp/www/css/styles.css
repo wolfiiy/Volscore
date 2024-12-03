@@ -70,3 +70,128 @@ td, th {
     text-align: center;
 }
 
+/* Restablecer márgenes y padding en todos los elementos */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+
+/* Configuración del body con flexbox */
+body {
+    display: flex;  /* Activamos el diseño de flexbox */
+    flex-direction: column;  /* Organizar los elementos de arriba hacia abajo */
+    font-family: Arial, sans-serif;
+}
+
+/* El contenedor principal de la página debe ocupar el espacio restante */
+.container {
+    flex: 1;  /* Hace que el contenedor ocupe el espacio disponible entre el header y el footer */
+    display: flex;
+    flex-direction: column;
+}
+
+/* Estilo para el footer */
+footer {
+    background: linear-gradient(0.25turn, #6aa619, #a7f89f, #1eb35c);
+    text-align: center;
+    padding: 10px 0;
+}
+
+/* Aseguramos que el body y html ocupen toda la altura */
+html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Centrado del contenedor principal */
+.row {
+    display: flex;  /* Activamos flexbox */
+    justify-content: center; /* Centra el contenido horizontalmente */
+    align-items: center; /* Centra el contenido verticalmente */
+    height: calc(100vh - 120px);  /* Resta la altura aproximada del header y el footer */
+    text-align: center;  /* Centra el texto dentro de los contenedores */
+    margin: 0; /* Elimina cualquier margen extra */
+}
+
+/* Estilos adicionales para mejorar la apariencia */
+h1 {
+    font-size: 2.5rem;  /* Ajusta el tamaño del título */
+    margin-bottom: 20px;  /* Espaciado inferior */
+}
+
+.description {
+    font-size: 1.2rem;  /* Tamaño de fuente más grande */
+    text-align: justify;  /* Justificar el texto */
+    line-height: 1.6;  /* Mejor separación de líneas */
+    max-width: 800px;  /* Limitar el ancho del texto */
+    margin: 0 auto;  /* Centrar el texto horizontalmente */
+}
+
+/* Estilos adicionales para mejorar la apariencia */
+h1 {
+    font-size: 2.5rem;  /* Ajusta el tamaño del título */
+    margin-bottom: 20px;  /* Espaciado inferior */
+}
+
+.description {
+    font-size: 1.2rem;  /* Tamaño de fuente más grande */
+    text-align: justify;  /* Justificar el texto */
+    line-height: 1.6;  /* Mejor separación de líneas */
+    max-width: 800px;  /* Limitar el ancho del texto */
+    margin: 0 auto;  /* Centrar el texto horizontalmente */
+}
+/* Estilo general para títulos con animación */
+.animated-title {
+    font-size: 3rem;
+    font-weight: bold;
+    color: #2a7a24;
+    text-align: center;
+    position: relative;
+    animation: fadeInTitle 1.2s ease-in-out; /* Duración reducida */
+    margin-bottom: 20px;
+}
+
+/* Estilo para las descripciones con animación */
+.animated-description {
+    font-size: 1.2rem;
+    color: #333;
+    text-align: justify;
+    line-height: 1.8;
+    max-width: 800px;
+    margin: 0 auto;
+    animation: fadeInText 1.5s ease-in-out; /* Duración reducida */
+}
+
+/* Animación de título: Fade-in desde abajo */
+@keyframes fadeInTitle {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Animación de texto: Fade-in con ligera opacidad */
+@keyframes fadeInText {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+/* Hover adicional para el título */
+.animated-title:hover {
+    color: #1e5d1b;
+    transform: scale(1.05);
+    transition: color 0.3s, transform 0.3s;
+}
+
