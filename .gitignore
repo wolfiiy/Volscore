@@ -402,3 +402,4 @@ Database/.dbeaver/
 
 # Volscore specifics
 .credentials.php
+PhP/lamp/www/output/sqldump/*
