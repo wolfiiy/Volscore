@@ -2,7 +2,7 @@
 require 'IVolscoreDb.php';
 
 class VolscoreDB implements IVolscoreDb {
-    
+
     public static function connexionDB()
     {
         require '.credentials.php';
@@ -13,7 +13,7 @@ class VolscoreDB implements IVolscoreDb {
     }
 
     /**
-     * Exports the database by manually generating an SQL dump.
+     * Exports the database by manually generating an SQL dump, including foreign keys.
      */
     public static function exportDatabase() {
         try {
@@ -56,6 +56,19 @@ class VolscoreDB implements IVolscoreDb {
                     }, array_values($row));
                     $sql = "INSERT INTO `$table` (`" . implode('`, `', $columns) . "`) VALUES (" . implode(', ', $values) . ");\n";
                     fwrite($file, $sql);
+                }
+
+                // Add foreign key constraints
+                $foreignKeys = $pdo->query("SHOW CREATE TABLE `$table`")->fetch(PDO::FETCH_ASSOC)['Create Table'];
+                preg_match_all('/CONSTRAINT `([^`]+)` FOREIGN KEY \(`([^`]+)`\) REFERENCES `([^`]+)` \(`([^`]+)`\)/', $foreignKeys, $matches, PREG_SET_ORDER);
+
+                foreach ($matches as $match) {
+                    $constraintName = $match[1];
+                    $columnName = $match[2];
+                    $referencedTable = $match[3];
+                    $referencedColumn = $match[4];
+                    $alterTableSQL = "ALTER TABLE `$table` ADD CONSTRAINT `$constraintName` FOREIGN KEY (`$columnName`) REFERENCES `$referencedTable` (`$referencedColumn`);\n";
+                    fwrite($file, $alterTableSQL);
                 }
             }
 
