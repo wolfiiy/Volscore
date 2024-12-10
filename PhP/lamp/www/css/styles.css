@@ -8,10 +8,11 @@ td, th {
 }
 
 .score {
-    font-size: 150px;
+    font-size: 60px;  /* Reducir el tamaño del puntaje */
     font-weight: bolder;
     text-align: center;
-    height: 230px;
+    height: 100px;  /* Reducir la altura para ocupar menos espacio */
+    margin: 0;  /* Eliminar márgenes innecesarios */
 }
 
 .setscore {
@@ -19,45 +20,43 @@ td, th {
 }
 
 .teamname {
-    font-size: 50px;
-    width: 300px;
+    font-size: 30px;  /* Reducir tamaño del nombre del equipo */
+    width: auto;
     text-align: center;
+    margin: 5px 0;  /* Ajustar márgenes */
 }
 
 .actions {
     text-align: center;
 }
 
-/* Thanks http://jsfiddle.net/mirohristov/awayF/473/ */
 .checkmark {
-    display:inline-block;
-    width: 22px;
-    height:22px;
+    display: inline-block;
+    width: 18px;
+    height: 18px;  /* Reducir tamaño del checkmark */
     background: #38d917;
-    border-radius:50%;
-    -ms-transform: rotate(45deg); /* IE 9 */
-    -webkit-transform: rotate(45deg); /* Chrome, Safari, Opera */
+    border-radius: 50%;
     transform: rotate(45deg);
 }
 
-.checkmark:before{
-    content:"";
+.checkmark:before {
+    content: "";
     position: absolute;
-    width:3px;
-    height:9px;
-    background-color:#fff;
-    left:11px;
-    top:6px;
+    width: 2px;
+    height: 6px;  /* Reducir tamaño de la barra en el checkmark */
+    background-color: #fff;
+    left: 8px;
+    top: 5px;
 }
 
-.checkmark:after{
-    content:"";
+.checkmark:after {
+    content: "";
     position: absolute;
-    width:3px;
-    height:3px;
-    background-color:#fff;
-    left:8px;
-    top:12px;
+    width: 2px;
+    height: 2px;  /* Reducir tamaño del punto en el checkmark */
+    background-color: #fff;
+    left: 6px;
+    top: 9px;
 }
 
 .serving {
@@ -66,40 +65,34 @@ td, th {
 }
 
 .teamPrep {
-    width: 30%;
+    width: 25%;
     text-align: center;
 }
 
-/* Restablecer márgenes y padding en todos los elementos */
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
 }
 
-
-/* Configuración del body con flexbox */
 body {
-    display: flex;  /* Activamos el diseño de flexbox */
-    flex-direction: column;  /* Organizar los elementos de arriba hacia abajo */
+    display: flex;
+    flex-direction: column;
     font-family: Arial, sans-serif;
 }
 
-/* El contenedor principal de la página debe ocupar el espacio restante */
 .container {
-    flex: 1;  /* Hace que el contenedor ocupe el espacio disponible entre el header y el footer */
+    flex: 1;
     display: flex;
     flex-direction: column;
 }
 
-/* Estilo para el footer */
 footer {
     background: linear-gradient(0.25turn, #6aa619, #a7f89f, #1eb35c);
     text-align: center;
-    padding: 10px 0;
+    padding: 5px 0;  /* Reducir el padding en el footer */
 }
 
-/* Aseguramos que el body y html ocupen toda la altura */
 html, body {
     height: 100%;
     margin: 0;
@@ -107,66 +100,42 @@ html, body {
     box-sizing: border-box;
 }
 
-/* Centrado del contenedor principal */
 .row {
-    display: flex;  /* Activamos flexbox */
-    justify-content: center; /* Centra el contenido horizontalmente */
-    align-items: center; /* Centra el contenido verticalmente */
-    height: calc(100vh - 120px);  /* Resta la altura aproximada del header y el footer */
-    text-align: center;  /* Centra el texto dentro de los contenedores */
-    margin: 0; /* Elimina cualquier margen extra */
-}
-
-/* Estilos adicionales para mejorar la apariencia */
-h1 {
-    font-size: 2.5rem;  /* Ajusta el tamaño del título */
-    margin-bottom: 20px;  /* Espaciado inferior */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: calc(100vh - 80px);  /* Reducir espacio total considerando el footer y el header */
+    text-align: center;
+    margin: 0;
 }
 
 .description {
-    font-size: 1.2rem;  /* Tamaño de fuente más grande */
-    text-align: justify;  /* Justificar el texto */
-    line-height: 1.6;  /* Mejor separación de líneas */
-    max-width: 800px;  /* Limitar el ancho del texto */
-    margin: 0 auto;  /* Centrar el texto horizontalmente */
+    font-size: 1rem;  /* Reducir el tamaño del texto */
+    text-align: justify;
+    line-height: 1.4;
+    max-width: 600px;  /* Reducir el tamaño máximo del texto */
+    margin: 0 auto;
 }
 
-/* Estilos adicionales para mejorar la apariencia */
-h1 {
-    font-size: 2.5rem;  /* Ajusta el tamaño del título */
-    margin-bottom: 20px;  /* Espaciado inferior */
-}
-
-.description {
-    font-size: 1.2rem;  /* Tamaño de fuente más grande */
-    text-align: justify;  /* Justificar el texto */
-    line-height: 1.6;  /* Mejor separación de líneas */
-    max-width: 800px;  /* Limitar el ancho del texto */
-    margin: 0 auto;  /* Centrar el texto horizontalmente */
-}
-/* Estilo general para títulos con animación */
 .animated-title {
-    font-size: 3rem;
+    font-size: 2rem;  /* Reducir el tamaño del título */
     font-weight: bold;
     color: #2a7a24;
     text-align: center;
-    position: relative;
-    animation: fadeInTitle 1.2s ease-in-out; /* Duración reducida */
-    margin-bottom: 20px;
+    animation: fadeInTitle 1.2s ease-in-out;
+    margin-bottom: 10px;  /* Reducir margen */
 }
 
-/* Estilo para las descripciones con animación */
 .animated-description {
-    font-size: 1.2rem;
+    font-size: 1rem;  /* Reducir el tamaño del texto */
     color: #333;
     text-align: justify;
-    line-height: 1.8;
-    max-width: 800px;
+    line-height: 1.4;
+    max-width: 600px;
     margin: 0 auto;
-    animation: fadeInText 1.5s ease-in-out; /* Duración reducida */
+    animation: fadeInText 1.5s ease-in-out;
 }
 
-/* Animación de título: Fade-in desde abajo */
 @keyframes fadeInTitle {
     from {
         opacity: 0;
@@ -178,7 +147,6 @@ h1 {
     }
 }
 
-/* Animación de texto: Fade-in con ligera opacidad */
 @keyframes fadeInText {
     from {
         opacity: 0;
@@ -188,10 +156,104 @@ h1 {
     }
 }
 
-/* Hover adicional para el título */
 .animated-title:hover {
     color: #1e5d1b;
     transform: scale(1.05);
     transition: color 0.3s, transform 0.3s;
 }
 
+ul.animated-description {
+    list-style: none;
+    padding: 0;
+    margin: 10px auto;  /* Reducir margen */
+    max-width: 500px;  /* Reducir el tamaño máximo de la lista */
+    text-align: left;
+    animation: fadeInText 1.5s ease-in-out;
+}
+
+ul.animated-description li {
+    font-size: 1rem;  /* Reducir tamaño de fuente */
+    color: #333;
+    background: #f9f9f9;
+    margin: 5px 0;  /* Reducir margen entre elementos */
+    padding: 5px 10px;  /* Reducir padding */
+    border-radius: 5px;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    transform: translateX(-30px);
+    opacity: 0;
+    animation: fadeInListItem 0.8s ease-in-out forwards;
+}
+
+ul.animated-description li:nth-child(odd) {
+    animation-delay: 0.3s;
+}
+ul.animated-description li:nth-child(even) {
+    animation-delay: 0.5s;
+}
+
+ul.animated-description li::before {
+    content: "★ ";
+    color: #ffcc00;
+    font-size: 1rem;  /* Reducir el tamaño de la estrella */
+    margin-right: 5px;  /* Reducir espacio entre estrella y texto */
+}
+
+@keyframes fadeInListItem {
+    from {
+        opacity: 0;
+        transform: translateX(-30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+h1 {
+    font-size: 2rem;  /* Reducir tamaño del título */
+    margin: 5px 0;  /* Reducir márgenes */
+}
+
+.d-flex {
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    gap: 8px;  /* Reducir el espacio entre elementos */
+}
+
+.d-flex.flex-column {
+    flex: 1;
+    padding: 5px;  /* Reducir padding */
+    text-align: center;
+    justify-content: flex-start;
+    margin: 0 5px;  /* Reducir márgenes */
+}
+
+.score {
+    font-size: 60px;  /* Reducir aún más el tamaño del puntaje */
+    font-weight: bolder;
+    text-align: center;
+    height: 100px;  /* Reducir la altura del puntaje */
+    margin: 5px 0;
+}
+
+.teamname, .setscore {
+    margin: 5px 0;  /* Reducir márgenes */
+}
+
+.d-flex.flex-column > div {
+    padding: 5px;  /* Reducir padding de las columnas */
+}
+
+button, .btn {
+    margin: 5px;
+    padding: 5px 8px;  /* Reducir padding de los botones */
+}
+
+.actions {
+    display: flex;
+    justify-content: center;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 8px;  /* Reducir el espacio entre los botones */
+}

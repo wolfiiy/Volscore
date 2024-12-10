@@ -1,11 +1,11 @@
 #sheetframe {
-    border: 1px solid black;
     width: 1024px;
     height: 768px;
     padding: 1px;
     display: flex;
     flex-direction: column;
     font-size: small;
+    margin: 0 auto; /* Centra el contenedor en la página */
 }
 
 #sheetheader {
@@ -83,8 +83,8 @@
 }
 
 .logo {
-    height:60px; 
-    padding:2px;
+    height: 60px; 
+    padding: 2px;
 }
 
 .headerslot {
@@ -100,29 +100,35 @@
     flex-direction: row;
     flex-wrap: wrap;
 }
+
 .setresult {
     border: 1px solid gray;
     width: 330px;
     margin: 4px;
 }
+
 .setnumber {
     font-weight: bolder;
 }
+
 .setduration {
     font-weight: lighter;
 }
+
 .playerpoints {
     width: 16.5%;
     border-bottom: 1px solid gray;
     border-right: 1px solid gray;
     text-align: center;
 }
+
 .playernumber {
     width: 16.5%;
     border-bottom: 1px solid gray;
     border-right: 1px solid gray;
     text-align: center;
 }
+
 .scoringsequence {
     width: 100%;
     border: 1px solid black;
@@ -142,12 +148,24 @@
     flex-direction: row;
     flex-wrap: wrap;
 }
+
 .teamsetresult {
     width: 50%;
     display: flex;
     flex-direction: column;
 }
+
 .cards {
     width: 30px;
     height: 30px;
+}
+
+/* Asegura que los elementos dentro de la clase .d-flex estén centrados */
+.d-flex {
+    display: flex;
+    justify-content: center; /* Centra los elementos dentro de su contenedor */
+}
+
+.d-flex .d-flex.flex-row {
+    justify-content: center; /* Centra el contenido en la fila */
 }

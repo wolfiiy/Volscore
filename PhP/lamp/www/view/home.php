@@ -4,7 +4,7 @@ ob_start();
 ?>
 <div class="row">
 <div class="col-6">
-    <h1 class="animated-title">VolScores - Application</h1>
+    <h1 class="animated-title"git >VolScores - Application</h1>
     <p class="description animated-description">
         VolScores est une application conçue pour faciliter l'organisation des matchs de volley-ball. 
         Elle fournit des informations complètes sur les équipes, permettant aux utilisateurs de suivre les scores en temps réel. 
