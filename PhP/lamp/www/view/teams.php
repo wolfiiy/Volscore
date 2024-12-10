@@ -4,13 +4,11 @@ $title = 'Equipes';
 ob_start();
 ?>
 
-<h1>Equipes</h1>
-<ul>
-
+<h1 class="animated-title">Equipes</h1>
+<ul class="animated-description">
 <?php
-foreach ($teams as $team)
-{
-    echo "<li>".$team->name."</li>";
+foreach ($teams as $team) {
+    echo "<li>" . $team->name . "</li>";
 }
 ?>
 </ul>
