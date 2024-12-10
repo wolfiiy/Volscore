@@ -3,8 +3,17 @@ require 'IVolscoreDb.php';
 
 class VolscoreDB implements IVolscoreDb {
 
-    public static function connexionDB()
-    {
+    /**
+     * Establishes a connection to the MySQL database using PDO.
+     * 
+     * This method retrieves the database connection details from an external credentials file
+     * and returns a PDO object configured with the appropriate settings for error handling 
+     * and fetch mode.
+     * 
+     * @return PDO The PDO object representing the database connection.
+     * @throws PDOException If the connection to the database fails, an exception is thrown.
+     */
+    public static function connexionDB() {
         require '.credentials.php';
         $PDO = new PDO("mysql:host=$hostname; port=$portnumber; dbname=$database;", $username, $password);
         $PDO->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
@@ -13,7 +22,14 @@ class VolscoreDB implements IVolscoreDb {
     }
 
     /**
-     * Exports the database by manually generating an SQL dump, including foreign keys.
+     * Exports the MySQL database to a SQL dump file.
+     * 
+     * This method connects to the database using credentials from an external configuration file
+     * and performs a backup of the database using the `mysqldump` command executed inside a Docker container.
+     * The generated SQL dump file is saved to a specified directory with a timestamped filename.
+     * 
+     * @return string|null The file path of the generated SQL dump file if successful, or null if an error occurred.
+     * @throws Exception If an error occurs while creating the directory or executing the `mysqldump` command.
      */
     public static function exportDatabase() {
         try {
@@ -30,53 +46,31 @@ class VolscoreDB implements IVolscoreDb {
 
             // Define the dump file name with a timestamp
             $dumpFile = $dumpDir . '/backup_' . date('Y-m-d_H-i-s') . '.sql';
-            
-            // Open the file to write the dump
-            $file = fopen($dumpFile, 'w');
-            if (!$file) {
-                throw new Exception('Unable to create dump file.');
+
+            // Define your Docker container name (replace with your actual container name)
+            $containerName = 'db';  // Replace with your actual Docker container name
+
+            // Construct the mysqldump command to execute inside the Docker container
+            $command = sprintf(
+                'docker exec %s mysqldump --user=%s --password=%s --host=localhost --port=%d %s > %s',
+                escapeshellarg($containerName),
+                escapeshellarg($username),
+                escapeshellarg($password),
+                escapeshellarg($portnumber),
+                escapeshellarg($database),
+                escapeshellarg($dumpFile)
+            );
+
+            // Execute the command
+            $resultCode = null;
+            system($command, $resultCode);
+
+            if ($resultCode === 0) {
+                // Return the file path if the export was successful
+                return $dumpFile;
+            } else {
+                throw new Exception("Error executing mysqldump command inside Docker. Code: $resultCode");
             }
-
-            // Get tables
-            $pdo = self::connexionDB();
-            $tables = $pdo->query("SHOW TABLES")->fetchAll(PDO::FETCH_COLUMN);
-
-            // Write dump for each table
-            foreach ($tables as $table) {
-                // Add table creation statement
-                $createTableQuery = $pdo->query("SHOW CREATE TABLE `$table`")->fetch(PDO::FETCH_ASSOC);
-                fwrite($file, "\n\n" . $createTableQuery['Create Table'] . ";\n\n");
-
-                // Add insert statements for each row in the table
-                $rows = $pdo->query("SELECT * FROM `$table`")->fetchAll(PDO::FETCH_ASSOC);
-                foreach ($rows as $row) {
-                    $columns = array_keys($row);
-                    $values = array_map(function ($value) use ($pdo) {
-                        return $pdo->quote($value);
-                    }, array_values($row));
-                    $sql = "INSERT INTO `$table` (`" . implode('`, `', $columns) . "`) VALUES (" . implode(', ', $values) . ");\n";
-                    fwrite($file, $sql);
-                }
-
-                // Add foreign key constraints
-                $foreignKeys = $pdo->query("SHOW CREATE TABLE `$table`")->fetch(PDO::FETCH_ASSOC)['Create Table'];
-                preg_match_all('/CONSTRAINT `([^`]+)` FOREIGN KEY \(`([^`]+)`\) REFERENCES `([^`]+)` \(`([^`]+)`\)/', $foreignKeys, $matches, PREG_SET_ORDER);
-
-                foreach ($matches as $match) {
-                    $constraintName = $match[1];
-                    $columnName = $match[2];
-                    $referencedTable = $match[3];
-                    $referencedColumn = $match[4];
-                    $alterTableSQL = "ALTER TABLE `$table` ADD CONSTRAINT `$constraintName` FOREIGN KEY (`$columnName`) REFERENCES `$referencedTable` (`$referencedColumn`);\n";
-                    fwrite($file, $alterTableSQL);
-                }
-            }
-
-            fclose($file);
-
-            // Return the file path if the export was successful
-            return $dumpFile;
-
         } catch (Exception $e) {
             error_log('Database Export Error: ' . $e->getMessage());
             return null; // Return null on failure
