@@ -25,12 +25,11 @@ ob_start();
 <div class="row text-center">
     <h1>Set <?= $set->number ?></h1>
 </div>
-<div class="row text-center">
-    <h2 id="timer">00:00</h2>
-</div>
 
-<div class="d-flex flex-row justify-content-around">
-    <div class="d-flex flex-column order-<?= (($game->toss + $set->number) % 2 == 0) ? 1 : 2 ?>">
+<!-- Conteneur pour les équipes et le timer -->
+<div class="d-flex flex-row justify-content-between align-items-center my-3">
+    <!-- Équipe recevant -->
+    <div class="d-flex flex-column text-center">
         <div class="teamname"><?= $game->receivingTeamName ?></div>
         <div class="setscore"><?= $game->scoreReceiving ?> sets</div>
         <div class="setscore"><?= count($game->receivingTimeouts) ?> timeouts</div>
@@ -57,9 +56,15 @@ ob_start();
         </div>
     </div>
 
-    <div class="d-flex flex-column order-<?= (($game->toss + $set->number) % 2 == 0) ? 2 : 1 ?>">
+    <!-- Timer au centre -->
+    <div class="text-center">
+        <h2 id="timer" class="display-4">00:00</h2>
+    </div>
+
+    <!-- Équipe visiteuse -->
+    <div class="d-flex flex-column text-center">
         <div class="teamname"><?= $game->visitingTeamName ?></div>
-        <div class="setscore"><?= $game->scoreVisiting ?></div>
+        <div class="setscore"><?= $game->scoreVisiting ?> sets</div>
         <div class="setscore"><?= count($game->visitingTimeouts) ?> timeouts</div>
         <div class="score"><?= $set->scoreVisiting ?></div>
         <div class="d-flex flex-column align-items-center">

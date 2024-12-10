@@ -257,3 +257,17 @@ button, .btn {
     flex-wrap: wrap;
     gap: 8px;  /* Reducir el espacio entre los botones */
 }
+
+#timer {
+    font-size: 40px; /* Ajustez la taille selon vos besoins */
+    font-weight: bold;
+    text-align: center;
+    margin: 20px auto; /* Centre horizontalement */
+}
+
+.row.text-center {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: auto; /* Ajustez pour s'adapter à votre structure */
+}
