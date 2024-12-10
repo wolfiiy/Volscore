@@ -1,6 +1,24 @@
 <?php
-$title = 'Score du match '.$game->number;
+session_start(); // Start the session
 
+// Initialize or update the timer value in the session
+if (!isset($_SESSION['timer_start'])) {
+    $_SESSION['timer_start'] = time(); // Store the current timestamp on first load
+}
+
+// Store the setid in the session if it's set in the URL
+if (isset($_GET['setid'])) {
+    if (!isset($_SESSION['setid']) || $_SESSION['setid'] != $_GET['setid']) {
+        // If setid is different from the session's setid, reset the timer
+        $_SESSION['setid'] = $_GET['setid'];
+        $_SESSION['timer_start'] = time(); // Reset the timer
+    }
+}
+
+$currentTime = time();
+$elapsedTime = $currentTime - $_SESSION['timer_start']; // Calculate elapsed time in seconds
+
+$title = 'Score du match ' . $game->number;
 ob_start();
 ?>
 
@@ -66,7 +84,30 @@ ob_start();
     </div>
 </div>
 
+<script>
+    let secondsElapsed = <?= $elapsedTime ?>; // Initialize with elapsed time
+
+    function updateTimer() {
+        const timerElement = document.getElementById('timer');
+        const minutes = Math.floor(secondsElapsed / 60);
+        const seconds = secondsElapsed % 60;
+
+        // Format the time as MM:SS
+        const formattedTime =
+            String(minutes).padStart(2, '0') + ':' +
+            String(seconds).padStart(2, '0');
+
+        timerElement.textContent = formattedTime;
+        secondsElapsed++; // Increment the time
+    }
+
+    // Update the timer every second
+    setInterval(updateTimer, 1000);
+    updateTimer(); // Initialize immediately
+</script>
+
 <?php
 $content = ob_get_clean();
 require_once 'gabarit.php';
 ?>
+
